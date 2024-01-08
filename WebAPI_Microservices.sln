@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.PaymentAPI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.EmailAPI", "Web.Services.EmailAPI\Web.Services.EmailAPI.csproj", "{69B6E322-3557-4378-9A10-BFBB3EED2D21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.GetwaySolution", "Web.GetwaySolution\Web.GetwaySolution.csproj", "{0087595E-3390-4A00-81F8-320C561664F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.GetwaySolution", "Web.GetwaySolution\Web.GetwaySolution.csproj", "{0087595E-3390-4A00-81F8-320C561664F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Services.CouponAPI", "Web.Services.CouponAPI\Web.Services.CouponAPI.csproj", "{5B0A08B9-91BB-4898-A96F-FAC10771B38D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{0087595E-3390-4A00-81F8-320C561664F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0087595E-3390-4A00-81F8-320C561664F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0087595E-3390-4A00-81F8-320C561664F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0A08B9-91BB-4898-A96F-FAC10771B38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0A08B9-91BB-4898-A96F-FAC10771B38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0A08B9-91BB-4898-A96F-FAC10771B38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0A08B9-91BB-4898-A96F-FAC10771B38D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{D08B8A0D-175C-4BC5-A49D-29E22B17DC33} = {63FF032E-3E8F-4BAB-8EE3-E26C1A553D1C}
 		{69B6E322-3557-4378-9A10-BFBB3EED2D21} = {63FF032E-3E8F-4BAB-8EE3-E26C1A553D1C}
 		{0087595E-3390-4A00-81F8-320C561664F7} = {A6F0DCB5-8F7D-4D38-A2B4-3BEC62459950}
+		{5B0A08B9-91BB-4898-A96F-FAC10771B38D} = {63FF032E-3E8F-4BAB-8EE3-E26C1A553D1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAAC1AD5-FC8B-4856-A33E-B0023F3F087E}
