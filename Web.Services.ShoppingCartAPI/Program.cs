@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using Web.Services.ShoppingCartAPI;
 using Web.Services.ShoppingCartAPI.Data;
 using Web.Services.ShoppingCartAPI.Extensions;
+using Web.Services.ShoppingCartAPI.Service;
+using Web.Services.ShoppingCartAPI.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<CartService, CartServiceImpl>();
 
 builder.Services.AddHttpContextAccessor();
 

@@ -1,9 +1,10 @@
-﻿using Web.Services.InventoryAPI.Models.Dto;
+﻿using Web.Services.InventoryAPI.Models;
+using Web.Services.InventoryAPI.Models.Dto;
 
 namespace Web.Services.InventoryAPI.Repository.IRepository
 {
     public interface IIventoryRepository : IDisposable
     {
-        public List<InventoryDTO> isInStock(List<int> productIds);
+        public List<Inventory> GetAll();
     }
 }

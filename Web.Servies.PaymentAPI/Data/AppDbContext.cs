@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Web.Services.PaymentAPI.Models;
 
 namespace Web.Services.PaymentAPI.Data
 {
@@ -7,6 +8,8 @@ namespace Web.Services.PaymentAPI.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
+        public DbSet<Payments> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -5,12 +5,19 @@ using Microsoft.OpenApi.Models;
 using Web.Services.InventoryAPI;
 using Web.Services.InventoryAPI.Data;
 using Web.Services.InventoryAPI.Extensions;
+using Web.Services.InventoryAPI.Repository;
+using Web.Services.InventoryAPI.Repository.IRepository;
+using Web.Services.InventoryAPI.Service;
+using Web.Services.InventoryAPI.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer
 (builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IIventoryRepository, InventoryRepository>();
 
 //Add services Auto Mapper
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
