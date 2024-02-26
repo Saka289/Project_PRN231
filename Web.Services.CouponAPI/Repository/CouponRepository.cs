@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Web.Services.CouponAPI.Data;
 using Web.Services.CouponAPI.Models;
 using Web.Services.CouponAPI.Repository.IRepository;
@@ -8,25 +9,27 @@ namespace Web.Services.CouponAPI.Repository
     public class CouponRepository : ICouponRepository
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CouponRepository(AppDbContext context)
+        public CouponRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async void AddAsync(Coupon coupon)
         {
-            await _context.AddAsync(coupon);
+            await _context.Set<Coupon>().AddAsync(coupon);
         }
 
         public async Task<IEnumerable<Coupon>> GetAllAsyns()
         {
-            return await _context.Coupons.ToListAsync();
+            return await _context.Set<Coupon>().ToListAsync();
         }
 
         public void Remove(int couponId)
         {
-            var obj = _context.Coupons.First(c => c.CouponId == couponId);
+            var obj = _context.Set<Coupon>().First(c => c.CouponId == couponId);
             if (obj != null)
             {
                 _context.Coupons.Remove(obj);
@@ -35,7 +38,11 @@ namespace Web.Services.CouponAPI.Repository
 
         public void UpdateAsync(Coupon coupon)
         {
-            _context.Coupons.Update(coupon);
+            var obj = _context.Set<Coupon>().First(c => c.CouponId == coupon.CouponId);
+            if (obj != null)
+            {
+                _mapper.Map(coupon, obj);
+            }
         }
 
         public void Dispose()
@@ -50,12 +57,12 @@ namespace Web.Services.CouponAPI.Repository
 
         public Coupon GetAsyns(int couponId)
         {
-            return _context.Coupons.First(c => c.CouponId == couponId);
+            return _context.Set<Coupon>().First(c => c.CouponId == couponId);
         }
 
         public Coupon GetByCode(string code)
         {
-            return _context.Coupons.First(c => c.CouponCode.ToLower() == code.ToLower());
+            return _context.Set<Coupon>().First(c => c.CouponCode.ToLower() == code.ToLower());
         }
     }
 }
