@@ -80,7 +80,7 @@ namespace Web.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
-                [Route("{id:int}")]
+        [Route("{id:int}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int id)
         {
