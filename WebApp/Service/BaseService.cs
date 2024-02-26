@@ -3,6 +3,7 @@ using Shared.Dtos;
 using System.Net;
 using System.Text;
 using WebApp.Models;
+using WebApp.Models.Dtos;
 using WebApp.Service.IService;
 using static Shared.Enums.SD;
 
@@ -18,7 +19,7 @@ namespace WebApp.Service
             _httpClientFactory = httpClientFactory;
             _tokenProvider = tokenProvider;
         }
-        public async Task<ResponseDto?> SendAsync(ReestDto requestDto, bool withBearer = true)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
         {
             try
             {
