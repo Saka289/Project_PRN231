@@ -18,5 +18,7 @@ namespace Shared.Enums
             Json,
             MultipartFormData,
         }
+
+        public const string TokenCookie = "JWTToken";
     }
 }
