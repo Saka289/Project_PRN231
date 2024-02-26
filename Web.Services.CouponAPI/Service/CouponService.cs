@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shared.Dtos;
 using Web.Services.CouponAPI.Models;
 using Web.Services.CouponAPI.Models.Dto;
 using Web.Services.CouponAPI.Repository.IRepository;

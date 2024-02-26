@@ -11,6 +11,7 @@ namespace Web.Services.CouponAPI
             var mappingConfig = new MapperConfiguration(config =>
             {
                 config.CreateMap<CouponDto, Coupon>().ReverseMap();
+                config.CreateMap<Coupon, Coupon>().ReverseMap();
             });
             return mappingConfig;
         }
