@@ -4,9 +4,10 @@ namespace Web.Services.PaymentAPI.Repository.IRepository
 {
     public interface IPaymentRepository
     {
-        void Remove(int productId);
-        void Update(Payments payments);
-        Payments FindById(String id);
-        List<Payments> FindAll();
+        public void Update(PaymentDTO paymentDTO);
+
+        public PaymentDTO FindById(String id);
+
+        public PaymentDTO PaymentCasso(List<PaymentCasso> payment);
     }
 }
