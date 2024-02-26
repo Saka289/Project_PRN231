@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos;
 using System.Net;
 using Web.Services.CouponAPI.Models.Dto;
 using Web.Services.CouponAPI.Service.IService;
