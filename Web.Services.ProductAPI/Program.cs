@@ -5,6 +5,10 @@ using Microsoft.OpenApi.Models;
 using Web.Services.ProductAPI;
 using Web.Services.ProductAPI.Data;
 using Web.Services.ProductAPI.Extensions;
+using Web.Services.ProductAPI.Repository;
+using Web.Services.ProductAPI.Repository.IRepository;
+using Web.Services.ProductAPI.Service;
+using Web.Services.ProductAPI.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,12 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -69,7 +79,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//ApplyMigration();
+ApplyMigration();
 
 app.Run();
 
