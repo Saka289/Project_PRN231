@@ -8,10 +8,12 @@ namespace Web.Services.PaymentAPI.Service
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IUserService _userService;
 
-        public PaymentService (IPaymentRepository paymentRepository)
+        public PaymentService (IPaymentRepository paymentRepository, IUserService userService)
         {
             _paymentRepository = paymentRepository;
+            _userService = userService; 
         }
 
 
@@ -70,6 +72,7 @@ namespace Web.Services.PaymentAPI.Service
                 string username = destrip[indexIdOrder + 2];
 
                 // search user name
+                var user = _userService.GetUser(email);
                 
 
                 // search Order lấy ra amout so amout 

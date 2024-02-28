@@ -24,5 +24,7 @@ namespace Shared.Enums
         public const string RoleAdmin = "ADMIN";
 
         public const string RoleCustomer = "CUSTOMER";
+
+        public const string AuthAPIBase = "https://localhost:6001";
     }
 }
