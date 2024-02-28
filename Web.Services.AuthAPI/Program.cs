@@ -1,7 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
+using Web.Services.AuthAPI;
 using Web.Services.AuthAPI.Data;
 using Web.Services.AuthAPI.Models;
 using Web.Services.AuthAPI.Service;
@@ -16,6 +18,11 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer
 var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
+//Add services Auto Mapper
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -25,6 +32,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
   .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
