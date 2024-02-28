@@ -26,12 +26,12 @@ namespace Web.Services.InventoryAPI.Service
                 if(inventory != null)
                 {
                     inventoryDTO.productId = inventory.ProductId;
-                    if (inventory.Quantity > 0)
+                    if (inventory.ReservedQuantity > 0)
                         inventoryDTO.isInStock = true;
                     else inventoryDTO.isInStock = false;
 
 
-                    if(inventory.Quantity < product.Quantity)
+                    if(inventory.ReservedQuantity < product.Quantity)
                     {
                         inventoryDTO.isEnoughtQty = false;
                     }
@@ -42,5 +42,34 @@ namespace Web.Services.InventoryAPI.Service
             }
             return inventoryDTOs;
         }
+
+        public void UpdateInventory(List<ProductRequest> products, string status)
+        {
+            List<Inventory> inventories = _repository.GetAll();
+            if (status.Equals("Order Success"))
+            {
+                foreach (ProductRequest product in products)
+                {
+                    Inventory inventory = inventories.SingleOrDefault(x => x.ProductId == product.ProductId);
+                    if (inventory != null)
+                    {
+                        inventory.ReservedQuantity += product.Quantity;
+                        inventory.StockQuantity -= product.Quantity;
+                    }
+                }
+            } else if (status.Equals("Roll back"))
+            {
+                foreach (ProductRequest product in products)
+                {
+                    Inventory inventory = inventories.SingleOrDefault(x => x.ProductId == product.ProductId);
+                    if (inventory != null)
+                    {
+                        inventory.ReservedQuantity -= product.Quantity;
+                        inventory.StockQuantity += product.Quantity;
+                    }
+                }
+            }
+        }
+
     }
 }

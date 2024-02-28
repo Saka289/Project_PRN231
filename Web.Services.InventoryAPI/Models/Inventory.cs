@@ -10,6 +10,8 @@ namespace Web.Services.InventoryAPI.Models
         [Required]
         public int ProductId { get; set; }
         [Required]
-        public long Quantity { get; set; }
+        public long StockQuantity { get; set; }
+        [Required]
+        public long ReservedQuantity { get; set; }
     }
 }
