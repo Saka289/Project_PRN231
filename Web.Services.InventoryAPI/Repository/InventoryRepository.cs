@@ -19,7 +19,6 @@ namespace Web.Services.InventoryAPI.Repository
         }
         public List<Inventory> GetAll()
         {
-            
             return _context.Inventories.ToList();
         }
     }

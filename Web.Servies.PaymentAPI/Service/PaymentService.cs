@@ -15,7 +15,7 @@ namespace Web.Services.PaymentAPI.Service
         }
 
 
-        public PaymentDTO FindById(string id)
+        public  PaymentDTO FindById(string id)
         {
             Payments payments = _paymentRepository.FindById(id);
 
@@ -42,6 +42,49 @@ namespace Web.Services.PaymentAPI.Service
                 payments.isPayed = paymentDTO.isPayed;
                 _paymentRepository.Update(payments);
             }
+        }
+
+        public List<PaymentDTO> PaymentCasso(List<PaymentCasso> paymentCasso)
+        {
+            if (paymentCasso == null) { return null; }
+
+            List<PaymentDTO> paymentDTOs = new List<PaymentDTO>();
+
+            foreach (PaymentCasso payment in paymentCasso)
+            {
+                if (string.IsNullOrEmpty(payment.Description))
+                {
+                    throw new ArgumentNullException("Payment invalid");
+                }
+
+                string[] destrip = payment.Description.Split(" ");
+                int indexIdOrder = -1;
+                for (int j = 0; j < destrip.Length; j++)
+                {
+                    if (destrip[j].Equals("ECOMMERCE"))
+                    {
+                        indexIdOrder = j;
+                    }
+                }
+                int OrderId = Int16.Parse(destrip[indexIdOrder + 1]);
+                string username = destrip[indexIdOrder + 2];
+
+                // search user name
+
+
+                // search Order lấy ra amout so amout 
+
+
+                // cập nhật payment bằng cách lấy ra payment với orderId
+
+                PaymentDTO paymentDTO = null;
+
+                paymentDTOs.Add(paymentDTO);
+
+            }
+
+
+            return paymentDTOs;
         }
 
     }

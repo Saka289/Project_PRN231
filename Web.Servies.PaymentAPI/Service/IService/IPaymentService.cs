@@ -8,5 +8,7 @@ namespace Web.Services.PaymentAPI.Service.IService
         public void Update(PaymentDTO paymentDTO); 
 
         public PaymentDTO FindById(String id);
+
+        public List<PaymentDTO> PaymentCasso(List<PaymentCasso> payment);
     }
 }

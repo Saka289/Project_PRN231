@@ -1,13 +1,13 @@
 ﻿using Web.Services.PaymentAPI.Models;
+using Web.Services.PaymentAPI.Models.Dto;
 
 namespace Web.Services.PaymentAPI.Repository.IRepository
 {
     public interface IPaymentRepository
     {
-        public void Update(PaymentDTO paymentDTO);
-
-        public PaymentDTO FindById(String id);
-
-        public PaymentDTO PaymentCasso(List<PaymentCasso> payment);
+        void Remove(int productId);
+        void Update(Payments payments);
+        Payments FindById(String id);
+        List<Payments> FindAll();
     }
 }
