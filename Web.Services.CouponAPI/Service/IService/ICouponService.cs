@@ -11,6 +11,5 @@ namespace Web.Services.CouponAPI.Service.IService
         ResponseDto Add(CouponDto couponDto);
         ResponseDto Update(CouponDto couponDto);
         ResponseDto Delete(int couponId);
-        
     }
 }
