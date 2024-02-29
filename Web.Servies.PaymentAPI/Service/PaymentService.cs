@@ -72,13 +72,17 @@ namespace Web.Services.PaymentAPI.Service
                 string username = destrip[indexIdOrder + 2];
 
                 // search user name
-                var user = _userService.GetUser(email);
-                
+                var user = _userService.GetUser(username);
+                if (user != null)
+                {
+                    // search Order lấy ra amout so amout 
 
-                // search Order lấy ra amout so amout 
+
+                    // cập nhật payment bằng cách lấy ra payment với orderId
+                }
 
 
-                // cập nhật payment bằng cách lấy ra payment với orderId
+
 
                 PaymentDTO paymentDTO = null;
 
