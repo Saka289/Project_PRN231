@@ -1,11 +1,15 @@
-﻿namespace Web.Services.OrderAPI.Models.Dto
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Web.Services.OrderAPI.Models.Dto
 {
-    public class OrderDetailDTO
+    public class OrderDetailDto
     {
-        private string id;
-        private string title;
-        private string skuCode;
-        private double price;
-        private int quantity;
+        public Guid OrderDetailId { get; set; }
+        public Guid OrderId { get; set; }
+        public int ProducId { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
+        public ProductDto? Product { get; set; }
     }
 }

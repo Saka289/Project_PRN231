@@ -1,17 +1,26 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Web.Services.OrderAPI.Models.Dto
 {
     public class OrderDto
     {
-        public string orderId { get; set; }
-        public DateTime orderDate { get; set; }
-        public string orderDesc { get; set; }
-        public Double orderFee { get; set; }
-        public string shippingAddress { get; set; }
-        public List<OrderDetailDTO> orderLineItemsDtoList { get; set; }
-        public string userId { get; set; }
+        public Guid OrderId { get; set; } 
+        public string UserId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal OrderTotal { get; set; }
+        public string? CouponCode { get; set; }
+        public decimal Discount { get; set; }
+        public string? Name { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
+        public string? Address { get; set; }
+        public string? Note { get; set; }
+        public DateTime ShippedDate { get; set; }
+        public DateTime RequiredDate { get; set; }
+        public string PaymentStatus { get; set; }
+        public IEnumerable<OrderDetailDto> OrderDetails { get; set; }
     }
 }

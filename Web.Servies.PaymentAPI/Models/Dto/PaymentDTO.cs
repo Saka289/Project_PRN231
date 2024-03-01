@@ -1,4 +1,6 @@
-﻿namespace Web.Services.PaymentAPI.Models.Dto
+﻿using static Shared.Enums.SD;
+
+namespace Web.Services.PaymentAPI.Models.Dto
 {
     public class PaymentDTO
     {

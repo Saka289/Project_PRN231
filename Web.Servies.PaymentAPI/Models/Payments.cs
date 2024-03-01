@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Shared.Enums.SD;
 
 namespace Web.Services.PaymentAPI.Models
 {
     public class Payments
     {
         [Key]
-        public string id { get; set; } =
-        Guid.NewGuid().ToString();
+        public string id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
         public int orderId { get; set; }
