@@ -7,8 +7,8 @@ namespace Web.Services.ProductAPI.Service.IService
     {
         Task<ResponseDto> GetAllProducts();
         ResponseDto GetProductById(int pId);
-        ResponseDto Add(ProductDtoForCreateAndUpdate model);
-        ResponseDto Update(ProductDtoForCreateAndUpdate model);
+        Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model);
+        Task<ResponseDto> Update(ProductDtoForCreateAndUpdate model);
         ResponseDto Delete(int pId);
         ResponseDto DeleteSoft(int pId);
     }

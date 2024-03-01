@@ -21,12 +21,12 @@ namespace Web.Services.ProductAPI.Service
             _mapper = mapper;   
             _response = new ResponseDto();
         }
-        public ResponseDto Add(ProductDtoForCreateAndUpdate model)
+        public async Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model)
         {
             try
             {
                 using var memoryStr = new MemoryStream();
-                model.Image.CopyToAsync(memoryStr);
+                await model.Image.CopyToAsync(memoryStr);
                 var fileExtension = Path.GetExtension(model.Image.FileName); // .jpg
                 var objName = $"{Guid.NewGuid()}-{Path.GetFileNameWithoutExtension(model.Image.FileName)}{fileExtension}";
                 var s3Obj = new S3Object
@@ -42,7 +42,7 @@ namespace Web.Services.ProductAPI.Service
 
                 };
                 FileUploadFunction fuf = new FileUploadFunction();
-                var stringImage = fuf.UploadImageAsync(s3Obj, cred);
+                var stringImage =  fuf.UploadImageAsync(s3Obj, cred);
 
 
                 Product obj = new Product();
@@ -131,7 +131,7 @@ namespace Web.Services.ProductAPI.Service
             return _response;
         }
 
-        public ResponseDto Update(ProductDtoForCreateAndUpdate model)
+        public async Task<ResponseDto> Update(ProductDtoForCreateAndUpdate model)
         {
             try
             {
@@ -154,10 +154,10 @@ namespace Web.Services.ProductAPI.Service
                     string fileName = obj.Image.Substring(obj.Image.LastIndexOf('/') + 1);
                     // xóa ảnh ở cloudfare
                     FileUploadFunction f = new FileUploadFunction();
-                    f.DeleteFileAsync("productimages", fileName);
+                    await f.DeleteFileAsync("productimages", fileName);
                     // upload lại ảnh lên cloudfare 
                     using var memoryStr = new MemoryStream();
-                    model.Image.CopyToAsync(memoryStr);
+                    await model.Image.CopyToAsync(memoryStr);
                     var fileExtension = Path.GetExtension(model.Image.FileName); // .jpg
                     var objName = $"{Guid.NewGuid()}-{Path.GetFileNameWithoutExtension(model.Image.FileName)}{fileExtension}";
                     var s3Obj = new S3Object
@@ -173,7 +173,7 @@ namespace Web.Services.ProductAPI.Service
 
                     };
                     FileUploadFunction fuf = new FileUploadFunction();
-                    var stringImage = fuf.UploadImageAsync(s3Obj, cred);
+                    var stringImage =  fuf.UploadImageAsync(s3Obj, cred);
 
                     obj.Image = Convert.ToString(stringImage.Result);
                 }

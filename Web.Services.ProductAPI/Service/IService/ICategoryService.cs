@@ -7,8 +7,8 @@ namespace Web.Services.ProductAPI.Service.IService
     {
         Task<ResponseDto> GetAllCategories();
         ResponseDto GetCategoryById(int cateId);
-        ResponseDto Add(CategoryDtoForCreateAndUpdate cateDto);
-        ResponseDto Update(CategoryDtoForCreateAndUpdate cateDto);
+        Task<ResponseDto> Add(CategoryDtoForCreateAndUpdate cateDto);
+        Task<ResponseDto> Update(CategoryDtoForCreateAndUpdate cateDto);
         ResponseDto Delete(int cateId);
         ResponseDto DeleteSoft (int cateId);
     }
