@@ -26,7 +26,7 @@ namespace Web.Services.ProductAPI.Service
             _mapper = mapper;
         }
 
-        public ResponseDto Add(CategoryDtoForCreateAndUpdate cateDto)
+        public async Task<ResponseDto> Add(CategoryDtoForCreateAndUpdate cateDto)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Web.Services.ProductAPI.Service
             return _response;
         }
 
-        public ResponseDto Update(CategoryDtoForCreateAndUpdate cateDto)
+        public async Task<ResponseDto> Update(CategoryDtoForCreateAndUpdate cateDto)
         {
             try
             {
