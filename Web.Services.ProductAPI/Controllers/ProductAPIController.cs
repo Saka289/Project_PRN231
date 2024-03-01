@@ -8,7 +8,7 @@ using Web.Services.ProductAPI.Service.IService;
 
 namespace Web.Services.ProductAPI.Controllers
 {
-    [Route("api/product")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductAPIController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace Web.Services.ProductAPI.Controllers
             _productService = productService;
         }
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ProductDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> Get()
         {
