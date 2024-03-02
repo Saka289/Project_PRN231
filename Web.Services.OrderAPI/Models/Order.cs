@@ -1,24 +1,36 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Web.Services.OrderAPI.Models
 {
     public class Order
     {
         [Key]
-        public string id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid OrderId { get; set; }
         [Required]
-        public string customerId { get; set; }
+        public string UserId { get; set; }
         [Required]
-        public string employeeId { get; set; }
+        public DateTime OrderDate { get; set; }
         [Required]
-        public DateTime orderDate { get; set; }
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal OrderTotal { get; set; }
+        public string? CouponCode { get; set; }
         [Required]
-        public Double orderFee { get; set; }
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Discount { get; set; }
+        public string? Name { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
+        public string? Address { get; set; }
+        public string? Note { get; set; }
         [Required]
-        public DateTime shippedDate { get; set; }
+        public DateTime ShippedDate { get; set; }
         [Required]
-        public DateTime requiredDate { get; set; }
+        public DateTime RequiredDate { get; set; }
         [Required]
-        public List<OrderDetail> orderLineItemsList { get; set; }
+        public string PaymentStatus { get; set; }
+        [Required]
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }
 }

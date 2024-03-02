@@ -21,11 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Repository\IRepository\" />
-    <Folder Include="Repository\IRepository\" />
-    <Folder Include="Service\IService\" />
-    <Folder Include="Service\IService\" />
+    <ProjectReference Include="..\CallService\CallService.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>
