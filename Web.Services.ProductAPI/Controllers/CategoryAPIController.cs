@@ -20,7 +20,7 @@ namespace Web.Services.ProductAPI.Controllers
             _categoryService = categoryService;
         }
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> Get()
         {
