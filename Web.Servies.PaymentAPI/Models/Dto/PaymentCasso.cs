@@ -2,7 +2,7 @@
 {
     public class PaymentCasso
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string When { get; set; }
         public int Amount { get; set; }
         public string Description { get; set; }
