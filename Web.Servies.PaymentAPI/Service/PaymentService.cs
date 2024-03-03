@@ -25,8 +25,7 @@ namespace Web.Services.PaymentAPI.Service
         {
             Payments payments = _paymentRepository.FindById(id);
 
-            
-            if (payments !=  null)
+            if (payments != null)
             {
                 PaymentDto paymentDto = new PaymentDto
                 {
@@ -112,6 +111,7 @@ namespace Web.Services.PaymentAPI.Service
                         paymentDTOs.Add(new PaymentDto
                         {
                             paymentId = payments.id,
+                            orderId = payments.orderId,
                             paymentStatus = payments.paymentStatus,
                             refund = payments.refund,
                         });
