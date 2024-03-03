@@ -2,7 +2,7 @@
 {
     public class PaymentWebHook
     {
-        public int error {  get; set; }
+        public string error {  get; set; }
         public List<PaymentCasso> data { get; set; }
     }
 }
