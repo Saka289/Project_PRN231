@@ -2,6 +2,8 @@
 using Web.Services.PaymentAPI.Models.Dto;
 using Web.Services.PaymentAPI.Repository.IRepository;
 using Web.Services.PaymentAPI.Service.IService;
+using static Shared.Enums.SD;
+
 
 namespace Web.Services.PaymentAPI.Service
 {
@@ -9,11 +11,13 @@ namespace Web.Services.PaymentAPI.Service
     {
         private readonly IPaymentRepository _paymentRepository;
         private readonly IUserService _userService;
+        private readonly IOrderService _orderService;
 
-        public PaymentService (IPaymentRepository paymentRepository, IUserService userService)
+        public PaymentService (IPaymentRepository paymentRepository, IUserService userService, IOrderService orderService)
         {
             _paymentRepository = paymentRepository;
             _userService = userService; 
+            _orderService = orderService;
         }
 
 
@@ -46,7 +50,7 @@ namespace Web.Services.PaymentAPI.Service
             }
         }
 
-        public List<PaymentDTO> PaymentCasso(List<PaymentCasso> paymentCasso)
+        public async Task<List<PaymentDTO>> PaymentCasso(List<PaymentCasso> paymentCasso)
         {
             if (paymentCasso == null) { return null; }
 
@@ -68,7 +72,7 @@ namespace Web.Services.PaymentAPI.Service
                         indexIdOrder = j;
                     }
                 }
-                int OrderId = Int16.Parse(destrip[indexIdOrder + 1]);
+                string OrderId = destrip[indexIdOrder + 1];
                 string username = destrip[indexIdOrder + 2];
 
                 // search user name
@@ -76,21 +80,33 @@ namespace Web.Services.PaymentAPI.Service
                 if (user != null)
                 {
                     // search Order lấy ra amout so amout 
-
-
-                    // cập nhật payment bằng cách lấy ra payment với orderId
+                    OrderDto order = await _orderService.GetOrder(OrderId);
+                    Payments payments = _paymentRepository.FindByOrderId(OrderId);
+                    if(payments != null && order != null)
+                    {
+                        if (payment.Amount == order.OrderTotal)
+                        {
+                            payments.paymentStatus = PaymentStatus.COMPLETED;
+                        } else if (payment.Amount > order.OrderTotal) 
+                        {
+                            payments.refund = payment.Amount;
+                            payments.paymentStatus= PaymentStatus.NOT_STARTED;
+                        } else if(payment.Amount < order.OrderTotal)
+                        {
+                            decimal refund = order.OrderTotal - payment.Amount;
+                            payments.refund = refund;
+                            payments.paymentStatus = PaymentStatus.COMPLETED;
+                        }
+                        _paymentRepository.Update(payments);
+                        paymentDTOs.Add(new PaymentDTO
+                        {
+                            paymentId = payments.id,
+                            paymentStatus = payments.paymentStatus,
+                            refund = payments.refund,
+                        });
+                    }
                 }
-
-
-
-
-                PaymentDTO paymentDTO = null;
-
-                paymentDTOs.Add(paymentDTO);
-
             }
-
-
             return paymentDTOs;
         }
 

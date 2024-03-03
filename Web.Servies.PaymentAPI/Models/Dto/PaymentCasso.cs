@@ -3,7 +3,7 @@
     public class PaymentCasso
     {
         public string Id { get; set; }
-        public DateTime When { get; set; }
+        public string When { get; set; }
         public int Amount { get; set; }
         public string Description { get; set; }
         public int CusumBalance { get; set; }

@@ -9,5 +9,6 @@ namespace Web.Services.PaymentAPI.Repository.IRepository
         void Update(Payments payments);
         Payments FindById(String id);
         List<Payments> FindAll();
+        Payments FindByOrderId(string orderId);
     }
 }

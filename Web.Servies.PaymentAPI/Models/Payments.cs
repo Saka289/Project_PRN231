@@ -17,5 +17,8 @@ namespace Web.Services.PaymentAPI.Models
         [Required]
         [EnumDataType(typeof(PaymentStatus))]
         public PaymentStatus paymentStatus { get; set; }
+
+        [Required]
+        public decimal refund { get; set; } = 0;
     }
 }

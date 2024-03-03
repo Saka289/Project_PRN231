@@ -2,6 +2,9 @@
 using Shared.Dtos;
 using Web.Services.PaymentAPI.Models.Dto;
 using Web.Services.PaymentAPI.Service.IService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
 
 namespace Web.Services.PaymentAPI.Controllers
 {
@@ -43,11 +46,11 @@ namespace Web.Services.PaymentAPI.Controllers
         }
 
         [HttpPost("/hanlePaymentWehook")]
-        public IActionResult hanlePaymentWehook(List<PaymentCasso> paymentCasso)
+        public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
             _response.IsSuccess = true;
             _response.Message = "Payment is update";
-            _response.Result = _paymentService.PaymentCasso(paymentCasso);
+            _response.Result = await _paymentService.PaymentCasso(paymentCasso.data);
             return Ok(_response);
         }
     }
