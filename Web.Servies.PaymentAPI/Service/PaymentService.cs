@@ -21,41 +21,49 @@ namespace Web.Services.PaymentAPI.Service
         }
 
 
-        public PaymentDTO FindById(string id)
+        public PaymentDto FindById(string id)
         {
             Payments payments = _paymentRepository.FindById(id);
 
-            return new PaymentDTO
+            
+            if (payments !=  null)
             {
-                paymentId = payments.id,
-                isPayed = payments.isPayed,
-                paymentStatus = payments.paymentStatus,
-            };
+                PaymentDto paymentDto = new PaymentDto
+                {
+                    paymentId = payments.id,
+                    orderId = payments.orderId,
+                    isPayed = payments.isPayed,
+                    paymentStatus = payments.paymentStatus,
+                };
+            }
+            return null;
         }
 
-        public void Update(PaymentDTO paymentDTO)
+        public void Update(PaymentDto paymentDTO)
         {
-            Payments payments = _paymentRepository.FindById(paymentDTO.paymentId);
+            Payments payments = _paymentRepository.FindById(paymentDTO.paymentId.ToString());
             if (payments != null)
             {
                 payments.paymentStatus = paymentDTO.paymentStatus;
                 payments.isPayed = paymentDTO.isPayed;
+                payments.orderId = paymentDTO.orderId;
                 _paymentRepository.Update(payments);
             }
             else
             {
                 payments = new Payments();
                 payments.paymentStatus = paymentDTO.paymentStatus;
+                payments.orderId = paymentDTO.orderId;
                 payments.isPayed = paymentDTO.isPayed;
                 _paymentRepository.Update(payments);
             }
         }
 
-        public async Task<List<PaymentDTO>> PaymentCasso(List<PaymentCasso> paymentCasso)
+        public async Task<List<PaymentDto>> PaymentCasso(List<PaymentCasso> paymentCasso)
         {
             if (paymentCasso == null) { return null; }
 
-            List<PaymentDTO> paymentDTOs = new List<PaymentDTO>();
+            List<PaymentDto> paymentDTOs = new List<PaymentDto>();
 
             foreach (PaymentCasso payment in paymentCasso)
             {
@@ -101,7 +109,7 @@ namespace Web.Services.PaymentAPI.Service
                             payments.paymentStatus = PaymentStatus.COMPLETED;
                         }
                         _paymentRepository.Update(payments);
-                        paymentDTOs.Add(new PaymentDTO
+                        paymentDTOs.Add(new PaymentDto
                         {
                             paymentId = payments.id,
                             paymentStatus = payments.paymentStatus,

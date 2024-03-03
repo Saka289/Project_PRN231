@@ -5,10 +5,10 @@ namespace Web.Services.PaymentAPI.Service.IService
 {
     public interface IPaymentService
     {
-        public void Update(PaymentDTO paymentDTO); 
+        public void Update(PaymentDto paymentDTO); 
 
-        public PaymentDTO FindById(String id);
+        public PaymentDto FindById(string id);
 
-        public Task<List<PaymentDTO>> PaymentCasso(List<PaymentCasso> payment);
+        public Task<List<PaymentDto>> PaymentCasso(List<PaymentCasso> payment);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Shared.Enums.SD;
 
 namespace Web.Services.PaymentAPI.Models
@@ -6,19 +7,20 @@ namespace Web.Services.PaymentAPI.Models
     public class Payments
     {
         [Key]
-        public string id { get; set; } = Guid.NewGuid().ToString();
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid id { get; set; }
+
+        public Guid orderId { get; set; }
 
         [Required]
-        public int orderId { get; set; }
-
-        [Required]
-        public Boolean isPayed { get; set; }
+        public bool isPayed { get; set; }
 
         [Required]
         [EnumDataType(typeof(PaymentStatus))]
         public PaymentStatus paymentStatus { get; set; }
 
         [Required]
-        public decimal refund { get; set; } = 0;
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal refund { get; set; }
     }
 }

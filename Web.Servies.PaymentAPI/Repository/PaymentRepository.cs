@@ -25,6 +25,7 @@ namespace Web.Services.PaymentAPI.Repository
         public void Update(Payments payments)
         {
             _context.Payments.Update(payments);
+            _context.SaveChanges();
         }
 
         public List<Payments> FindAll()
@@ -39,7 +40,8 @@ namespace Web.Services.PaymentAPI.Repository
 
         public Payments FindByOrderId(string orderId)
         {
-            return _context.Payments.SingleOrDefault(p => p.orderId.Equals(orderId));
+            return _context.Payments.SingleOrDefault(p => p.orderId.ToString().Equals(orderId));
         }
+
     }
 }

@@ -7,7 +7,7 @@ namespace Web.Services.PaymentAPI.Repository.IRepository
     {
         void Remove(int productId);
         void Update(Payments payments);
-        Payments FindById(String id);
+        Payments FindById(string id);
         List<Payments> FindAll();
         Payments FindByOrderId(string orderId);
     }

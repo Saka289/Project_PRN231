@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Web.Services.PaymentAPI.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial_PaymentDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,9 +13,11 @@ namespace Web.Services.PaymentAPI.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    orderId = table.Column<int>(type: "int", nullable: false),
-                    isPayed = table.Column<bool>(type: "bit", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    orderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    isPayed = table.Column<bool>(type: "bit", nullable: false),
+                    paymentStatus = table.Column<int>(type: "int", nullable: false),
+                    refund = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {

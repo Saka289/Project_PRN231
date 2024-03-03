@@ -34,25 +34,26 @@ namespace Web.Services.PaymentAPI.Controllers
                 _response.Message = "Payment is not existed";
                 return NotFound(_response);
             }
+            _response.Result = payment;
             _response.IsSuccess = true;
             _response.Message = "Payment is existed";
             return Ok(_response);
         }
 
         [HttpPost]
-        public IActionResult Update(PaymentDTO paymentDTO)
+        public IActionResult Update(PaymentDto paymentDTO)
         {
+            _paymentService.Update(paymentDTO);
             return Ok();
         }
 
         [HttpPost("hanlePaymentWehook")]
         public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
-            //_response.IsSuccess = true;
-            //_response.Message = "Payment is update";
-            //_response.Result = await _paymentService.PaymentCasso(paymentCasso.data);
-            var result = await _paymentService.PaymentCasso(paymentCasso.data);
-            return Ok(result);
+            _response.IsSuccess = true;
+            _response.Message = "Payment is update";
+            _response.Result = await _paymentService.PaymentCasso(paymentCasso.data);
+            return Ok(_response);
         }
     }
 }
