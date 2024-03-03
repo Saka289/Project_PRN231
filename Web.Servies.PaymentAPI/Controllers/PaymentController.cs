@@ -23,7 +23,7 @@ namespace Web.Services.PaymentAPI.Controllers
         }
 
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public IActionResult findPaymentById(string id) 
         {
             var payment = _paymentService.FindById(id);
@@ -45,7 +45,7 @@ namespace Web.Services.PaymentAPI.Controllers
             return Ok(); 
         }
 
-        [HttpPost("/hanlePaymentWehook")]
+        [HttpPost("hanlePaymentWehook")]
         public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
             _response.IsSuccess = true;

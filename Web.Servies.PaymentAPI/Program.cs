@@ -80,6 +80,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//app.UseSwagger();
+//app.UseSwaggerUI(options =>
+//{
+//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PAYMENT API");
+//    options.RoutePrefix = string.Empty;
+//});
+
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -88,7 +97,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//ApplyMigration();
+ApplyMigration();
 
 app.Run();
 
