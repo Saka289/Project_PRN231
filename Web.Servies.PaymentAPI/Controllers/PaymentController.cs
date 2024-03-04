@@ -4,6 +4,7 @@ using Web.Services.PaymentAPI.Models.Dto;
 using Web.Services.PaymentAPI.Service.IService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Immutable;
 
 
 namespace Web.Services.PaymentAPI.Controllers
@@ -52,7 +53,7 @@ namespace Web.Services.PaymentAPI.Controllers
         {
             
             var payemtn = await _paymentService.PaymentCasso(paymentCasso.data);
-            if (payemtn != null)
+            if (!payemtn.Any())
             {
                 _response.Result = payemtn;
                 _response.IsSuccess = true;
