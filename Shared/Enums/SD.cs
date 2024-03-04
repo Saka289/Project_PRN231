@@ -24,6 +24,7 @@ namespace Shared.Enums
             NOT_STARTED,
             IN_PROGRESS,
             COMPLETED,
+            REFUND,
         }
 
         public const string TokenCookie = "JWTToken";
