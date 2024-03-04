@@ -54,6 +54,7 @@ namespace Web.Services.PaymentAPI.Controllers
             var payemtn = await _paymentService.PaymentCasso(paymentCasso.data);
             if (payemtn != null)
             {
+                _response.Result = payemtn;
                 _response.IsSuccess = true;
                 _response.Message = "Payment is update";
                 return Ok(_response);

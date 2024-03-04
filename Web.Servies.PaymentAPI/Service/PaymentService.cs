@@ -104,7 +104,7 @@ namespace Web.Services.PaymentAPI.Service
                         }
                         else if (payment.Amount > order.OrderTotal)
                         {
-                            decimal refund = order.OrderTotal - payment.Amount;
+                            decimal refund = payment.Amount - order.OrderTotal;
                             payments.refund = refund;
                             payments.paymentStatus = PaymentStatus.COMPLETED;
                         }
