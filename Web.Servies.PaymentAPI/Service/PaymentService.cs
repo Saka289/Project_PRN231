@@ -97,12 +97,12 @@ namespace Web.Services.PaymentAPI.Service
                         {
                             payments.paymentStatus = PaymentStatus.COMPLETED;
                         }
-                        else if (payment.Amount > order.OrderTotal)
+                        else if (payment.Amount < order.OrderTotal)
                         {
                             payments.refund = payment.Amount;
-                            payments.paymentStatus = PaymentStatus.NOT_STARTED;
+                            payments.paymentStatus = PaymentStatus.IN_PROGRESS;
                         }
-                        else if (payment.Amount < order.OrderTotal)
+                        else if (payment.Amount > order.OrderTotal)
                         {
                             decimal refund = order.OrderTotal - payment.Amount;
                             payments.refund = refund;
