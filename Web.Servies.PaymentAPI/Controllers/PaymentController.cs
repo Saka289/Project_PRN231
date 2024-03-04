@@ -53,7 +53,7 @@ namespace Web.Services.PaymentAPI.Controllers
         {
             
             var payemtn = await _paymentService.PaymentCasso(paymentCasso.data);
-            if (!payemtn.Any())
+            if (payemtn.Any())
             {
                 _response.Result = payemtn;
                 _response.IsSuccess = true;
