@@ -25,7 +25,6 @@ namespace Web.Services.PaymentAPI.Service
         {
             Payments payments = _paymentRepository.FindById(id);
 
-            if (payments != null)
             if (payments !=  null)
             {
                 PaymentDto paymentDto = new PaymentDto
