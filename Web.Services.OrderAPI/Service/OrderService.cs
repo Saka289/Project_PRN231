@@ -69,7 +69,10 @@ namespace Web.Services.OrderAPI.Service
                     foreach (var itemOrderDetails in itemOrder.OrderDetails)
                     {
                         itemOrderDetails.Product = await _productService.GetProduct(itemOrderDetails.ProducId);
-                        itemOrderDetails.Product.Category = await _categoryService.GetCategory(itemOrderDetails.Product.CategoryId);
+                        if (itemOrderDetails.Product != null)
+                        {
+                            itemOrderDetails.Product.Category = await _categoryService.GetCategory(itemOrderDetails.Product.CategoryId);
+                        }
                     }
                 }
                 _response.Result = orderDtos;
