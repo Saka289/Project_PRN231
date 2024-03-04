@@ -25,7 +25,6 @@ namespace Web.Services.PaymentAPI.Service
         {
             Payments payments = _paymentRepository.FindById(id);
 
-            
             if (payments !=  null)
             {
                 PaymentDto paymentDto = new PaymentDto
@@ -35,6 +34,7 @@ namespace Web.Services.PaymentAPI.Service
                     isPayed = payments.isPayed,
                     paymentStatus = payments.paymentStatus,
                 };
+                return paymentDto;
             }
             return null;
         }

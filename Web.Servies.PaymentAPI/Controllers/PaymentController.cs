@@ -50,10 +50,17 @@ namespace Web.Services.PaymentAPI.Controllers
         [HttpPost("hanlePaymentWehook")]
         public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
-            _response.IsSuccess = true;
-            _response.Message = "Payment is update";
-            _response.Result = await _paymentService.PaymentCasso(paymentCasso.data);
-            return Ok(_response);
+            
+            var payemtn = await _paymentService.PaymentCasso(paymentCasso.data);
+            if (payemtn != null)
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Payment is update";
+                return Ok(_response);
+            }
+            _response.IsSuccess = false;
+            _response.Message = "Payment is not hanlde";
+            return NotFound(_response);
         }
     }
 }
