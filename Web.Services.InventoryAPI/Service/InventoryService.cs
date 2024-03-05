@@ -26,16 +26,16 @@ namespace Web.Services.InventoryAPI.Service
                 if(inventory != null)
                 {
                     inventoryDTO.productId = inventory.ProductId;
-                    if (inventory.ReservedQuantity > 0)
+                    if (inventory.StockQuantity > 0)
                         inventoryDTO.isInStock = true;
                     else inventoryDTO.isInStock = false;
 
 
-                    if(inventory.ReservedQuantity < product.Quantity)
+                    if(inventory.StockQuantity < product.Quantity)
                     {
-                        inventoryDTO.isEnoughtQty = false;
+                        inventoryDTO.isInStock = false;
                     }
-                    else inventoryDTO.isEnoughtQty = true;
+                    else inventoryDTO.isInStock = true;
 
                     inventoryDTOs.Add(inventoryDTO);
                 }

@@ -11,8 +11,8 @@ using Web.Services.InventoryAPI.Data;
 namespace Web.Services.InventoryAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240110064250_inventorydb")]
-    partial class inventorydb
+    [Migration("20240305093359_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,10 @@ namespace Web.Services.InventoryAPI.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Quantity")
+                    b.Property<long>("ReservedQuantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StockQuantity")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");

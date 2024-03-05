@@ -4,7 +4,7 @@
 
 namespace Web.Services.InventoryAPI.Migrations
 {
-    public partial class inventorydb : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace Web.Services.InventoryAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false)
+                    StockQuantity = table.Column<long>(type: "bigint", nullable: false),
+                    ReservedQuantity = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

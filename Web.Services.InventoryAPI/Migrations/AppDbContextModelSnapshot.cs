@@ -32,7 +32,10 @@ namespace Web.Services.InventoryAPI.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Quantity")
+                    b.Property<long>("ReservedQuantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StockQuantity")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
