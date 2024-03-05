@@ -8,12 +8,12 @@ namespace Web.Services.InventoryAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InventoryController : ControllerBase
+    public class InventoryAPIController : ControllerBase
     {
         private readonly IInventoryService _inventoryService;
         private ResponseDto responseDto;
 
-        public InventoryController(IInventoryService inventoryService) 
+        public InventoryAPIController(IInventoryService inventoryService)
         {
             _inventoryService = inventoryService;
             responseDto = new ResponseDto();
@@ -24,7 +24,7 @@ namespace Web.Services.InventoryAPI.Controllers
         {
 
             var invens = _inventoryService.isInStock(products);
-            if(invens == null)
+            if (invens == null)
             {
                 responseDto.IsSuccess = false;
                 responseDto.Message = "Not product is in stock";
@@ -33,7 +33,7 @@ namespace Web.Services.InventoryAPI.Controllers
             responseDto.IsSuccess = true;
             responseDto.Message = "have result";
             responseDto.Result = invens;
-            
+
 
             return Ok(responseDto);
         }
