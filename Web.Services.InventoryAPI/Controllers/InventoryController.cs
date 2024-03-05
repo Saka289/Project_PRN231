@@ -6,7 +6,7 @@ using Web.Services.InventoryAPI.Service.IService;
 
 namespace Web.Services.InventoryAPI.Controllers
 {
-    [Route("api/inventories")]
+    [Route("api/[controller]")]
     [ApiController]
     public class InventoryController : ControllerBase
     {

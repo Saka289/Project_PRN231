@@ -17,14 +17,16 @@ namespace Web.Services.OrderAPI.Service
         private readonly IOrderRepository _orderRepository;
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IInventoryService _inventoryService;
         protected ResponseDto _response;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService)
         {
             _orderRepository = orderRepository;
             _productService = productService;
             _categoryService = categoryService;
+            _inventoryService = inventoryService;
             _response = new ResponseDto();
             _mapper = mapper;
         }
@@ -144,6 +146,66 @@ namespace Web.Services.OrderAPI.Service
                 }
                 var result = await _orderRepository.SearchOrder(orderId);
                 _response.Result = _mapper.Map<OrderDto>(result);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+
+        public async Task<ResponseDto> CreateOrderVer2(CartDto cartDto)
+        {
+            try
+            {
+                OrderDto orderDto = _mapper.Map<OrderDto>(cartDto.CartOrder);
+                orderDto.OrderId = Guid.Empty;
+                orderDto.OrderDate = DateTime.Now;
+                orderDto.ShippedDate = DateTime.Now.AddDays(5);
+                orderDto.RequiredDate = DateTime.Now.AddDays(7);
+                orderDto.PaymentStatus = PaymentStatus.NOT_STARTED.ToString();
+                orderDto.OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(cartDto.CartOrderDetails).Select(orderDetails =>
+                {
+                    orderDetails.OrderDetailId = Guid.Empty;
+                    return orderDetails;
+                });
+
+                List<ProductRequest> productRequests = new List<ProductRequest>();
+                foreach (var item in orderDto.OrderDetails)
+                {
+                    ProductRequest productRequest = new ProductRequest
+                    {
+                        ProductId = item.ProducId,
+                        Quantity = item.Quantity,
+                    };
+
+                    productRequests.Add(productRequest);
+                }
+
+                // call đến inventory để check xem còn hàng hay ko 
+                bool flagOrder = true;
+                var inventory = _inventoryService.IsInStock(productRequests);
+                foreach (var item in inventory.Result)
+                {
+                    if(item.isInStock == false)
+                    {
+                        flagOrder = false;
+                    }
+                }
+               
+                if(flagOrder)
+                {
+                    Order orderCreated = await _orderRepository.CreateOrder(_mapper.Map<Order>(orderDto));
+                    _orderRepository.SaveChanges();
+                    _response.Result = _mapper.Map<OrderDto>(orderCreated);
+                    _response.Message = "Create Order Successfully !!!";
+                } else
+                {
+                    _response.Result = inventory;
+                    _response.Message = "Create Order Not Successfully !!!";
+                }   
             }
             catch (Exception ex)
             {
