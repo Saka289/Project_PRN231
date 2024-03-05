@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "EventB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileUpload", "FileUpload\FileUpload.csproj", "{C177EAEB-4197-4AF4-B7C9-E821C0115416}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallService", "CallService\CallService.csproj", "{3A1EE8E5-74BB-4091-9B52-8DD7C1072C4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallService", "CallService\CallService.csproj", "{3A1EE8E5-74BB-4091-9B52-8DD7C1072C4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

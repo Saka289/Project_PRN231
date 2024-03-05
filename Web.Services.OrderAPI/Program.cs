@@ -1,10 +1,16 @@
 using AutoMapper;
+using CallService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Web.Services.OrderAPI;
 using Web.Services.OrderAPI.Data;
 using Web.Services.OrderAPI.Extensions;
+using Web.Services.OrderAPI.Repository;
+using Web.Services.OrderAPI.Repository.IRepository;
+using Web.Services.OrderAPI.Service;
+using Web.Services.OrderAPI.Service.IService;
+using Web.Services.OrderAPI.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +24,18 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient<ISendService, SendService>();
+builder.Services.AddHttpClient<IProductService, ProductService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient<ICategoryService, CategoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ISendService, SendService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,12 +72,19 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 

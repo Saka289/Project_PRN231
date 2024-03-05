@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Web.Services.OrderAPI.Models;
 
 namespace Web.Services.OrderAPI.Data
 {
@@ -6,7 +7,11 @@ namespace Web.Services.OrderAPI.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+
         }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

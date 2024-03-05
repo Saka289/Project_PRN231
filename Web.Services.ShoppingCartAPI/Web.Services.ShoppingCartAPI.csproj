@@ -17,13 +17,17 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="NRedisStack" Version="0.11.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Models\Dto\" />
+    <Folder Include="Models\Dto\" />
     <Folder Include="Repository\IRepository\" />
+    <Folder Include="Repository\IRepository\" />
+    <Folder Include="Service\IService\" />
     <Folder Include="Service\IService\" />
   </ItemGroup>
 
