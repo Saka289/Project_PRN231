@@ -29,6 +29,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ISendService, SendService>();
 builder.Services.AddHttpClient<IProductService, ProductService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient<IInventoryService, InventoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ISendService, SendService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,19 +74,20 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
-    options.RoutePrefix = string.Empty;
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+//// Configure the HTTP request pipeline.
+//app.UseSwagger();
+//app.UseSwaggerUI(options =>
+//{
+//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
+//    options.RoutePrefix = string.Empty;
+//});
 
 app.UseHttpsRedirection();
 

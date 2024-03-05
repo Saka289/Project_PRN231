@@ -16,7 +16,7 @@ namespace Web.Services.OrderAPI.Models
         [ForeignKey(nameof(OrderId))]
         public Order? Order { get; set; }
         [Required]
-        public string ProducId { get; set; }
+        public string ProductId { get; set; }
         [Required]
         [Column(TypeName = "decimal(10,2)")]
         public decimal UnitPrice { get; set; }

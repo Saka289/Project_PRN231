@@ -9,6 +9,12 @@ namespace Web.Services.OrderAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderId { get; set; }
         [Required]
+        public string OrderIdString
+        {
+            get { return OrderId.ToString("N"); }
+            set { OrderId = Guid.Parse(value); }
+        }
+        [Required]
         public string UserId { get; set; }
         [Required]
         public DateTime OrderDate { get; set; }

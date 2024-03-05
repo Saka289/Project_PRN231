@@ -35,6 +35,22 @@ namespace Web.Services.OrderAPI.Service
         {
             try
             {
+                var productList = cartDto.CartOrderDetails.Select(p => new ProductRequestDto
+                {
+                    ProductId = p.ProductId,
+                    Quantity = p.Quantity,
+                }).ToList();
+
+                var checkInventory = await _inventoryService.IsInStock(productList);
+                bool flagOrder = checkInventory.All(c => c.isInStock);
+                if (flagOrder == false)
+                {
+                    _response.Result = false;
+                    _response.IsSuccess = false;
+                    _response.Message = "Order creation failed due to out of stock !!!";
+                    return _response;
+                }
+
                 OrderDto orderDto = _mapper.Map<OrderDto>(cartDto.CartOrder);
                 orderDto.OrderId = Guid.Empty;
                 orderDto.OrderDate = DateTime.Now;
@@ -70,7 +86,7 @@ namespace Web.Services.OrderAPI.Service
                 {
                     foreach (var itemOrderDetails in itemOrder.OrderDetails)
                     {
-                        itemOrderDetails.Product = await _productService.GetProduct(itemOrderDetails.ProducId);
+                        itemOrderDetails.Product = await _productService.GetProduct(itemOrderDetails.ProductId);
                         if (itemOrderDetails.Product != null)
                         {
                             itemOrderDetails.Product.Category = await _categoryService.GetCategory(itemOrderDetails.Product.CategoryId);
@@ -146,66 +162,6 @@ namespace Web.Services.OrderAPI.Service
                 }
                 var result = await _orderRepository.SearchOrder(orderId);
                 _response.Result = _mapper.Map<OrderDto>(result);
-            }
-            catch (Exception ex)
-            {
-                _response.Message = ex.Message;
-                _response.IsSuccess = false;
-            }
-            return _response;
-        }
-
-
-        public async Task<ResponseDto> CreateOrderVer2(CartDto cartDto)
-        {
-            try
-            {
-                OrderDto orderDto = _mapper.Map<OrderDto>(cartDto.CartOrder);
-                orderDto.OrderId = Guid.Empty;
-                orderDto.OrderDate = DateTime.Now;
-                orderDto.ShippedDate = DateTime.Now.AddDays(5);
-                orderDto.RequiredDate = DateTime.Now.AddDays(7);
-                orderDto.PaymentStatus = PaymentStatus.NOT_STARTED.ToString();
-                orderDto.OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(cartDto.CartOrderDetails).Select(orderDetails =>
-                {
-                    orderDetails.OrderDetailId = Guid.Empty;
-                    return orderDetails;
-                });
-
-                List<ProductRequest> productRequests = new List<ProductRequest>();
-                foreach (var item in orderDto.OrderDetails)
-                {
-                    ProductRequest productRequest = new ProductRequest
-                    {
-                        ProductId = item.ProducId,
-                        Quantity = item.Quantity,
-                    };
-
-                    productRequests.Add(productRequest);
-                }
-
-                // call đến inventory để check xem còn hàng hay ko 
-                bool flagOrder = true;
-                var inventory = _inventoryService.IsInStock(productRequests);
-                foreach (var item in inventory.Result)
-                {
-                    if(item.isInStock == false)
-                    {
-                        flagOrder = false;
-                    }
-                }
-               
-                if(flagOrder)
-                {
-                    Order orderCreated = await _orderRepository.CreateOrder(_mapper.Map<Order>(orderDto));
-                    _orderRepository.SaveChanges();
-                    _response.Result = _mapper.Map<OrderDto>(orderCreated);
-                    _response.Message = "Create Order Successfully !!!";
-                } else
-                {
-                    _response.Result = inventory;
-                    _response.Message = "Create Order Not Successfully !!!";
-                }   
             }
             catch (Exception ex)
             {

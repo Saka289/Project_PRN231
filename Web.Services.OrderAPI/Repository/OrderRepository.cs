@@ -48,7 +48,7 @@ namespace Web.Services.OrderAPI.Repository
 
         public async Task<Order> SearchOrder(string orderId)
         {
-            var result = await _context.Orders.Include(o => o.OrderDetails).FirstOrDefaultAsync(o => o.OrderId.ToString().Equals(orderId));
+            var result = await _context.Orders.Include(o => o.OrderDetails).FirstOrDefaultAsync(o => o.OrderId.ToString().Equals(orderId) || o.OrderIdString.Equals(orderId));
             if (result == null)
             {
                 return null;

@@ -4,6 +4,6 @@ namespace Web.Services.OrderAPI.Service.IService
 {
     public interface IInventoryService
     {
-        Task<List<InventoryDto>> IsInStock(List<ProductRequest> inventoryDto);
+        Task<IEnumerable<InventoryDto>> IsInStock(List<ProductRequestDto> inventoryDto);
     }
 }

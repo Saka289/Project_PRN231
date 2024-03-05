@@ -16,19 +16,19 @@ namespace Web.Services.OrderAPI.Service
             _sendService = sendService;
         }
 
-
-        public async Task<List<InventoryDto>> IsInStock(ProductRequest inventoryDto)
+        public async Task<IEnumerable<InventoryDto>> IsInStock(List<ProductRequestDto> inventoryDto)
         {
             try
             {
                 var response = await _sendService.SendServiceAsync(new SendRequestDto()
                 {
                     ApiType = SD.ApiType.POST,
-                    Url = SD.ProductAPIBase + "/api/Inventory/"
+                    Data = inventoryDto,
+                    Url = SD.InventoryAPIBase + "/api/InventoryAPI"
                 });
                 if (response.IsSuccess && response.Result != null)
                 {
-                    var result = JsonConvert.DeserializeObject<List<InventoryDto>>(Convert.ToString(response.Result));
+                    var result = JsonConvert.DeserializeObject<IEnumerable<InventoryDto>>(Convert.ToString(response.Result));
                     return result;
                 }
             }

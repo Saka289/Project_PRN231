@@ -52,7 +52,7 @@ namespace Web.Services.OrderAPI.Controllers
             {
                 return Ok(result);
             }
-            return NotFound();
+            return BadRequest(result);
         }
 
         [HttpPut]

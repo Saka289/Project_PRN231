@@ -7,7 +7,12 @@ namespace Web.Services.OrderAPI.Models.Dto
 {
     public class OrderDto
     {
-        public Guid OrderId { get; set; } 
+        public Guid OrderId { get; set; }
+        public string OrderIdString
+        {
+            get { return OrderId.ToString("N"); }
+            set { OrderId = Guid.Parse(value); }
+        }
         public string UserId { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal OrderTotal { get; set; }
