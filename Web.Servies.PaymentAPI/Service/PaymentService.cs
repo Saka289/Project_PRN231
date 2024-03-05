@@ -76,7 +76,7 @@ namespace Web.Services.PaymentAPI.Service
                 int indexIdOrder = -1;
                 for (int j = 0; j < destrip.Length; j++)
                 {
-                    if (destrip[j].Equals("ECOMMERCE"))
+                    if (destrip[j].Contains("ECOMMERCE"))
                     {
                         indexIdOrder = j;
                     }

@@ -62,7 +62,7 @@ namespace Web.Services.PaymentAPI.Controllers
             }
             _response.IsSuccess = false;
             _response.Message = "Payment is not hanlde";
-            return NotFound(_response);
+            return Ok(_response);
         }
     }
 }
