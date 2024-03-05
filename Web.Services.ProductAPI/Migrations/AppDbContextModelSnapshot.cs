@@ -146,6 +146,30 @@ namespace Web.Services.ProductAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Web.Services.ProductAPI.Models.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
+                });
+
             modelBuilder.Entity("Web.Services.ProductAPI.Models.Product", b =>
                 {
                     b.HasOne("Web.Services.ProductAPI.Models.Category", "Category")
@@ -155,6 +179,15 @@ namespace Web.Services.ProductAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Web.Services.ProductAPI.Models.ProductImage", b =>
+                {
+                    b.HasOne("Web.Services.ProductAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Web.Services.ProductAPI.Models.Category", b =>
