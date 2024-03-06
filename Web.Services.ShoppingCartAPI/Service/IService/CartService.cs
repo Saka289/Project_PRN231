@@ -3,10 +3,10 @@ using Web.Services.ShoppingCartAPI.Models;
 
 namespace Web.Services.ShoppingCartAPI.Service.IService
 {
-    public interface CartService
+    public interface CartServiceHainam
     {
-        CartDTO SaveCart(CartDTO cartDTO);
+        //CartDTO SaveCart(CartDTO cartDTO);
 
-        CartDTO getCart(String userId);
+        //CartDTO getCart(String userId);
     }
 }
