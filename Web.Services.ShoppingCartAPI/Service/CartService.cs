@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Newtonsoft.Json;
 using Shared.Dtos;
 using StackExchange.Redis;
+using System.Security.Principal;
 using Web.Services.ShoppingCartAPI.Models.Dto;
 using Web.Services.ShoppingCartAPI.Service.IService;
 
@@ -16,9 +18,32 @@ namespace Web.Services.ShoppingCartAPI.Service
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             _response = new ResponseDto();
         }
-        public Task<ResponseDto> ApplyCoupon(CartDto cartDto)
+        public async Task<ResponseDto> ApplyCoupon(CartDto cartDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var db = redis.GetDatabase();
+
+                // Retrieve the serialized object from Redis
+                string json = db.StringGet(cartDto.CartHeader.UserId + "-shopping-cart");
+
+                if (!string.IsNullOrEmpty(json))
+                {
+                    // Deserialize the JSON back to the object
+                    var cart =  JsonConvert.DeserializeObject<CartDto>(json);
+                    cart.CartHeader.CouponCode = cartDto.CartHeader.CouponCode;
+                    cart.CartHeader.Discount = cartDto.CartHeader.Discount;
+                    db.StringSet(cartDto.CartHeader.UserId + "-shopping-cart", JsonConvert.SerializeObject(cart));
+                    _response.IsSuccess = true;
+                    _response.Message = "Shopping Cart is existed";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
         }
 
         public async Task<ResponseDto> GetCart(string userId)
@@ -46,14 +71,20 @@ namespace Web.Services.ShoppingCartAPI.Service
             return _response;
         }
 
-        public Task<ResponseDto> RemoveCart(string userId)
+        public async Task<ResponseDto> RemoveCart(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ResponseDto> RemoveCoupon(CartDto cartDto)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                IDatabase db = redis.GetDatabase();
+                db.StringSet(userId + "-shopping-cart", string.Empty);
+                _response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
         }
 
         public async Task<ResponseDto> SaveCart(CartDto cartDto)
@@ -61,6 +92,19 @@ namespace Web.Services.ShoppingCartAPI.Service
             try
             {
                 IDatabase db = redis.GetDatabase();
+
+                if(cartDto.CartDetails == null) 
+                {
+                    throw new Exception("Cart is must not null");
+                }
+                decimal total = 0;
+                foreach (var item in cartDto.CartDetails)
+                {
+                    total += item.UnitPrice * item.Quantity;
+                }
+                cartDto.CartHeader.CartTotal = total;
+
+                total -= cartDto.CartHeader.Discount/100 * total; 
 
                 string json = JsonConvert.SerializeObject(cartDto);
 

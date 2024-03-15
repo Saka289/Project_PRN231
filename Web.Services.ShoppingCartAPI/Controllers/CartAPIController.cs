@@ -34,19 +34,14 @@ namespace Web.Services.ShoppingCartAPI.Controllers
         [HttpDelete("RemoveCart")]
         public async Task<IActionResult> RemoveCart([Required] string userId)
         {
-            return Ok();
+
+            return Ok(_cartService.RemoveCart(userId));
         }
 
         [HttpPost("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon([FromBody] CartDto cartDto)
         {
-            return Ok();
-        }
-
-        [HttpPost("RemoveCoupon")]
-        public async Task<IActionResult> RemoveCoupon([FromBody] CartDto cartDto)
-        {
-            return Ok();
+            return Ok(_cartService.ApplyCoupon(cartDto));
         }
     }
 }

@@ -82,12 +82,12 @@ namespace Web.Services.PaymentAPI.Service
                     }
                 }
                 string OrderId = destrip[indexIdOrder + 1];
-                string username = destrip[indexIdOrder + 2];
+                //string username = destrip[indexIdOrder + 2];
 
                 // search user name
-                var user = _userService.GetUser(username);
-                if (user != null)
-                {
+                //var user = _userService.GetUser(username);
+                //if (user != null)
+                //{
                     // search Order lấy ra amout so amout 
                     OrderDto order = await _orderService.GetOrder(OrderId);
                     Payments payments = _paymentRepository.FindByOrderId(OrderId);
@@ -117,7 +117,7 @@ namespace Web.Services.PaymentAPI.Service
                             refund = payments.refund,
                         });
                     }
-                }
+                //}
             }
             return paymentDTOs;
         }
