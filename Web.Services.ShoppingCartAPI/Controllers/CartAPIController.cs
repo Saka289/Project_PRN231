@@ -20,13 +20,15 @@ namespace Web.Services.ShoppingCartAPI.Controllers
         [HttpGet("GetCart/{userId}")]
         public async Task<IActionResult> GetCart(string userId)
         {
-            return Ok();
+            var result = await _cartService.GetCart(userId);
+            return Ok(result);
         }
 
         [HttpPost("SaveCart")]
         public async Task<IActionResult> SaveCart([FromBody] CartDto cartDto)
         {
-            return Ok();
+            var result = await _cartService.SaveCart(cartDto);
+            return Ok(result);
         }
 
         [HttpDelete("RemoveCart")]
@@ -35,13 +37,13 @@ namespace Web.Services.ShoppingCartAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("RemoveCart")]
+        [HttpPost("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon([FromBody] CartDto cartDto)
         {
             return Ok();
         }
 
-        [HttpPost("RemoveCart")]
+        [HttpPost("RemoveCoupon")]
         public async Task<IActionResult> RemoveCoupon([FromBody] CartDto cartDto)
         {
             return Ok();
