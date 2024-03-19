@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<CartService, CartServiceImpl>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddHttpContextAccessor();
 
