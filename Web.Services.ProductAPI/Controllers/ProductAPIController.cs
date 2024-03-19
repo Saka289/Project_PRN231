@@ -75,9 +75,9 @@ namespace Web.Services.ProductAPI.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-        public IActionResult Update([FromForm] ProductDtoForCreateAndUpdate productDto)
+        public async Task<IActionResult> Update([FromForm] ProductDtoForCreateAndUpdate productDto)
         {
-            var result = _productService.Update(productDto);
+            var result = await _productService.Update(productDto);
 
             if (result != null)
             {

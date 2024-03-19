@@ -173,9 +173,9 @@ namespace Web.Services.ProductAPI.Service
 
                     };
                     FileUploadFunction fuf = new FileUploadFunction();
-                    var stringImage =  fuf.UploadImageAsync(s3Obj, cred);
+                    var stringImage = await  fuf.UploadImageAsync(s3Obj, cred);
 
-                    obj.Image = Convert.ToString(stringImage.Result);
+                    obj.Image = Convert.ToString(stringImage);
                 }
 
 
