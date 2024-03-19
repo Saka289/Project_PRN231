@@ -35,12 +35,13 @@ namespace Web.Services.PaymentAPI.Repository
 
         public Payments FindById(string id)
         {
-            return _context.Payments.SingleOrDefault(p => p.id.Equals(id));
+            return _context.Payments.FirstOrDefault(p => p.id.ToString().Equals(id));
         }
 
         public Payments FindByOrderId(string orderId)
         {
-            return _context.Payments.SingleOrDefault(p => p.orderId.ToString().Equals(orderId));
+            var result = _context.Payments.FirstOrDefault(p => p.orderId.Equals(orderId));
+            return result;
         }
 
     }

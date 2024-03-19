@@ -69,11 +69,12 @@ namespace CallService
                         return new() { IsSuccess = false, Message = "Internal Server Error" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        dynamic dynamicApiResponse = JsonConvert.DeserializeObject(apiContent);
-                        if (dynamicApiResponse is ResponseDto)
+                        var responseApi = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                        if (responseApi.Result != null && responseApi.IsSuccess)
                         {
-                            return dynamicApiResponse;
+                            return responseApi;
                         }
+                        else
                         {
                             var apiResponseDto = new ResponseDto
                             {

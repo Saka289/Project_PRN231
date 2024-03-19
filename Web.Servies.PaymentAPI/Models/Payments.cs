@@ -10,7 +10,7 @@ namespace Web.Services.PaymentAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid id { get; set; }
 
-        public Guid orderId { get; set; }
+        public string orderId { get; set; }
 
         [Required]
         public bool isPayed { get; set; }

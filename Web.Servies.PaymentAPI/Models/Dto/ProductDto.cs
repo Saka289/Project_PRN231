@@ -16,7 +16,6 @@ namespace Web.Services.OrderAPI.Models.Dto
         public double? Price { get; set; }
 
         public int CategoryId { get; set; }
-        //public CategoryDto? Category { get; set; }
         public string Status { get; set; }
     }
 }
