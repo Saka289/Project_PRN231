@@ -48,6 +48,10 @@ namespace FileUpload
             {
                 publicUrl = $"https://pub-e70a7d818fa94d5dbed122bb99c1bbb3.r2.dev/{s3obj.Name}";
             }
+            else if (s3obj.BucketName == "productimagetable")
+            {
+                publicUrl = $"https://pub-1cbcaf5e7e3b4c5fbb36b6eeaa6a900b.r2.dev/{s3obj.Name}";
+            }
             return publicUrl;
         }
 

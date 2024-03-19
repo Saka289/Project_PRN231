@@ -12,6 +12,7 @@ namespace Web.Services.ProductAPI
             {
                 config.CreateMap<CategoryDto, Category>().ReverseMap();
                 config.CreateMap<ProductDto, Product>().ReverseMap();
+                config.CreateMap<ProductImageDto, ProductImage>().ReverseMap();    
             });
             return mappingConfig;
         }
