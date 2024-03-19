@@ -82,42 +82,35 @@ namespace Web.Services.PaymentAPI.Service
                     }
                 }
                 string OrderId = destrip[indexIdOrder + 1];
-                //string username = destrip[indexIdOrder + 2];
 
-                // search user name
-                //var user = _userService.GetUser(username);
-                //if (user != null)
-                //{
-                    // search Order lấy ra amout so amout 
-                    OrderDto order = await _orderService.GetOrder(OrderId);
-                    Payments payments = _paymentRepository.FindByOrderId(OrderId);
-                    if (payments != null && order != null)
+                OrderDto order = await _orderService.GetOrder(OrderId);
+                Payments payments = _paymentRepository.FindByOrderId(OrderId);
+                if (payments != null && order != null)
+                {
+                    if (payment.Amount == order.OrderTotal)
                     {
-                        if (payment.Amount == order.OrderTotal)
-                        {
-                            payments.paymentStatus = PaymentStatus.COMPLETED;
-                        }
-                        else if (payment.Amount < order.OrderTotal)
-                        {
-                            payments.refund = payment.Amount;
-                            payments.paymentStatus = PaymentStatus.REFUND;
-                        }
-                        else if (payment.Amount > order.OrderTotal)
-                        {
-                            decimal refund = payment.Amount - order.OrderTotal;
-                            payments.refund = refund;
-                            payments.paymentStatus = PaymentStatus.COMPLETED;
-                        }
-                        _paymentRepository.Update(payments);
-                        paymentDTOs.Add(new PaymentDto
-                        {
-                            paymentId = payments.id,
-                            orderId = payments.orderId,
-                            paymentStatus = payments.paymentStatus,
-                            refund = payments.refund,
-                        });
+                        payments.paymentStatus = PaymentStatus.COMPLETED;
                     }
-                //}
+                    else if (payment.Amount < order.OrderTotal)
+                    {
+                        payments.refund = payment.Amount;
+                        payments.paymentStatus = PaymentStatus.REFUND;
+                    }
+                    else if (payment.Amount > order.OrderTotal)
+                    {
+                        decimal refund = payment.Amount - order.OrderTotal;
+                        payments.refund = refund;
+                        payments.paymentStatus = PaymentStatus.COMPLETED;
+                    }
+                    _paymentRepository.Update(payments);
+                    paymentDTOs.Add(new PaymentDto
+                    {
+                        paymentId = payments.id,
+                        orderId = payments.orderId,
+                        paymentStatus = payments.paymentStatus,
+                        refund = payments.refund,
+                    });
+                }
             }
             return paymentDTOs;
         }
