@@ -78,5 +78,17 @@ namespace Web.Services.OrderAPI.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("GenerateQR")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GenerateQR([Required] string orderId, [Required] decimal amount)
+        {
+            var result = await _orderService.GenerateQR(orderId, amount);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

@@ -18,15 +18,17 @@ namespace Web.Services.OrderAPI.Service
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly IInventoryService _inventoryService;
+        private readonly IVietQrService _vietQrService;
         protected ResponseDto _response;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService, IVietQrService vietQrService)
         {
             _orderRepository = orderRepository;
             _productService = productService;
             _categoryService = categoryService;
             _inventoryService = inventoryService;
+            _vietQrService = vietQrService;
             _response = new ResponseDto();
             _mapper = mapper;
         }
@@ -162,6 +164,29 @@ namespace Web.Services.OrderAPI.Service
                 }
                 var result = await _orderRepository.SearchOrder(orderId);
                 _response.Result = _mapper.Map<OrderDto>(result);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GenerateQR(string orderId, decimal amount)
+        {
+            try
+            {
+                var result = await _vietQrService.GenerateQR(orderId, amount);
+                if (result.Data == null)
+                {
+                    _response.Result = false;
+                    _response.Message = result.Desc;
+                    _response.IsSuccess = false;
+                    return _response;
+                }
+                _response.Message = result.Desc;
+                _response.Result = result.Data.QrDataUrl;
             }
             catch (Exception ex)
             {

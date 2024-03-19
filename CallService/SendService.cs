@@ -14,6 +14,7 @@ namespace CallService
         {
             _httpClientFactory = httpClientFactory;
         }
+
         public async Task<ResponseDto?> SendServiceAsync(SendRequestDto requestDto)
         {
             try
@@ -68,8 +69,20 @@ namespace CallService
                         return new() { IsSuccess = false, Message = "Internal Server Error" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-                        return apiResponseDto;
+                        dynamic dynamicApiResponse = JsonConvert.DeserializeObject(apiContent);
+                        if (dynamicApiResponse is ResponseDto)
+                        {
+                            return dynamicApiResponse;
+                        }
+                        {
+                            var apiResponseDto = new ResponseDto
+                            {
+                                Result = apiContent,
+                                IsSuccess = apiResponse.IsSuccessStatusCode,
+                                Message = "true"
+                            };
+                            return apiResponseDto;
+                        }
                 }
             }
             catch (Exception ex)
