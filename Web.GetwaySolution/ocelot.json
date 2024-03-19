@@ -11,7 +11,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI",
+      "UpstreamPathTemplate": "/api/CategoryAPI",
       "UpstreamHttpMethod": [ "Get" ]
     },
 
@@ -25,7 +25,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI/{id}",
+      "UpstreamPathTemplate": "/api/CategoryAPI/{id}",
       "UpstreamHttpMethod": [ "Get" ]
     },
     // post
@@ -38,7 +38,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI",
+      "UpstreamPathTemplate": "/api/CategoryAPI",
       "UpstreamHttpMethod": [ "Post" ]
     },
 
@@ -52,7 +52,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI",
+      "UpstreamPathTemplate": "/api/CategoryAPI",
       "UpstreamHttpMethod": [ "Put" ]
     },
 
@@ -66,7 +66,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI/{id}",
+      "UpstreamPathTemplate": "/api/CategoryAPI/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
 
@@ -81,7 +81,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/category-gateway/CategoryAPI/DeleteSoft/{id}",
+      "UpstreamPathTemplate": "/api/CategoryAPI/DeleteSoft/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
 
@@ -97,7 +97,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI",
+      "UpstreamPathTemplate": "/api/ProductAPI",
       "UpstreamHttpMethod": [ "Get" ]
     },
     //get by id
@@ -110,7 +110,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI/{id}",
+      "UpstreamPathTemplate": "/api/ProductAPI/{id}",
       "UpstreamHttpMethod": [ "Get" ]
     },
     // post
@@ -123,7 +123,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI",
+      "UpstreamPathTemplate": "/api/ProductAPI",
       "UpstreamHttpMethod": [ "Post" ]
     },
 
@@ -137,7 +137,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI",
+      "UpstreamPathTemplate": "/api/ProductAPI",
       "UpstreamHttpMethod": [ "Put" ]
     },
 
@@ -151,7 +151,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI/{id}",
+      "UpstreamPathTemplate": "/api/ProductAPI/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
 
@@ -166,7 +166,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/product-gateway/ProductAPI/DeleteSoft/{id}",
+      "UpstreamPathTemplate": "/api/ProductAPI/DeleteSoft/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
 
@@ -181,7 +181,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/productimage-gateway/ProductImage/{productId}",
+      "UpstreamPathTemplate": "/api/ProductImage/{productId}",
       "UpstreamHttpMethod": [ "Get" ]
     },
     //post create
@@ -194,7 +194,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/productimage-gateway/ProductImage",
+      "UpstreamPathTemplate": "/api/ProductImage",
       "UpstreamHttpMethod": [ "Post" ]
     },
     //delete productimage
@@ -207,7 +207,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/productimage-gateway/ProductImage/{id}",
+      "UpstreamPathTemplate": "/api/ProductImage/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
 
@@ -221,7 +221,7 @@
           "Port": 6007
         }
       ],
-      "UpstreamPathTemplate": "/productimage-gateway/ProductImage/{id}/{pid}",
+      "UpstreamPathTemplate": "/api/ProductImage/{id}/{pid}",
       "UpstreamHttpMethod": [ "Post" ]
     }
 
