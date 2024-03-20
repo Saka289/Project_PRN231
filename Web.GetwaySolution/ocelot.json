@@ -393,7 +393,100 @@
       ],
       "UpstreamPathTemplate": "/api/AuthAPI/confirmEmail",
       "UpstreamHttpMethod": [ "Post" ]
+    },
+
+    // shopping cart
+    {
+      "DownstreamPathTemplate": "/api/CartAPI/GetCart",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6008
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CartAPI/GetCart",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/CartAPI/SaveCart",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6008
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CartAPI/RemoveCart",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/CartAPI/SaveCart",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6008
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CartAPI/RemoveCart",
+      "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/CartAPI/ApplyCoupon",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6008
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CartAPI/ApplyCoupon",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+
+    // Payment
+    {
+      "DownstreamPathTemplate": "/api/Payment",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6006
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Payment",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Payment",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6006
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Payment",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+
+    //inventory
+    {
+      "DownstreamPathTemplate": "/api/InventoryAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6004
+        }
+      ],
+      "UpstreamPathTemplate": "/api/InventoryAPI",
+      "UpstreamHttpMethod": [ "Post" ]
     }
+
+
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:6666"
