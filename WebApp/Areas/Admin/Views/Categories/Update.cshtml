@@ -1,0 +1,52 @@
+﻿@using WebApp.Models.Dtos;
+
+@model CategoryDto;
+@{
+    ViewData["Title"] = "Create or Update";
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary"> @(Model.Id != 0 ? "Update " : "Create ") a category</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Id" hidden />
+            <div class="row">
+                <div class="col-9">
+                    <div asp-validation-summary="All"></div>
+                    <div class="mb-3">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Image"></label>
+                        <input type="file" name="files" id="uploadBox" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-3">
+                    @if (Model.Id != 0)
+                    {
+                        <img width="100%" style="border-radius:5px;border:1px solid #bbb9b9" src="@Model.Image" />
+                    }
+                </div>
+            </div>
+            @if (Model.Id != 0)
+            {
+                <button type="submit" class="btn btn-sm btn-warning" style="width:150px;">Update</button>
+            }
+            else
+            {
+                <button onclick="return ValidateInput()" type="submit" class="btn btn-sm btn-success">Create</button>
+            }
+            <a asp-action="Index"  class="btn btn-sm btn-secondary">Back to list</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
