@@ -1,0 +1,101 @@
+﻿@model WebApp.Models.Dtos.MemberDto
+
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Tracking Order</h2>
+                        <p>Home <span>-</span> Tracking Order</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================register_part Area =================-->
+<section class="login_part padding_top">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-3">
+                <div class="login_part_text text-center p-0 pt-5 w-100">
+                    <div class="w-100 p-4">
+                        <ul class="navbar-nav text-justify" style="font-size:18px">
+                            <li class="nav-item pb-4 d-flex">
+                                <div style="width:25px" class="mr-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <a class="text-light font-18" asp-controller="Auth" asp-action="MyAccount">My Profile</a>
+                            </li>
+                            <li class="nav-item pb-4 d-flex">
+                                <div style="width:25px" class="mr-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <a class="text-light" asp-action="Auth" asp-controller="MyAccount">My Order</a>
+                            </li>
+                            <li class="nav-item pb-4 d-flex">
+                                <div style="width:25px" class="mr-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <a class="text-light" asp-action="Auth" asp-controller="MyAccount">Change Password</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="login_part_form">
+                    <div class="login_part_form_iner">
+                        <h3>
+                            My profile ! <br>
+                            <p>Manage profile information for account security</p>
+                        </h3>
+                        <form class="row contact_form" action="MyAccount " method="post" novalidate="novalidate">
+                            <div class="col-md-2">
+                                <label class="control-label pt-2">Email</label>
+                            </div>
+                            <div class="col-md-10 form-group p_star">
+                                <input asp-for="UserName" type="text" class="form-control" placeholder="Email">
+                                <span asp-validation-for="UserName" class="text-danger" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pt-2">FirstName</label>
+                            </div>
+                            <div class="col-md-10 form-group p_star">
+                                <input asp-for="FirstName" type="text" class="form-control" placeholder="FirstName">
+                                <span asp-validation-for="FirstName" class="text-danger" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pt-2">LastName</label>
+                            </div>
+                            <div class="col-md-10 form-group p_star">
+                                <input asp-for="LastName" type="text" class="form-control" placeholder="LastName">
+                                <span asp-validation-for="LastName" class="text-danger" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pt-2">PhoneNumber</label>
+                            </div>
+                            <div class="col-md-10 form-group p_star">
+                                <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="PhoneNumber">
+                                <span asp-validation-for="PhoneNumber" class="text-danger" />
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="w-30 float-right">
+                                    <button type="submit" value="submit" class="btn_3">Update account</button>
+                                    <a class="lost_pass" href="#">forget password?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================register_part end =================-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

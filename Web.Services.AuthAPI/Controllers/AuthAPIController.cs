@@ -46,6 +46,28 @@ namespace Web.Services.AuthAPI.Controllers
             return Ok(_response);
         }
 
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
+        {
+            var result = await _authService.Update(updateUserDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            var result = await _authService.ChangePassword(changePasswordDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
@@ -174,10 +196,10 @@ namespace Web.Services.AuthAPI.Controllers
             if (result == false)
             {
                 _response.IsSuccess = false;
-                _response.Message = "Failed confirmed email";
+                _response.Message = "Failed Confirmed Email Successfully !!!";
                 return BadRequest(_response);
             }
-            _response.Message = "Email confirmed";
+            _response.Message = "Confirmed Email successfully !!!";
             _response.IsSuccess = true;
             _response.Result = result;
             return Ok(_response);

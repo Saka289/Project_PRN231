@@ -262,18 +262,6 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/AdminAPI/GetMemberByEmail/{email}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 6001
-        }
-      ],
-      "UpstreamPathTemplate": "/api/AdminAPI/GetMemberByEmail/{email}",
-      "UpstreamHttpMethod": [ "Get" ]
-    },
-    {
       "DownstreamPathTemplate": "/api/AdminAPI/LockMember",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -335,6 +323,18 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
+      "DownstreamPathTemplate": "/api/AuthAPI/updateUser",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/AuthAPI/updateUser",
+      "UpstreamHttpMethod": [ "Put" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/AuthAPI/login",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -380,6 +380,18 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AuthAPI/resetPassword",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/AuthAPI/changePassword",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/AuthAPI/changePassword",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
