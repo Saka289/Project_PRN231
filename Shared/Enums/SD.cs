@@ -40,5 +40,7 @@ namespace Shared.Enums
         public const string PaymentAPIBase = "https://webservicespaymentapi.azurewebsites.net";
         public const string ProductAPIBase = "https://localhost:6007";
         public const string ShoppingCartAPIBase = "https://localhost:6008";
+
+        public const string BaseUrlGateWay = "https://localhost:6666";
     }
 }
