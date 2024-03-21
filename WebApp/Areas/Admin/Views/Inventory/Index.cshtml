@@ -1,0 +1,48 @@
+﻿﻿@using WebApp.Models.Dtos;
+@{
+    ViewData["Title"] = "Categories";
+}
+@model List<StockDto>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="text-primary">List of category</h5>
+        <a class="btn btn-sm btn-secondary"> <i class="bi bi-plus-square-fill"></i> Create</a>
+    </div>
+    <div class="card-body">
+        <table id="DT_load" class="table table-bordered table-striped" style="width:100%;">
+            <thead>
+                <tr>
+                    
+                    <th>ProductName</th>
+                    <th>Image</th>
+                    <th>Stock Quantity</th>
+                    <th>Reserved Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Product.Title</td>
+                            <td><img src="@item.Product.Image" alt="Category Image" style="width: 100px;height: 100px;" /></td>
+                            <td>@item.StockQuantity</td>
+                            <td>@item.ReservedQuantity</td>
+                            <td style="text-align:center">
+                                <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
+                                <a class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

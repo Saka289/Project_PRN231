@@ -37,5 +37,23 @@ namespace Web.Services.InventoryAPI.Controllers
 
             return Ok(responseDto);
         }
+
+        [HttpGet]
+        public IActionResult StockManager()
+        {
+            var invens = _inventoryService.getStock();
+
+            if (invens == null)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Not product is in stock";
+                return NotFound(responseDto);
+            }
+            responseDto.IsSuccess = true;
+            responseDto.Message = "have result";
+            responseDto.Result = invens;
+
+            return Ok(responseDto);
+        }
     }
 }
