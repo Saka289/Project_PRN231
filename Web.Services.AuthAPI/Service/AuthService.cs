@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Shared.Dtos;
 using System;
 using System.Text;
 using Web.Services.AuthAPI.Data;
@@ -20,6 +21,7 @@ namespace Web.Services.AuthAPI.Service
         private readonly IConfiguration _configuration;
         private readonly EmailService _emailService;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        protected ResponseDto _response;
 
         public AuthService(AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, EmailService emailService, IJwtTokenGenerator jwtTokenGenerator)
         {
@@ -29,6 +31,7 @@ namespace Web.Services.AuthAPI.Service
             _configuration = configuration;
             _emailService = emailService;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _response = new ResponseDto();
         }
 
         public async Task<bool> AssignRole(string email, string roleName)
@@ -59,7 +62,7 @@ namespace Web.Services.AuthAPI.Service
                 return new LoginResponseDto()
                 {
                     User = null,
-                    Token = "Login Failed !!!",
+                    Token = "The password you entered is incorrect. Please try again.",
                 };
             }
 
@@ -133,6 +136,95 @@ namespace Web.Services.AuthAPI.Service
                 throw new Exception(ex.Message.ToString());
             }
         }
+        public async Task<ResponseDto> Update(UpdateUserDto updateUserDto)
+        {
+            try
+            {
+                var checkEmail = await _userManager.Users.AnyAsync(x => x.Email.Equals(updateUserDto.Email) && x.Id != updateUserDto.UserId);
+                if (checkEmail)
+                {
+                    _response.Result = false;
+                    _response.IsSuccess = false;
+                    _response.Message = $"An existing account is using {updateUserDto.Email}, email addres. Please try with another email address";
+                    return _response;
+                }
+                var user = await _userManager.FindByIdAsync(updateUserDto.UserId);
+                if (user == null)
+                {
+                    _response.Result = false;
+                    _response.IsSuccess = false;
+                    _response.Message = "Not found !!!";
+                    return _response;
+                }
+                user.FirstName = updateUserDto.FirstName;
+                user.LastName = updateUserDto.LastName;
+                user.PhoneNumber = updateUserDto.PhoneNumber;
+                user.Email = updateUserDto.Email;
+                user.UserName = updateUserDto.Email;
+                user.EmailConfirmed = false;
+
+                await _userManager.UpdateAsync(user);
+                var userToReturn = _context.ApplicationUsers.First(u => u.UserName == updateUserDto.Email);
+                await SendConfirmEmailAsync(userToReturn);
+
+                _response.IsSuccess = true;
+                _response.Result = true;
+                _response.Message = "Update Successfully !!!";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+        public async Task<ResponseDto> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var user = await _context.ApplicationUsers.FirstOrDefaultAsync(u => u.Email.Equals(changePasswordDto.Email));
+                if (user == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "This email address has not been registerd yet";
+                    return _response;
+                }
+                if (!changePasswordDto.NewPassword.Equals(changePasswordDto.ConfirmNewPassword))
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "Your password and confirmation password do not match.";
+                    return _response;
+                }
+                bool checkUser = await _userManager.CheckPasswordAsync(user, changePasswordDto.Password);
+                if (checkUser == false)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "The password you entered is incorrect.";
+                    return _response;
+                }
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, changePasswordDto.NewPassword);
+                if (!result.Succeeded)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = result.Errors.FirstOrDefault().Description;
+                    return _response;
+                }
+                _response.IsSuccess = true;
+                _response.Result = true;
+                _response.Message = "Changed password successfully !!!";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
 
         public async Task<bool> ForgotPassword(string email)
         {
@@ -145,34 +237,53 @@ namespace Web.Services.AuthAPI.Service
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public async Task<bool> ResetPassword(ResetpasswordDto resetpasswordDto)
+        public async Task<ResponseDto> ResetPassword(ResetpasswordDto resetpasswordDto)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(resetpasswordDto.Email);
-                if (user != null)
+                if (user == null)
                 {
-                    var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetpasswordDto.Token);
-                    var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
-
-                    var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetpasswordDto.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return true;
-                    }
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "This email address has not been registerd yet";
+                    return _response;
                 }
-                return false;
+                if (user.EmailConfirmed == false)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "Please confirm your email address first.";
+                    return _response;
+                }
+                var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetpasswordDto.Token);
+                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+
+                var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetpasswordDto.NewPassword);
+                if (!result.Succeeded)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = result.Errors.FirstOrDefault().Description;
+                    return _response;
+                }
+                _response.Message = "Reset password successfully";
+                _response.IsSuccess = true;
+                _response.Result = result;
+
             }
             catch (Exception ex)
             {
-                return false;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
+            return _response;
         }
 
         public async Task<bool> ConfirmEmail(ConfirmEmailDto model)
@@ -194,7 +305,7 @@ namespace Web.Services.AuthAPI.Service
                 return false;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
