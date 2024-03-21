@@ -1,0 +1,55 @@
+﻿@using WebApp.Models.Dtos;
+
+@model CategoryDtoForCreateAndUpdate;
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary"> Create a category</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Id" hidden value="0" />
+            <div class="row">
+                <div class="col-9">
+                    <div class="mb-3">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Image"></label>
+                        <input asp-for="Image" class="form-control" id="uploadBox" />
+                    </div>
+
+                    <input type="hidden" asp-for="Status" value="Active"/>
+                </div>
+            </div>
+            <button type="submit" onclick="return ValidateInput()" class="btn btn-sm btn-success" value="Create">Create</button>
+            <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function ValidateInput() {
+            var valueOfImageBox = document.getElementById("uploadBox").value;
+            if (valueOfImageBox == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please upload an Image!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

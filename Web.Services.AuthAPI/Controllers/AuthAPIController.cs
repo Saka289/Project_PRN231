@@ -46,6 +46,28 @@ namespace Web.Services.AuthAPI.Controllers
             return Ok(_response);
         }
 
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
+        {
+            var result = await _authService.Update(updateUserDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            var result = await _authService.ChangePassword(changePasswordDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
@@ -124,31 +146,12 @@ namespace Web.Services.AuthAPI.Controllers
         [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetpasswordDto resetpasswordDto)
         {
-            var user = await _userManager.FindByEmailAsync(resetpasswordDto.Email);
-            if (user == null)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "This email address has not been registerd yet";
-                return Unauthorized(_response);
-            }
-
-            if (user.EmailConfirmed == false)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Please confirm your email address first.";
-                return BadRequest(_response);
-            }
             var result = await _authService.ResetPassword(resetpasswordDto);
-            if (result == false)
+            if (result.IsSuccess)
             {
-                _response.IsSuccess = false;
-                _response.Message = "Failed to reset password";
-                return BadRequest(_response);
+                return Ok(result);
             }
-            _response.Message = "Reset password successfully";
-            _response.IsSuccess = true;
-            _response.Result = result;
-            return Ok(_response);
+            return BadRequest(result);
         }
 
         [HttpPost("confirmEmail")]
@@ -174,10 +177,10 @@ namespace Web.Services.AuthAPI.Controllers
             if (result == false)
             {
                 _response.IsSuccess = false;
-                _response.Message = "Failed confirmed email";
+                _response.Message = "Failed Confirmed Email Successfully !!!";
                 return BadRequest(_response);
             }
-            _response.Message = "Email confirmed";
+            _response.Message = "Confirmed Email successfully !!!";
             _response.IsSuccess = true;
             _response.Result = result;
             return Ok(_response);

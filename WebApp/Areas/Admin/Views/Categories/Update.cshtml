@@ -1,0 +1,46 @@
+﻿@using WebApp.Models.Dtos;
+@model CategoryDtoForCreateAndUpdate;
+@{
+    ViewData["Title"] = " Update";
+    CategoryDto categoryDto =(CategoryDto) ViewBag.Category;
+
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary">Update a category</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Id" value="@categoryDto.Id" hidden />
+            <div class="row">
+                <div class="col-9">
+                    <div class="mb-3">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" value="@categoryDto.Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Image"></label>
+                        <input type="file" name="files" id="uploadBox" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-3">
+                    @if (categoryDto.Image != null)
+                    {
+                        <img width="100%" style="border-radius:5px;border:1px solid #bbb9b9" src="@categoryDto.Image" />
+                    }
+                </div>
+                <input asp-for="Status" value="@categoryDto.Status" type="hidden"/>
+            </div>
+                <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
+            <a asp-action="Index"  class="btn btn-sm btn-info">Back to list</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

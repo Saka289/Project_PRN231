@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="~/css/slick.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="~/css/style.css">
+    <!-- notifications -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <!--::header part start::-->
@@ -31,7 +33,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="index.html"> <img src="img/logo.png" alt="logo"> </a>
+                        <a asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/img/logo.png" alt="logo"></a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +62,6 @@
                                         pages
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                        <a class="dropdown-item" href="login.html"> login</a>
                                         <a class="dropdown-item" href="tracking.html">tracking</a>
                                         <a class="dropdown-item" href="checkout.html">product checkout</a>
                                         <a class="dropdown-item" href="cart.html">shopping cart</a>
@@ -100,6 +101,35 @@
 
                             </div>
                         </div>
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Login/Register
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                            <a class="dropdown-item" asp-controller="Auth" asp-action="Login"> login</a>
+                                            <a class="dropdown-item" asp-controller="Auth" asp-action="Register"> Register</a>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Hello, @User.Identity.Name
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                            <a class="dropdown-item" asp-controller="Auth" asp-action="Login"> login</a>
+                                            <a class="dropdown-item" asp-controller="Auth" asp-action="MyAccount">My Account</a>
+                                            <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     </nav>
                 </div>
             </div>
@@ -117,6 +147,7 @@
     <!-- Header part end-->
     <!-- banner part start-->
     @RenderBody()
+    <partial name="_Notifications" />
     <!--::subscribe_area part end::-->
     <!--::footer_part start::-->
     <footer class="footer_part">
@@ -217,9 +248,6 @@
             </div>
         </div>
     </footer>
-    <!--::footer_part end::-->
-
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <!--::footer_part end::-->
     <!-- jquery plugins here-->
     <script src="~/js/jquery-1.12.1.min.js"></script>
