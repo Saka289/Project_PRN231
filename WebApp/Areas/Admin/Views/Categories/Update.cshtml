@@ -33,9 +33,10 @@
                         <img width="100%" style="border-radius:5px;border:1px solid #bbb9b9" src="@categoryDto.Image" />
                     }
                 </div>
+                <input asp-for="Status" value="@categoryDto.Status" type="hidden"/>
             </div>
                 <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
-            <a asp-action="Index"  class="btn btn-sm btn-secondary">Back to list</a>
+            <a asp-action="Index"  class="btn btn-sm btn-info">Back to list</a>
         </form>
     </div>
 </div>

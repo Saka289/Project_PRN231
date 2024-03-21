@@ -30,7 +30,7 @@
                             <td>@item.Status</td>
                             <td style="text-align:center">
                                 <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
-                                <a class="btn btn-sm btn-danger">Delete</a>
+                                <a class="btn btn-sm btn-danger" onclick="deleteCategory(@item.Id)">Delete</a>
                             </td>
                         </tr>
                     }
@@ -42,4 +42,24 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+            function deleteCategory(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/Admin/Categories/Delete/' + id;
+                    }
+                })
+            }
+
+
+    </script>
 }
+

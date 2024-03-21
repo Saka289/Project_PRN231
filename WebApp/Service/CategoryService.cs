@@ -65,7 +65,9 @@ namespace WebApp.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = categoryDto,
-                Url = SD.BaseUrlGateWay + "/api/CategoryAPI/"
+                Url = SD.BaseUrlGateWay + "/api/CategoryAPI",
+                ContentType = SD.ContentType.MultipartFormData
+
             });
         }
     }

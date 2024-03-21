@@ -23,18 +23,33 @@
 
                     <div class="mb-3">
                         <label asp-for="Image"></label>
-                        <input asp-for="Image"  class="form-control" />
+                        <input asp-for="Image" class="form-control" id="uploadBox" />
                     </div>
 
                     <input type="hidden" asp-for="Status" value="Active"/>
                 </div>
             </div>
-            <input type="submit" class="btn btn-sm btn-success" value="Create"></input>
-            <a asp-action="Index" class="btn btn-sm btn-secondary">Back to list</a>
+            <button type="submit" onclick="return ValidateInput()" class="btn btn-sm btn-success" value="Create">Create</button>
+            <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
         </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function ValidateInput() {
+            var valueOfImageBox = document.getElementById("uploadBox").value;
+            if (valueOfImageBox == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please upload an Image!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
 }

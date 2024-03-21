@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Shared.Dtos;
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using System.Reflection;
 using WebApp.Models.Dtos;
 using WebApp.Service.IService;
 
@@ -49,9 +50,23 @@ namespace WebApp.Areas.Admin.Controllers
             return NotFound();
         }
         [HttpPost]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update(CategoryDtoForCreateAndUpdate model)
         {
-            
+            if (ModelState.IsValid)
+            {
+                //Update
+                ResponseDto? response = await _categoryService.UpdateCategoryAsync(model);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Update category successfully";
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
         public async Task<IActionResult> Create()
@@ -59,6 +74,24 @@ namespace WebApp.Areas.Admin.Controllers
 
             return View();
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id != null)
+            {
+                ResponseDto? response = await _categoryService.DeleteSoftCategoryAsync(id);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Delete category successfully";
+                }
+                else
+                {
+                    TempData["error"] = "Delete category failed";
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDtoForCreateAndUpdate model)
         {

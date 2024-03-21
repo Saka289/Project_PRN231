@@ -12,7 +12,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 //builder.Services.AddHttpClient<ICouponService, ICouponService>();
-//builder.Services.AddHttpClient<IProductService, ProductService>();
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>();
 //builder.Services.AddHttpClient<IAuthService, AuthService>();
 //builder.Services.AddHttpClient<ICartService, CartService>();
@@ -27,6 +27,8 @@ builder.Services.AddHttpClient<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

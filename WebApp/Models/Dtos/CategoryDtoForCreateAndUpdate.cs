@@ -7,7 +7,6 @@ namespace WebApp.Models.Dtos
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
 
         public IFormFile? Image { get; set; }
         public string? Status { get; set; }
