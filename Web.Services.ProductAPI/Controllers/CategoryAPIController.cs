@@ -23,7 +23,7 @@ namespace Web.Services.ProductAPI.Controllers
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> Get()
-        {
+            {
             var result = await _categoryService.GetAllCategories();
             if(result != null)
             {
@@ -46,7 +46,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> AddAsync([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
         {

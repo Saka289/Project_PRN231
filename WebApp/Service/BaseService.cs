@@ -92,7 +92,7 @@ namespace WebApp.Service
 
                 apiResponse = await client.SendAsync(message);
 
-                switch (apiResponse.StatusCode)
+                    switch (apiResponse.StatusCode)
                 {
                     case HttpStatusCode.NotFound:
                         return new() { IsSuccess = false, Message = "Not Found" };

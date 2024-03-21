@@ -25,7 +25,7 @@ namespace Web.Services.ProductAPI.Repository
 
         public async Task<IEnumerable<Product>> GetAllAsyns()
         {
-            return await _appDbContext.Products.ToListAsync();
+            return await _appDbContext.Products.Include(x=>x.Category).ToListAsync();
         }
 
         public Product GetByIdAsyns(int pId)

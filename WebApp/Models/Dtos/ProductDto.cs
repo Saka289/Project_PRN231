@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace Web.Services.ProductAPI.Models.Dto
+﻿namespace WebApp.Models.Dtos
 {
     public class ProductDto
     {

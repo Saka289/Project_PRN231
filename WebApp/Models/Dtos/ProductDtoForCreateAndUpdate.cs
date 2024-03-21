@@ -1,24 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.Services.ProductAPI.Models.Dto
+namespace WebApp.Models.Dtos
 {
-    public class ProductDto
+    public class ProductDtoForCreateAndUpdate
     {
         public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
 
         public string ProductCode { get; set; }
+        [Required]
 
         public string Description { get; set; }
 
-        public string? Image { get; set; }
+        public IFormFile? Image { get; set; }
+        [Required]
 
         public double? Price { get; set; }
+        [Required]
 
         public int? CategoryId { get; set; }
-
-        public string? CategoryName { get; set; }
 
         public string? Status { get; set; }
     }
