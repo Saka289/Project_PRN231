@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace Web.Services.ProductAPI.Models.Dto
+﻿namespace WebApp.Models.Dtos
 {
     public class ProductDto
     {
@@ -17,8 +14,6 @@ namespace Web.Services.ProductAPI.Models.Dto
         public double? Price { get; set; }
 
         public int? CategoryId { get; set; }
-
-        public string? CategoryName { get; set; }
 
         public string? Status { get; set; }
     }

@@ -29,7 +29,7 @@
                             <td><img src="@item.Image" alt="Category Image" style="width: 100px;height: 100px;" /></td>
                             <td>@item.Status</td>
                             <td style="text-align:center">
-                                <a class="btn btn-sm btn-info">Update</a>
+                                <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
                                 <a class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>

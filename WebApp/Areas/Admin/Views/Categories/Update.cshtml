@@ -1,24 +1,24 @@
 ﻿@using WebApp.Models.Dtos;
-
-@model CategoryDto;
+@model CategoryDtoForCreateAndUpdate;
 @{
-    ViewData["Title"] = "Create or Update";
+    ViewData["Title"] = " Update";
+    CategoryDto categoryDto =(CategoryDto) ViewBag.Category;
+
 }
 <div class="card">
 
     <div class="card-header">
-        <h5 class="text-primary"> @(Model.Id != 0 ? "Update " : "Create ") a category</h5>
+        <h5 class="text-primary">Update a category</h5>
     </div>
 
     <div class="card-body" style="min-height:450px">
         <form method="post" enctype="multipart/form-data">
-            <input asp-for="Id" hidden />
+            <input asp-for="Id" value="@categoryDto.Id" hidden />
             <div class="row">
                 <div class="col-9">
-                    <div asp-validation-summary="All"></div>
                     <div class="mb-3">
                         <label asp-for="Name"></label>
-                        <input asp-for="Name" class="form-control" />
+                        <input asp-for="Name" class="form-control" value="@categoryDto.Name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
@@ -28,20 +28,13 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    @if (Model.Id != 0)
+                    @if (categoryDto.Image != null)
                     {
-                        <img width="100%" style="border-radius:5px;border:1px solid #bbb9b9" src="@Model.Image" />
+                        <img width="100%" style="border-radius:5px;border:1px solid #bbb9b9" src="@categoryDto.Image" />
                     }
                 </div>
             </div>
-            @if (Model.Id != 0)
-            {
-                <button type="submit" class="btn btn-sm btn-warning" style="width:150px;">Update</button>
-            }
-            else
-            {
-                <button onclick="return ValidateInput()" type="submit" class="btn btn-sm btn-success">Create</button>
-            }
+                <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
             <a asp-action="Index"  class="btn btn-sm btn-secondary">Back to list</a>
         </form>
     </div>

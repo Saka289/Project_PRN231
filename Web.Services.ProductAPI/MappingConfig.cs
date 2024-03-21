@@ -11,7 +11,8 @@ namespace Web.Services.ProductAPI
             var mappingConfig = new MapperConfiguration(config =>
             {
                 config.CreateMap<CategoryDto, Category>().ReverseMap();
-                config.CreateMap<ProductDto, Product>().ReverseMap();
+                config.CreateMap<Product, ProductDto>().ForMember(x=>x.CategoryName, y=>y.MapFrom(src=>src.Category.Name
+                )).ReverseMap();
                 config.CreateMap<ProductImageDto, ProductImage>().ReverseMap();    
             });
             return mappingConfig;

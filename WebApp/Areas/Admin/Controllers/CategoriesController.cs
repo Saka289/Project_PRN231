@@ -31,24 +31,22 @@ namespace WebApp.Areas.Admin.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Update(int id)
         {
             CategoryDto c = new CategoryDto();
             if (id != null)
             {
                 //Edit
-                ResponseDto? response = await _categoryService.GetAllCategoryAsync();
+                ResponseDto? response = await _categoryService.GetCategoryByIdAsync(id);
                 if (response != null && response.IsSuccess)
                 {
                     c = JsonConvert.DeserializeObject<CategoryDto>(Convert.ToString(response.Result));
                 }
-                else
-                {
-                    TempData["error"] = response?.Message;
-                }
-                return View(c); 
+                ViewBag.Category = c;
+
+                return View(); 
             }
-            return View(c);
+            return NotFound();
         }
         [HttpPost]
         public async Task<IActionResult> Update()
@@ -70,15 +68,15 @@ namespace WebApp.Areas.Admin.Controllers
                 ResponseDto? response = await _categoryService.CreateCategoryAsync(model);
                 if (response != null && response.IsSuccess)
                 {
-                    TempData["success"] = response?.Message;
+                    TempData["success"] = "Create category successfully";
                 }
                 else
                 {
                     TempData["error"] = response?.Message;
                 }
-                return View(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
-            return View();
+            return View(model);
         }
     }
 }

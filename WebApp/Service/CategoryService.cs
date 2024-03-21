@@ -18,7 +18,8 @@ namespace WebApp.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data = categoryDto,
-                Url = SD.BaseUrlGateWay + "/api/CategoryAPI"
+                Url = SD.BaseUrlGateWay + "/api/CategoryAPI",
+                ContentType = SD.ContentType.MultipartFormData
             });
         }
 
@@ -54,7 +55,7 @@ namespace WebApp.Service
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.BaseUrlGateWay + "/api/CategoryAPI/{id}"
+                Url = SD.BaseUrlGateWay + "/api/CategoryAPI/"+id
             });
         }
 
