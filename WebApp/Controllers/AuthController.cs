@@ -8,6 +8,7 @@ using System.Security.Claims;
 using WebApp.Models.Dtos;
 using WebApp.Service.IService;
 using System.IdentityModel.Tokens.Jwt;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -117,24 +118,101 @@ namespace WebApp.Controllers
             if (response != null && response.IsSuccess)
             {
                 var responseUser = JsonConvert.DeserializeObject<MemberDto>(Convert.ToString(response.Result));
-                return View(responseUser);
+                var viewModel = new MyAccountViewModel
+                {
+                    Member = responseUser
+                };
+                return View(viewModel);
             }
-            return View(new MemberDto());
+            return View(new MyAccountViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> MyAccount(MemberDto memberDto)
+        public async Task<IActionResult> MyAccount(MyAccountViewModel myAccountViewModel)
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
-            var user = new UpdateUserDto()
+            if (myAccountViewModel.Member != null)
             {
-                UserId = userId,
-                Email = memberDto.UserName,
-                FirstName = memberDto.FirstName,
-                LastName = memberDto.LastName,
-                PhoneNumber = memberDto.PhoneNumber,
-            };
-            var response = await _authService.UpdateUser(user);
+                var user = new UpdateUserDto()
+                {
+                    UserId = userId,
+                    Email = myAccountViewModel.Member.UserName,
+                    FirstName = myAccountViewModel.Member.FirstName,
+                    LastName = myAccountViewModel.Member.LastName,
+                    PhoneNumber = myAccountViewModel.Member.PhoneNumber,
+                };
+                var response = await _authService.UpdateUser(user);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = response.Message;
+                    await HttpContext.SignOutAsync();
+                    _tokenProvider.ClearToken();
+                    return RedirectToAction(nameof(Login));
+                }
+                TempData["error"] = response.Message;
+            }
+            else if (myAccountViewModel.ChangePassword != null)
+            {
+                var response = await _authService.ChangePassword(myAccountViewModel.ChangePassword);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = response.Message;
+                    await HttpContext.SignOutAsync();
+                    _tokenProvider.ClearToken();
+                    return RedirectToAction(nameof(Login));
+                }
+                TempData["error"] = response.Message;
+                var result = await _adminService.GetUserById(userId);
+                if (result != null && result.IsSuccess)
+                {
+                    var responseUser = JsonConvert.DeserializeObject<MemberDto>(Convert.ToString(result.Result));
+                    myAccountViewModel.Member = responseUser;
+                }
+            }
+            return View(myAccountViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordDto forgetPasswordDto)
+        {
+            var response = await _authService.ForgotPassword(forgetPasswordDto.Email);
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Check Your Mail !!!";
+            }
+            return View(forgetPasswordDto);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            TempData["token"] = token;
+            TempData["email"] = email;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetpasswordDto resetpasswordDto)
+        {
+            if (TempData["token"] == null && TempData["email"] == null)
+            {
+                TempData["warning"] = "Forget Password Now.";
+                return RedirectToAction(nameof(ForgetPassword));
+            }
+            resetpasswordDto.Token = TempData["token"].ToString();
+            resetpasswordDto.Email = TempData["email"].ToString();
+            if (!resetpasswordDto.NewPassword.Equals(resetpasswordDto.ConfirmNewPassword))
+            {
+                TempData["warning"] = "Your password and confirmation password do not match.";
+                return RedirectToAction(nameof(ResetPassword), new { token = resetpasswordDto.Token, email = resetpasswordDto.Email });
+            }
+            var response = await _authService.ResetPassword(resetpasswordDto);
             if (response != null && response.IsSuccess)
             {
                 TempData["success"] = response.Message;
@@ -143,8 +221,9 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Login));
             }
             TempData["error"] = response.Message;
-            return View(memberDto);
+            return RedirectToAction(nameof(ResetPassword), new { token = resetpasswordDto.Token, email = resetpasswordDto.Email });
         }
+
 
         private async Task SignInUser(LoginResponseDto model)
         {

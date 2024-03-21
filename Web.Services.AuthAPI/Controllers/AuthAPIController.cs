@@ -146,31 +146,12 @@ namespace Web.Services.AuthAPI.Controllers
         [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetpasswordDto resetpasswordDto)
         {
-            var user = await _userManager.FindByEmailAsync(resetpasswordDto.Email);
-            if (user == null)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "This email address has not been registerd yet";
-                return Unauthorized(_response);
-            }
-
-            if (user.EmailConfirmed == false)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Please confirm your email address first.";
-                return BadRequest(_response);
-            }
             var result = await _authService.ResetPassword(resetpasswordDto);
-            if (result == false)
+            if (result.IsSuccess)
             {
-                _response.IsSuccess = false;
-                _response.Message = "Failed to reset password";
-                return BadRequest(_response);
+                return Ok(result);
             }
-            _response.Message = "Reset password successfully";
-            _response.IsSuccess = true;
-            _response.Result = result;
-            return Ok(_response);
+            return BadRequest(result);
         }
 
         [HttpPost("confirmEmail")]

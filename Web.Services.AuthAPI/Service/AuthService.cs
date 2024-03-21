@@ -243,28 +243,47 @@ namespace Web.Services.AuthAPI.Service
             }
         }
 
-        public async Task<bool> ResetPassword(ResetpasswordDto resetpasswordDto)
+        public async Task<ResponseDto> ResetPassword(ResetpasswordDto resetpasswordDto)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(resetpasswordDto.Email);
-                if (user != null)
+                if (user == null)
                 {
-                    var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetpasswordDto.Token);
-                    var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
-
-                    var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetpasswordDto.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return true;
-                    }
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "This email address has not been registerd yet";
+                    return _response;
                 }
-                return false;
+                if (user.EmailConfirmed == false)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = "Please confirm your email address first.";
+                    return _response;
+                }
+                var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetpasswordDto.Token);
+                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+
+                var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetpasswordDto.NewPassword);
+                if (!result.Succeeded)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = false;
+                    _response.Message = result.Errors.FirstOrDefault().Description;
+                    return _response;
+                }
+                _response.Message = "Reset password successfully";
+                _response.IsSuccess = true;
+                _response.Result = result;
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
+            return _response;
         }
 
         public async Task<bool> ConfirmEmail(ConfirmEmailDto model)

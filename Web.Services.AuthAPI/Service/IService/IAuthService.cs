@@ -11,7 +11,7 @@ namespace Web.Services.AuthAPI.Service.IService
         Task<bool> AssignRole(string email, string roleName);
         Task<ResponseDto> ChangePassword(ChangePasswordDto changePasswordDto);
         Task<bool> ForgotPassword(string email);
-        Task<bool> ResetPassword(ResetpasswordDto resetpasswordDto);
+        Task<ResponseDto> ResetPassword(ResetpasswordDto resetpasswordDto);
         Task<bool> ConfirmEmail(ConfirmEmailDto model);
     }
 }
