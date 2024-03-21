@@ -7,9 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Areas\Admin\Data\**" />
+		<Compile Remove="Areas\Admin\Models\**" />
 		<Compile Remove="wwwroot\Images\**" />
+		<Content Remove="Areas\Admin\Data\**" />
+		<Content Remove="Areas\Admin\Models\**" />
 		<Content Remove="wwwroot\Images\**" />
+		<EmbeddedResource Remove="Areas\Admin\Data\**" />
+		<EmbeddedResource Remove="Areas\Admin\Models\**" />
 		<EmbeddedResource Remove="wwwroot\Images\**" />
+		<None Remove="Areas\Admin\Data\**" />
+		<None Remove="Areas\Admin\Models\**" />
 		<None Remove="wwwroot\Images\**" />
 	</ItemGroup>
 
@@ -21,11 +29,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Shared\Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Areas\Admin\Data\" />
-		<Folder Include="Areas\Admin\Models\" />
 	</ItemGroup>
 
 	<ItemGroup>

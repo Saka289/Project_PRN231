@@ -118,6 +118,7 @@ namespace Web.Services.AuthAPI.Service
                     return _response;
                 }
                 await _userManager.DeleteAsync(member);
+                _response.Message = "Delete User Successfully !!!";
                 _response.Result = true;
             }
             catch (Exception ex)
@@ -186,7 +187,6 @@ namespace Web.Services.AuthAPI.Service
                 var members = await _userManager.Users
                     .Join(_context.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { u, ur })
                     .Join(_context.Roles, ur => ur.ur.RoleId, r => r.Id, (ur, r) => new { ur, r })
-                    .Where(r => r.r.Name.ToLower().Equals(SD.RoleCustomer))
                     .Select(m => m.ur.u.ToMemberDto(_context))
                     .ToListAsync();
                 _response.Result = members;
@@ -217,7 +217,7 @@ namespace Web.Services.AuthAPI.Service
                     _response.Message = "Not found !!!";
                     return _response;
                 }
-                await _userManager.SetLockoutEndDateAsync(member, DateTime.UtcNow.AddDays(5));
+                await _userManager.SetLockoutEndDateAsync(member, DateTime.UtcNow.AddDays(30));
                 _response.Result = true;
                 _response.Message = "LockMember Successfully !!!";
             }
