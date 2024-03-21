@@ -36,7 +36,8 @@ namespace Shared.Enums
         public const string CouponAPIBase = "https://localhost:6002";
         public const string EmailAPIBase = "https://localhost:6003";
         public const string InventoryAPIBase = "https://localhost:6004";
-        public const string OrderAPIBase = "https://webservicesorderapi.azurewebsites.net";
+        public const string OrderAPIBase = "https://localhost:6005";
+        public const string OrderAPIDeployBase = "https://webservicesorderapi.azurewebsites.net";
         public const string PaymentAPIBase = "https://webservicespaymentapi.azurewebsites.net";
         public const string ProductAPIBase = "https://localhost:6007";
         public const string ShoppingCartAPIBase = "https://localhost:6008";
