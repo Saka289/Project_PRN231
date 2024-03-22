@@ -2,16 +2,35 @@
 using Web.Services.InventoryAPI.Models.Dto;
 using Web.Services.InventoryAPI.Repository.IRepository;
 using Web.Services.InventoryAPI.Service.IService;
+using Web.Services.OrderAPI.Service.IService;
 
 namespace Web.Services.InventoryAPI.Service
 {
     public class InventoryService : IInventoryService
     {
         private readonly IIventoryRepository _repository;
+        public readonly IProductService _productService;
 
-        public InventoryService(IIventoryRepository repository)
+        public InventoryService(IIventoryRepository repository, IProductService productService)
         {
             _repository = repository;
+            _productService = productService;
+        }
+
+        public List<StockDto> getStock()
+        {
+            List<ProductDto> products = _productService.GetProduct().Result;
+
+            var inventories = _repository.GetAll().Select(item => new StockDto
+            {
+                Id = item.Id,
+                ProductId = item.ProductId,
+                ReservedQuantity = item.ReservedQuantity,
+                StockQuantity = item.StockQuantity,
+                Product = products.FirstOrDefault(i => i.Id == item.ProductId)
+            }).ToList();
+
+            return inventories;
         }
 
         public List<InventoryDTO> isInStock(List<ProductRequest> products)
@@ -71,5 +90,36 @@ namespace Web.Services.InventoryAPI.Service
             }
         }
 
+        public StockDto GetInventoryById(int id)
+        {
+            var inven = _repository.GetInventoryById(id);
+
+            if(inven != null)
+            {
+                return new StockDto
+                {
+                    Id = id,
+                    ProductId = inven.ProductId,
+                    StockQuantity = inven.StockQuantity,
+                    ReservedQuantity = inven.ReservedQuantity,
+                    Product = _productService.GetProductById(inven.ProductId).Result,
+                };
+            }
+            return null;
+        }
+
+        public int Update(StockCreate stock)
+        {
+            var inven = _repository.GetInventoryById(stock.Id); 
+            if(inven != null)
+            {
+                    if (inven.StockQuantity > 0)
+                    {
+                        inven.StockQuantity = stock.StockQuantity;
+                        return _repository.Update(inven);
+                    }
+            }
+            return 0;
+        }
     }
 }

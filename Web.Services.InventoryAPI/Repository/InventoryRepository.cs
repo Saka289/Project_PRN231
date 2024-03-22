@@ -21,5 +21,16 @@ namespace Web.Services.InventoryAPI.Repository
         {
             return _context.Inventories.ToList();
         }
+
+        public Inventory GetInventoryById(int id)
+        {
+            return _context.Inventories.FirstOrDefault(x => x.Id == id);
+        }
+
+        public int Update(Inventory inventory)
+        {
+            _context.Inventories.Update(inventory);
+            return _context.SaveChanges();
+        }
     }
 }
