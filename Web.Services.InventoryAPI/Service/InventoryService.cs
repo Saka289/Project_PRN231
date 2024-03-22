@@ -90,5 +90,36 @@ namespace Web.Services.InventoryAPI.Service
             }
         }
 
+        public StockDto GetInventoryById(int id)
+        {
+            var inven = _repository.GetInventoryById(id);
+
+            if(inven != null)
+            {
+                return new StockDto
+                {
+                    Id = id,
+                    ProductId = inven.ProductId,
+                    StockQuantity = inven.StockQuantity,
+                    ReservedQuantity = inven.ReservedQuantity,
+                    Product = _productService.GetProductById(inven.ProductId).Result,
+                };
+            }
+            return null;
+        }
+
+        public int Update(StockCreate stock)
+        {
+            var inven = _repository.GetInventoryById(stock.Id); 
+            if(inven != null)
+            {
+                    if (inven.StockQuantity > 0)
+                    {
+                        inven.StockQuantity = stock.StockQuantity;
+                        return _repository.Update(inven);
+                    }
+            }
+            return 0;
+        }
     }
 }

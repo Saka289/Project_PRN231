@@ -1,0 +1,43 @@
+﻿@using WebApp.Models.Dtos;
+@model CouponDto;
+@{
+    ViewData["Title"] = " Update";
+
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary">Update a category</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="CouponId" hidden />
+            <div class="row">
+                <div class="col-9">
+                    <div class="mb-3">
+                        <label asp-for="CouponCode"></label>
+                        <input asp-for="CouponCode" class="form-control" />
+                        <span asp-validation-for="CouponCode" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DiscountAmount"></label>
+                        <input asp-for="DiscountAmount" class="form-control" />
+                        <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="MinAmount"></label>
+                        <input asp-for="MinAmount" class="form-control" />
+                        <span asp-validation-for="MinAmount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+                <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
+            <a asp-action="Index"  class="btn btn-sm btn-info">Back to list</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

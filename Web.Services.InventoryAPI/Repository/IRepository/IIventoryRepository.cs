@@ -6,5 +6,7 @@ namespace Web.Services.InventoryAPI.Repository.IRepository
     public interface IIventoryRepository : IDisposable
     {
         public List<Inventory> GetAll();
+        public Inventory GetInventoryById(int id);
+        public int Update(Inventory inventory);
     }
 }

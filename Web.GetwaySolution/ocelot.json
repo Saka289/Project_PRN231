@@ -495,10 +495,47 @@
         }
       ],
       "UpstreamPathTemplate": "/api/InventoryAPI",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Get", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/InventoryAPI/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6004
+        }
+      ],
+      "UpstreamPathTemplate": "/api/InventoryAPI/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/CouponAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CouponAPI",
+      "UpstreamHttpMethod": [ "Get", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/CouponAPI/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/CouponAPI/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
     }
-
-
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:6666"

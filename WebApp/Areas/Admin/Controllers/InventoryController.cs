@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Dtos;
-using Web.Services.InventoryAPI.Models.Dto;
+using WebApp.Models.Dtos;
 using WebApp.Service.IService;
 
 namespace WebApp.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class InventoryController : Controller
     {
         private readonly IInventoryService _inventoryService;
@@ -29,6 +30,46 @@ namespace WebApp.Areas.Admin.Controllers
             }
             return View(list);
         }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            StockDto c = new StockDto();
+            if (id != null)
+            {
+                //Edit
+                ResponseDto? response = await _inventoryService.GetInventoryById(id);
+                if (response != null && response.IsSuccess)
+                {
+                    c = JsonConvert.DeserializeObject<StockDto>(Convert.ToString(response.Result));
+                }
+                return View(c);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(StockDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                //Update
+                ResponseDto? response = await _inventoryService.UpdateInventoryAsync(model);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Update inventory successfully";
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
+
+
+
     }
 
 

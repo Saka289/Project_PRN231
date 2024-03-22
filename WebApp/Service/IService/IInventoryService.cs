@@ -1,5 +1,6 @@
 ﻿using Shared.Dtos;
 using Web.Services.InventoryAPI.Models.Dto;
+using WebApp.Models.Dtos;
 
 namespace WebApp.Service.IService
 {
@@ -7,5 +8,7 @@ namespace WebApp.Service.IService
     {
         Task<ResponseDto?> IsInStock(List<ProductCheckInventory> products);
         Task<ResponseDto?> GetAllInventory();
+        Task<ResponseDto?> GetInventoryById(int id);
+        Task<ResponseDto?> UpdateInventoryAsync(StockDto stock);
     }
 }

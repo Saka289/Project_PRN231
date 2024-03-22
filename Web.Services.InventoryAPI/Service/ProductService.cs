@@ -38,5 +38,28 @@ namespace Web.Services.OrderAPI.Service
             }
             return null;
         }
+
+        public async Task<ProductDto> GetProductById(int id)
+        {
+            try
+            {
+                var response = await _sendService.SendServiceAsync(new SendRequestDto()
+                {
+                    ApiType = SD.ApiType.GET,
+                    Url = SD.ProductAPIBase + "/api/ProductAPI" + id,
+                });
+
+                if (response.IsSuccess && response.Result != null)
+                {
+                    var result = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return null;
+        }
     }
 }

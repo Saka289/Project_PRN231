@@ -55,5 +55,41 @@ namespace Web.Services.InventoryAPI.Controllers
 
             return Ok(responseDto);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetStock(int id)
+        {
+            var inven = _inventoryService.GetInventoryById(id);
+
+            if(inven == null)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Not stock is existed";
+                return NotFound(responseDto);
+            }
+
+            responseDto.IsSuccess = true;
+            responseDto.Message = "have result";
+            responseDto.Result = inven;
+
+            return Ok(responseDto);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateStock(StockCreate stock)
+        {
+            int update = _inventoryService.Update(stock);
+
+            if(update == 0)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Update failes";
+                return BadRequest(responseDto);
+            }
+
+            responseDto.IsSuccess = true;
+            responseDto.Message = "Update Successfully";
+            return Ok(responseDto);
+        }
     }
 }

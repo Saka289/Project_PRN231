@@ -1,9 +1,8 @@
-﻿
-﻿@using WebApp.Models.Dtos;
+﻿﻿@using WebApp.Models.Dtos;
 @{
     ViewData["Title"] = "Stocks";
 }
-@model List<StockDto> 
+@model List<CouponDto> 
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -15,10 +14,9 @@
             <thead>
                 <tr>
                     
-                    <th>ProductName</th>
-                    <th>Image</th>
-                    <th>Stock Quantity</th>
-                    <th>Reserved Quantity</th>
+                    <th>Coupon Code</th>
+                    <th>Discount Amount</th>
+                    <th>Min Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,13 +25,12 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Product.Title</td>
-                            <td><img src="@item.Product.Image" alt="Product Image" style="width: 100px;height: 100px;" /></td>
-                            <td>@item.StockQuantity</td>
-                            <td>@item.ReservedQuantity</td>
+                            <td>@item.CouponCode</td>
+                            <td>@item.DiscountAmount</td>
+                            <td>@item.MinAmount</td>
                             <td style="text-align:center">
-                                <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
-                                <a class="btn btn-sm btn-danger">Delete</a>
+                                <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.CouponId">Update</a>
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.CouponId">Delete</a>
                             </td>
                         </tr>
                     }
