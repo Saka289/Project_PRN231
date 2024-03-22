@@ -31,7 +31,7 @@
                         <tr>
                             <td>@item.Title</td>
                             <td style="color:seagreen">@item.ProductCode</td>
-                            <td><img src="@item.Image" alt="Product Image" style="width: 100px;height: 100px;" /></td>
+                            <td><img src="@item.Image" alt="Product Image" style="width: 100px;height: 100px;" onclick="manageImage(@item.Id)" /></td>
                             <td>@item.Price</td>
                             <td>@item.CategoryName</td>
                             <td>@item.Status</td>
@@ -66,7 +66,9 @@
                 }
             })
         }
-
+        function manageImage(id){
+            window.location.href = '/Admin/Product/ManageProductImage/' + id;
+        }
 
     </script>
 }

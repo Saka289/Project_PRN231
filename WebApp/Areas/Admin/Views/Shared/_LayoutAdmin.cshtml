@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="~/layoutAdmin/assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="~/layoutAdmin/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
 
-    
+
     <link href="~/lib/summernote/summernote-bs4.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/lib/jqueryui/themes/base/theme.css" />
@@ -212,24 +212,24 @@
                                 <div id="submenu-15" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" >Đơn hàng</a>
+                                            <a class="nav-link">Đơn hàng</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-13" aria-controls="submenu-13"><i class="fas fa-user"></i>Quản lí người dùng<span class="badge badge-success">6</span></a>
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-13" aria-controls="submenu-13"><i class="fas fa-user"></i>Manage User<span class="badge badge-success">6</span></a>
                                 <div id="submenu-13" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
 
 
 
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-area="Admin" asp-page="/Roles/Index">Phân quyền</a>
+                                            <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Accounts">Accounts</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-area="Admin" asp-page="/Users/Index">Tài khoản</a>
+                                            <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Decentralization">Decentralization</a>
                                         </li>
 
                                     </ul>
@@ -260,8 +260,8 @@
         <!-- ============================================================== -->
         <div class="dashboard-wrapper">
             <div class="container-fluid dashboard-content">
-                        @RenderBody()
-                         <partial name="_Notification" />
+                @RenderBody()
+                <partial name="_Notification" />
             </div>
             <!-- ============================================================== -->
             <!-- footer -->

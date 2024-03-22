@@ -30,13 +30,26 @@ namespace Web.Services.ProductAPI.Controllers
             }
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetById/{id}")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _productImageService.GetProductImageById(id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
 
         [HttpPost]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
-        public async Task<IActionResult> AddAsync([FromForm] int productId, IFormFile[] files)
+        public async Task<IActionResult> AddAsync([FromForm] UploadDto model)
         {
-            var rs = await _productImageService.UploadMultiImage(productId, files);
+            var rs = await _productImageService.UploadMultiImage(model.ProductId, model.files);
              
             if (rs != null)
             {

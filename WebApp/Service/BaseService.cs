@@ -57,6 +57,18 @@ namespace WebApp.Service
                                 content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
                             }
                         }
+                        else if (value is IList<IFormFile>)
+                        {
+                            var files = (IList<IFormFile>)value;
+                            foreach (var item in files)
+                            {
+                                var file = (FormFile)item;
+                                if (file != null)
+                                {
+                                    content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
+                                }
+                            }
+                        }
                         else
                         {
                             content.Add(new StringContent(value == null ? string.Empty : value.ToString()), prop.Name);
@@ -92,7 +104,7 @@ namespace WebApp.Service
 
                 apiResponse = await client.SendAsync(message);
 
-                    switch (apiResponse.StatusCode)
+                switch (apiResponse.StatusCode)
                 {
                     case HttpStatusCode.NotFound:
                         return new() { IsSuccess = false, Message = "Not Found" };

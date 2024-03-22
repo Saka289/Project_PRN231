@@ -10,6 +10,7 @@ namespace Web.Services.AuthAPI.Models.Dto
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public bool EmailConfirmed { get; set; }
+        public DateTimeOffset? LockOutEnd { get; set; }
         public IEnumerable<string> Roles { get; set; }
     }
 }

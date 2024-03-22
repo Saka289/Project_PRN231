@@ -15,6 +15,7 @@ namespace Web.Services.AuthAPI.Models.Dto
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
                 EmailConfirmed = user.EmailConfirmed,
+                LockOutEnd = user.LockoutEnd,
                 Roles = context.UserRoles
                         .Where(ur => ur.UserId == user.Id)
                         .Join(context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.Name)

@@ -14,6 +14,7 @@ builder.Services.AddHttpClient();
 //builder.Services.AddHttpClient<ICouponService, ICouponService>();
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>();
+builder.Services.AddHttpClient<IProductImageService, ProductImageService>();
 //builder.Services.AddHttpClient<IAuthService, AuthService>();
 //builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
@@ -29,6 +30,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -58,17 +60,12 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(
+app.MapControllerRoute(
     name: "Areas",
-    areaName: "Admin",
     pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
-
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-
 
 app.Run();
