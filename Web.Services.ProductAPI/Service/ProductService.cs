@@ -13,13 +13,16 @@ namespace Web.Services.ProductAPI.Service
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IProductImageRepository _productImageRepository;
         protected ResponseDto _response;
         private IMapper _mapper;
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IProductImageRepository productImageRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;   
+            _productImageRepository = productImageRepository;
+            _mapper = mapper;
             _response = new ResponseDto();
+
         }
         public async Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model)
         {
@@ -42,7 +45,7 @@ namespace Web.Services.ProductAPI.Service
 
                 };
                 FileUploadFunction fuf = new FileUploadFunction();
-                var stringImage =  fuf.UploadImageAsync(s3Obj, cred);
+                var stringImage = fuf.UploadImageAsync(s3Obj, cred);
 
 
                 Product obj = new Product();
@@ -50,11 +53,23 @@ namespace Web.Services.ProductAPI.Service
                 obj.Price = model.Price;
                 obj.ProductCode = model.ProductCode;
                 obj.CategoryId = model.CategoryId;
-                obj.Description = model.Description;    
+                obj.Description = model.Description;
                 obj.Status = model.Status;
                 obj.Image = Convert.ToString(stringImage.Result);
                 _productRepository.AddAsync(obj);
                 _productRepository.Save();
+
+                // sau khi create product và ảnh bên productimage cloud
+                // cập nhật thêm vào bảng productimage in db
+                ProductImageDto productImageDto = new ProductImageDto
+                {
+                    Image = Convert.ToString(stringImage.Result),
+                    IsDefault = true,   
+                    ProductId = obj.Id,
+                };
+                _productImageRepository.AddAsync(productImageDto);
+                _productImageRepository.Save();
+
                 _response.Result = "";
                 _response.Message = "Add product successfully !";
             }
@@ -142,8 +157,8 @@ namespace Web.Services.ProductAPI.Service
                 obj.CategoryId = model.CategoryId;
                 obj.Description = model.Description;
                 obj.Status = model.Status;
-                
-                
+
+
                 if (model.Image == null)
                 {
                     // nếu không chọn ảnh khách thì giữ nguyên ảnh hiện tại
@@ -173,7 +188,7 @@ namespace Web.Services.ProductAPI.Service
 
                     };
                     FileUploadFunction fuf = new FileUploadFunction();
-                    var stringImage = await  fuf.UploadImageAsync(s3Obj, cred);
+                    var stringImage = await fuf.UploadImageAsync(s3Obj, cred);
 
                     obj.Image = Convert.ToString(stringImage);
                 }
