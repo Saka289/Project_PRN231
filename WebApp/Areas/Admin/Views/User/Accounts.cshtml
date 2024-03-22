@@ -13,7 +13,6 @@
         <table id="DT_load" class="table table-bordered table-striped table-hover" style="width:100%;">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Email</th>
                     <th>FullName</th>
                     <th>PhoneNumber</th>
@@ -28,7 +27,6 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Id</td>
                         <td style="color:seagreen">@item.UserName</td>
                         <td>@item.FirstName @item.LastName</td>
                         <td>@item.PhoneNumber</td>

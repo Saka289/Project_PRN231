@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Shared.Dtos;
 using WebApp.Models.Dtos;
@@ -121,6 +122,45 @@ namespace WebApp.Areas.Admin.Controllers
             }
             TempData["error"] = response.Message;
             return RedirectToAction(nameof(Accounts));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Decentralization()
+        {
+            List<SelectListItem> listR = new List<SelectListItem>();
+            IEnumerable<MemberDto> list = new List<MemberDto>();
+            var response = await _adminService.GetApplicationRoles();
+            if (response != null && response.IsSuccess)
+            {
+                var roles = JsonConvert.DeserializeObject<List<string>>(Convert.ToString(response.Result));
+                listR = roles.Select(r => new SelectListItem()
+                {
+                    Text = r.ToString(),
+                    Value = r.ToString(),
+                }).ToList();
+                ViewBag.Roles = listR;
+            }
+            var responseList = await _adminService.GetMembers();
+            if (responseList != null && responseList.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<IEnumerable<MemberDto>>(Convert.ToString(responseList.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return View(list);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Decentralization([FromBody] UpdateRoleDto updateRoleDto)
+        {
+            var response = await _adminService.UpdateRoleMember(updateRoleDto);
+            if (response != null && response.IsSuccess)
+            {
+                return Json(new { success = true, message = response.Message });
+            }
+            return Json(new { success = false, message = response.Message });
         }
     }
 }

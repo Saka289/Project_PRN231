@@ -8,6 +8,7 @@ namespace WebApp.Service.IService
         Task<ResponseDto?> GetMembers();
         Task<ResponseDto?> GetMemberByUserID(string userId);
         Task<ResponseDto?> GetMemberByEmail(string email);
+        Task<ResponseDto?> UpdateRoleMember(UpdateRoleDto updateRoleDto);
         Task<ResponseDto?> AddEditMember(MemberAddEditDto model);
         Task<ResponseDto?> LockMember(string userId);
         Task<ResponseDto?> UnlockMember(string userId);

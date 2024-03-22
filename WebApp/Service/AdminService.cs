@@ -88,5 +88,15 @@ namespace WebApp.Service
                 Url = SD.BaseUrlGateWay + "/api/AdminAPI/UnlockMember"
             });
         }
+
+        public async Task<ResponseDto?> UpdateRoleMember(UpdateRoleDto updateRoleDto)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = updateRoleDto,
+                Url = SD.BaseUrlGateWay + "/api/AdminAPI/UpdateRoleMember"
+            });
+        }
     }
 }

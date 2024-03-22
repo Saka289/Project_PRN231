@@ -38,6 +38,18 @@ namespace Web.Services.AuthAPI.Controllers
             return NotFound();
         }
 
+        [HttpPost("UpdateRoleMember")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdateRoleMember([FromBody] UpdateRoleDto updateRoleDto)
+        {
+            var result = await _adminService.UpdateRoleMemeber(updateRoleDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
+        }
+
         [HttpGet("GetMemberByUserID/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetMemberByUserID([Required] string userId)

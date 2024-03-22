@@ -309,6 +309,18 @@
       "UpstreamPathTemplate": "/api/AdminAPI/GetRoles",
       "UpstreamHttpMethod": [ "Get" ]
     },
+    {
+      "DownstreamPathTemplate": "/api/AdminAPI/UpdateRoleMember",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/AdminAPI/UpdateRoleMember",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
     //AuthAPI
     {
       "DownstreamPathTemplate": "/api/AuthAPI/register",
