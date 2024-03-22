@@ -16,13 +16,15 @@ namespace Web.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         protected ResponseDto _response;
 
-        public AuthAPIController(IAuthService authService, UserManager<ApplicationUser> userManager)
+        public AuthAPIController(IAuthService authService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _authService = authService;
             _userManager = userManager;
             _response = new ResponseDto();
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -76,9 +78,15 @@ namespace Web.Services.AuthAPI.Controllers
             {
                 _response.IsSuccess = false;
                 _response.Message = "Invalid username or password";
-                return Unauthorized(_response);
+                return BadRequest(_response);
             }
-
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequestDto.Password, false);
+            if (result.IsLockedOut)
+            {
+                _response.IsSuccess = false;
+                _response.Message = string.Format("Your account has been locked. You should wait until {0} (UTC time) to be able to login", user.LockoutEnd);
+                return BadRequest(_response);
+            }
             var loginResponse = await _authService.Login(loginRequestDto);
             if (loginResponse.User == null)
             {

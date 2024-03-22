@@ -299,7 +299,7 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "/api/AdminAPI/DeleteMember",
+      "DownstreamPathTemplate": "/api/AdminAPI/DeleteMember/{userId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -307,7 +307,7 @@
           "Port": 6001
         }
       ],
-      "UpstreamPathTemplate": "/api/AdminAPI/DeleteMember",
+      "UpstreamPathTemplate": "/api/AdminAPI/DeleteMember/{userId}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
     {
@@ -321,6 +321,18 @@
       ],
       "UpstreamPathTemplate": "/api/AdminAPI/GetRoles",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/AdminAPI/UpdateRoleMember",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/AdminAPI/UpdateRoleMember",
+      "UpstreamHttpMethod": [ "Post" ]
     },
     //AuthAPI
     {

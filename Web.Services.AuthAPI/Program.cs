@@ -29,6 +29,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedEmail = true;
 }).AddEntityFrameworkStores<AppDbContext>()
+  .AddSignInManager<SignInManager<ApplicationUser>>()
   .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
