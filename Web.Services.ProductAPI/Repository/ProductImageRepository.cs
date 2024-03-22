@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using Web.Services.ProductAPI.Data;
 using Web.Services.ProductAPI.Models;
+using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository.IRepository;
 
 namespace Web.Services.ProductAPI.Repository
@@ -14,9 +15,17 @@ namespace Web.Services.ProductAPI.Repository
         {
             _context = context;
         }
-        public void AddAsync(ProductImage p)
+        public void AddAsync(ProductImageDto p)
         {
-            _context.ProductImages.Add(p);
+            if (p != null)
+            {
+                ProductImage p1 = new ProductImage();
+                p1.Image = p.Image;
+                p1.IsDefault = p.IsDefault; 
+                p1.ProductId = p.ProductId;
+                _context.ProductImages.Add(p1);
+
+            }
         }
 
         public void ChangeDefaultImageAsync(int id)

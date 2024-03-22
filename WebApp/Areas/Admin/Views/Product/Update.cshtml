@@ -18,7 +18,7 @@
                 <div class="col-9">
                     <div class="mb-3">
                         <label asp-for="Title"></label>
-                        <input asp-for="Title" class="form-control" value="@productDto.Title"/>
+                        <input asp-for="Title" class="form-control" value="@productDto.Title" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -28,22 +28,21 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Description"></label>
-                        <textarea asp-for="Description" class="form-control"/>@Html.Raw(productDto.Description)</textarea>
+                        <textarea asp-for="Description" class="form-control" />@Html.Raw(productDto.Description)</textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Price"></label>
-                        <input asp-for="Price" class="form-control" value="@productDto.Price"/>
+                        <input asp-for="Price" class="form-control" value="@productDto.Price" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>Select Category</label>
-                        <select asp-items="@ViewBag.ListC" asp-for="CategoryId" class="form-control"></select>
+                        <select id="categoryIdSelect" asp-items="@ViewBag.ListC" asp-for="CategoryId" class="form-control"></select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Image"></label>
-                        <input asp-for="Image" class="form-control" id="uploadBox" />
+                        <input asp-for="Image" class="form-control" id="uploadBox" type="hidden"/>
                     </div>
 
                     <input type="hidden" asp-for="Status" value="Active" />
@@ -55,7 +54,7 @@
                     }
                 </div>
             </div>
-            <button type="submit" onclick="return ValidateInput()" class="btn btn-sm btn-success" value="Create">Update</button>
+            <button type="submit"  class="btn btn-sm btn-success" value="Create">Update</button>
             <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
         </form>
     </div>
@@ -64,10 +63,19 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        $(document).ready(function () {
+            // Lấy giá trị của CategoryId từ productDto
+            var categoryId = "@productDto.CategoryId";
+
+            // Đặt giá trị của select box thành categoryId
+            $("#categoryIdSelect").val(categoryId);
+
+            tinymce.init({
+                selector: 'textarea',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            });
         });
     </script>
+
 }

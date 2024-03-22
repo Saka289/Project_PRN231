@@ -184,6 +184,19 @@
       "UpstreamPathTemplate": "/api/ProductImage/{productId}",
       "UpstreamHttpMethod": [ "Get" ]
     },
+    //Get 1 productimage by id
+    {
+      "DownstreamPathTemplate": "/api/ProductImage/GetById/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6007
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductImage/GetById/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
     //post create
     {
       "DownstreamPathTemplate": "/api/ProductImage",
