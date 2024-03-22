@@ -11,5 +11,8 @@ namespace Web.Services.ProductAPI.Repository.IRepository
         void UpdateAsync(Product p);
         void Save();
         void RemoveSoft(int pId);
+
+        Task<IEnumerable<Product>> SearchAsyns(string searchValue);
+
     }
 }
