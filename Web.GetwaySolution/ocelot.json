@@ -100,6 +100,19 @@
       "UpstreamPathTemplate": "/api/ProductAPI",
       "UpstreamHttpMethod": [ "Get" ]
     },
+    //search
+    {
+      "DownstreamPathTemplate": "/api/ProductAPI/Search/{searchValue}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6007
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductAPI/Search/{searchValue}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
     //get by id
     {
       "DownstreamPathTemplate": "/api/ProductAPI/{id}",

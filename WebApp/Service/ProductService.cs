@@ -50,6 +50,15 @@ namespace WebApp.Service
             });
         }
 
+        public async Task<ResponseDto?> SearchProductAsync(string searchValue)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/Search/"+searchValue
+            });
+        }
+
         public async Task<ResponseDto?> GetProductByIdAsync(int id)
         {
             return await _baseService.SendAsync(new RequestDto

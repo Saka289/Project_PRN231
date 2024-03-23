@@ -30,7 +30,18 @@ namespace Web.Services.ProductAPI.Controllers
             }
             return NotFound();
         }
+        [HttpGet("Search/{searchValue}")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
+        public async Task<IActionResult> Search(string searchValue)
+        {
+            var result = await _productService.SearchProducts(searchValue);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
 
         [HttpGet]
         [Route("{id:int}")]

@@ -68,6 +68,13 @@ namespace Web.Services.ProductAPI.Repository
             _appDbContext.SaveChanges();
         }
 
+        public async Task<IEnumerable<Product>> SearchAsyns(string searchValue)
+        {
+            return await _appDbContext.Products.Include(x => x.Category)
+                .Where(x=>x.Title.ToLower().Contains(searchValue.ToLower()) || x.ProductCode.ToLower().Contains(searchValue.ToLower()))
+                .ToListAsync();
+        }
+
         public void UpdateAsync(Product p)
         {
             _appDbContext.Products.Update(p);

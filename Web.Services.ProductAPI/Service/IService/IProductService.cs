@@ -6,6 +6,7 @@ namespace Web.Services.ProductAPI.Service.IService
     public interface IProductService
     {
         Task<ResponseDto> GetAllProducts();
+        Task<ResponseDto> SearchProducts(string seachValue);
         ResponseDto GetProductById(int pId);
         Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model);
         Task<ResponseDto> Update(ProductDtoForCreateAndUpdate model);

@@ -2,6 +2,7 @@
 using FileUpload;
 using FileUpload.Models;
 using Shared.Dtos;
+using System.Security.Cryptography;
 using Web.Services.ProductAPI.Models;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository;
@@ -137,6 +138,21 @@ namespace Web.Services.ProductAPI.Service
             {
                 var objFind = _productRepository.GetByIdAsyns(pId);
                 _response.Result = _mapper.Map<ProductDto>(objFind);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> SearchProducts(string seachValue)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchAsyns(seachValue);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
             }
             catch (Exception ex)
             {

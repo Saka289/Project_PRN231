@@ -21,17 +21,33 @@ namespace WebApp.Areas.Admin.Controllers
             _categoryService = categoryService;
             _productImageService = productImageService;
         }
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> IndexAsync(string searchString)
         {
             List<ProductDto> list = new List<ProductDto>();
-            ResponseDto? response = await _productService.GetAllProductAsync();
-            if (response != null && response.IsSuccess)
+            if (!string.IsNullOrEmpty(searchString))
             {
-                list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+                ResponseDto? response = await _productService.SearchProductAsync(searchString);
+                if (response != null && response.IsSuccess)
+                {
+                    list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+                TempData["searchValue"] = searchString;
             }
             else
             {
-                TempData["error"] = response?.Message;
+                ResponseDto? response = await _productService.GetAllProductAsync();
+                if (response != null && response.IsSuccess)
+                {
+                    list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
             }
             return View(list);
         }
