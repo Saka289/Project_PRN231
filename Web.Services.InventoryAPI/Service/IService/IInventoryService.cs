@@ -9,7 +9,7 @@ namespace Web.Services.InventoryAPI.Service.IService
         public List<StockDto> getStock();
         public StockDto GetInventoryById(int id);
         public int Update(StockCreate stock);
-
+        public void UpdateInventory(List<ProductRequest> products, string status);
         Task<int> Upload(IFormFile file);
     }
 }
