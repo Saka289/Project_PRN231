@@ -208,6 +208,19 @@
       "UpstreamPathTemplate": "/api/ProductAPI/DeleteSoft/{id}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
+    //Get best seller
+    {
+      "DownstreamPathTemplate": "/api/ProductAPI/GetBestSeller",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6007
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductAPI/GetBestSeller",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
 
     //ProductImage API
     //Get

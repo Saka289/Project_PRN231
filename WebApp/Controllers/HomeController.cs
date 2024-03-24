@@ -12,10 +12,12 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryService _categoryService;
-        public HomeController(ILogger<HomeController> logger, ICategoryService categoryService)
+        private readonly IProductService _productService;
+        public HomeController(ILogger<HomeController> logger, ICategoryService categoryService,IProductService productService)
         {
             _logger = logger;
             _categoryService = categoryService;
+            _productService = productService;   
         }
 
         public async Task<IActionResult> Index()
@@ -34,6 +36,23 @@ namespace WebApp.Controllers
             if (list.Count() > 0)
             {
                 ViewBag.ListCate = list;
+            }
+
+
+            // get list cate 
+            List<ProductDto> listP = new List<ProductDto>();
+            ResponseDto? response2 = await _productService.GetProductBestSellerAsync();
+            if (response2 != null && response2.IsSuccess)
+            {
+                listP = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response2.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            if (listP.Count() > 0)
+            {
+                ViewBag.ListBestSeller = listP;
             }
             return View();
         }

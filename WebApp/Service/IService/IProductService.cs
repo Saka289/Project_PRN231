@@ -7,6 +7,7 @@ namespace WebApp.Service.IService
     {
         Task<ResponseDto?> GetAllProductAsync();
         Task<ResponseDto?> GetAllProductByCateAsync(int id);
+        Task<ResponseDto?> GetProductBestSellerAsync();
         Task<ResponseDto?> SearchProductAsync(string searchValue);
         Task<ResponseDto?> SearchProductInShopAsync(ProductSearchDto model);
         Task<ResponseDto?> GetProductByIdAsync(int id);
