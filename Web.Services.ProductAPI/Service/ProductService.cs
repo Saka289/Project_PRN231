@@ -2,6 +2,7 @@
 using FileUpload;
 using FileUpload.Models;
 using Shared.Dtos;
+using System.Security.Cryptography;
 using Web.Services.ProductAPI.Models;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository;
@@ -130,6 +131,20 @@ namespace Web.Services.ProductAPI.Service
             }
             return _response;
         }
+        public async Task<ResponseDto> SearchProductInShopPage(ProductSearchDto model)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchInShopPageAsyns(model);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
 
         public ResponseDto GetProductById(int pId)
         {
@@ -137,6 +152,21 @@ namespace Web.Services.ProductAPI.Service
             {
                 var objFind = _productRepository.GetByIdAsyns(pId);
                 _response.Result = _mapper.Map<ProductDto>(objFind);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> SearchProducts(string seachValue)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchAsyns(seachValue);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
             }
             catch (Exception ex)
             {
@@ -204,6 +234,21 @@ namespace Web.Services.ProductAPI.Service
 
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetAllProductByCateAsync(int id)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.GetAllByCateAsyns(id);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
             }
             return _response;
         }
