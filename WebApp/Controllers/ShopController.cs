@@ -30,7 +30,7 @@ namespace WebApp.Controllers
             }
             if (list.Count() > 0)
             {
-                ViewBag.ListCate = list;
+                ViewBag.ListCate = list.Where(x => x.Status == "Active").ToList();
             }
 
 
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
             }
             if (listP.Count() > 0)
             {
-                ViewBag.ListProduct = listP;
+                ViewBag.ListProduct = listP.Where(x => x.Status == "Active").ToList();
                 ViewBag.ListProductCount = listP.Count;
             }
 

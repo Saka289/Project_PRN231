@@ -12,14 +12,14 @@ $(function() {
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     datasets: [{
                         label: 'Current Week',
-                        data: [12, 19, 3, 17, 6, 3, 7],
+                        data: [1200, 1900, 3000, 1700, 6000, 3000, 7000],
                       backgroundColor: "rgba(89, 105, 255,0.5)",
                                     borderColor: "rgba(89, 105, 255,0.7)",
                                     borderWidth: 2
                         
                     }, {
                         label: 'Previous Week',
-                        data: [2, 29, 5, 5, 2, 3, 10],
+                        data: [2000, 2900, 500, 500, 200, 300, 1000],
                           backgroundColor: "rgba(255, 64, 123,0.5)",
                                     borderColor: "rgba(255, 64, 123,0.7)",
                                     borderWidth: 2
@@ -70,35 +70,7 @@ $(function() {
             });
    
     // ============================================================== 
-    // Total Sale
-    // ============================================================== 
- var ctx = document.getElementById("total-sale").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'doughnut',
-                
-                data: {
-                    labels: ["Direct", " Affilliate", "Sponsored", " E-mail"],
-                    datasets: [{
-                        backgroundColor: [
-                            "#5969ff",
-                            "#ff407b",
-                            "#25d5f2",
-                            "#ffc750"
-                        ],
-                        data: [350.56, 135.18, 48.96, 154.02]
-                    }]
-                },
-                options: {
-                    legend: {
-                        display: false
-
-                    }
-                }
-
-            });
-     
-   
-    // ============================================================== 
+    
     // Location Map
     // ============================================================== 
      jQuery('#locationmap').vectorMap({
