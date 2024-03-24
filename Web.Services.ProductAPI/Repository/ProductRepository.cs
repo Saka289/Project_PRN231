@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using Web.Services.ProductAPI.Data;
 using Web.Services.ProductAPI.Models;
+using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository.IRepository;
 
 namespace Web.Services.ProductAPI.Repository
@@ -28,9 +29,14 @@ namespace Web.Services.ProductAPI.Repository
             return await _appDbContext.Products.Include(x=>x.Category).ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllByCateAsyns(int id)
+        {
+            return await _appDbContext.Products.Include(x => x.Category).Where(x=>x.CategoryId==id).ToListAsync();
+        }
+
         public Product GetByIdAsyns(int pId)
         {
-            var p = _appDbContext.Products.Find(pId);
+            var p = _appDbContext.Products.Include(x=>x.Category).FirstOrDefault(x=>x.Id==pId);
             if (p != null)
             {
                 return p;
@@ -75,9 +81,52 @@ namespace Web.Services.ProductAPI.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> SearchInShopPageAsyns(ProductSearchDto searchModel)
+        {
+            var query = _appDbContext.Products.Include(x=>x.Category).AsQueryable();
+            if(searchModel != null)
+            {
+                if (!string.IsNullOrEmpty(searchModel.Title))
+                {
+                    query = query.Where(x => x.Title.ToLower().Contains(searchModel.Title));
+                }
+                if (searchModel.CategoryId >0)
+                {
+                    query = query.Where(x => x.CategoryId==searchModel.CategoryId);
+                }
+                if (searchModel.PriceFrom >= 0 && searchModel.PriceTo >0 && (searchModel.PriceFrom < searchModel.PriceTo))
+                {
+                    query = query.Where(x => x.Price>= searchModel.PriceFrom && x.Price<= searchModel.PriceTo);
+                }
+
+                if (!string.IsNullOrEmpty(searchModel.sortQuery))
+                {
+                    if(searchModel.sortQuery == "Price")
+                    {
+                        query = query.OrderBy(x => x.Price);
+                    }
+                    if (searchModel.sortQuery == "Title")
+                    {
+                        query = query.OrderBy(x => x.Title);
+                    }
+                }
+                else
+                {
+                    query = query.OrderByDescending(x => x.Id);
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.Id);
+            }
+            return query.ToList();      
+        }
+
         public void UpdateAsync(Product p)
         {
             _appDbContext.Products.Update(p);
         }
+
+       
     }
 }

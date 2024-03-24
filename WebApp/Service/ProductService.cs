@@ -79,5 +79,23 @@ namespace WebApp.Service
 
             });
         }
+
+        public async Task<ResponseDto?> GetAllProductByCateAsync(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/GetListByCateId/"+id
+            });
+        }
+        public async Task<ResponseDto?> SearchProductInShopAsync(ProductSearchDto model)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.POST,
+                Data = model,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/SearchInShopPage"
+            });
+        }
     }
 }

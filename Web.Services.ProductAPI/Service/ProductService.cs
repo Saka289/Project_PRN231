@@ -131,6 +131,20 @@ namespace Web.Services.ProductAPI.Service
             }
             return _response;
         }
+        public async Task<ResponseDto> SearchProductInShopPage(ProductSearchDto model)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchInShopPageAsyns(model);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
 
         public ResponseDto GetProductById(int pId)
         {
@@ -220,6 +234,21 @@ namespace Web.Services.ProductAPI.Service
 
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetAllProductByCateAsync(int id)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.GetAllByCateAsyns(id);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
             }
             return _response;
         }
