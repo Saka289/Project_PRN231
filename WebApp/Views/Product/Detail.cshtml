@@ -55,14 +55,14 @@
                             <a href="#"> <span>Availibility</span> : In Stock</a>
                         </li>
                     </ul>
-                     @Html.Raw(Model.Description)
+                    @Html.Raw(Model.Description)
                     <div class="card_area d-flex justify-content-between align-items-center">
                         <div class="product_count">
                             <span class="inumber-decrement"> <i class="ti-minus"></i></span>
-                            <input class="input-number" type="text" value="1" min="0" max="10">
+                            <input id="inputQuantity" class="input-number" type="text" value="1" min="1" max="100">
                             <span class="number-increment"> <i class="ti-plus"></i></span>
                         </div>
-                        <a href="#" class="btn_3">add to cart</a>
+                        <a id="btnInput" data-productid="@Model.Id" data-quantity="1" href="#" class="btn_3">add to cart</a>
                         <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
                     </div>
                 </div>
@@ -467,3 +467,31 @@
     </div>
 </section>
 <!--================End Product Description Area =================-->
+@section Scripts {
+    <script type="text/javascript">
+
+        $(document).on('click', '#btnInput', function (e) {
+            e.preventDefault();
+            var quantity = $("#inputQuantity").val();
+            var productId = $(this).data("productid");
+            $.ajax({
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}&status=shop`,
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while processing your request.");
+                }
+            });
+        });
+    </script>
+}

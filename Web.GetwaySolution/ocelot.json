@@ -497,7 +497,7 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "/api/CartAPI/RemoveCart",
+      "DownstreamPathTemplate": "/api/CartAPI/RemoveCart/{userId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -505,7 +505,7 @@
           "Port": 6008
         }
       ],
-      "UpstreamPathTemplate": "/api/CartAPI/RemoveCart",
+      "UpstreamPathTemplate": "/api/CartAPI/RemoveCart/{userId}",
       "UpstreamHttpMethod": [ "Delete" ]
     },
     {
@@ -570,6 +570,7 @@
       "UpstreamPathTemplate": "/api/InventoryAPI/{id}",
       "UpstreamHttpMethod": [ "Get" ]
     },
+    //CouponAPI
     {
       "DownstreamPathTemplate": "/api/CouponAPI",
       "DownstreamScheme": "https",

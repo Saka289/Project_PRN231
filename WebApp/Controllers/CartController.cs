@@ -39,7 +39,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SaveCart(int productId, int quantity)
+        public async Task<IActionResult> SaveCart(int productId, int quantity, string status)
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             var cart = await _cartService.GetCart(userId);
@@ -49,19 +49,12 @@ namespace WebApp.Controllers
             {
                 var cartUpdate = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(cart.Result));
                 var cartDetailList = cartUpdate.CartDetails.FirstOrDefault(c => c.ProductId == productId);
-                if (cartDetailList != null && cartDetailList.Quantity < quantity)
+                if (cartDetailList != null && status.Equals("shop"))
                 {
-                    if (cartDetailList.Quantity == quantity - 1)
-                    {
-                        cartDetailList.Quantity += 1;
-                    }
-                    else
-                    {
-                        cartDetailList.Quantity += quantity;
-                    }
+                    cartDetailList.Quantity += quantity;
                     mess = "Add Cart Successfully !!!";
                 }
-                else if (cartDetailList != null && cartDetailList.Quantity > quantity)
+                else if (cartDetailList != null && status.Equals("cart"))
                 {
                     if (quantity == 0)
                     {
@@ -69,11 +62,21 @@ namespace WebApp.Controllers
                         mess = "Remove Cart Successfully !!!";
                         flag = true;
                     }
-                    else
+                    else if (cartDetailList.Quantity > quantity)
                     {
                         cartDetailList.Quantity -= 1;
                         mess = "Update Cart Successfully !!!";
                     }
+                    else if (cartDetailList.Quantity < quantity)
+                    {
+                        cartDetailList.Quantity += 1;
+                        mess = "Update Cart Successfully !!!";
+                    }
+                }
+                else if (cartDetailList != null && status.Equals("details"))
+                {
+                    cartDetailList.Quantity += quantity;
+                    mess = "Add Cart Successfully !!!";
                 }
                 else
                 {
@@ -92,6 +95,10 @@ namespace WebApp.Controllers
                     }
                 }
                 var data = await _cartService.SaveCart(cartUpdate);
+                if (cartUpdate.CartDetails.Count == 0)
+                {
+                    await _cartService.RemoveCart(userId);
+                }
                 return Json(new { result = data.Result, success = true, message = mess, status = flag });
             }
             else
@@ -188,7 +195,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> CheckOut(CheckOutViewModel checkOutViewModel)
         {
             var cart = await LoadCartDtoBaseOnLoggedInUser();
-            if (checkOutViewModel.Status == 0)
+            if (checkOutViewModel.Status == 1)
             {
                 var session = _contextAccessor.HttpContext.Session;
                 cart.CartHeader.Name = checkOutViewModel.FirstName + " " + checkOutViewModel.LastName;
@@ -237,7 +244,7 @@ namespace WebApp.Controllers
                     return RedirectToAction(nameof(Confirmation));
                 }
             }
-            return View();
+            return View(checkOutViewModel);
         }
 
 
@@ -269,12 +276,14 @@ namespace WebApp.Controllers
                     return View(paymentViewModel);
                 }
             }
+            TempData["error"] = "Order failed !!!";
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Confirmation()
         {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             if (TempData["orderId"] != null)
             {
                 var response = await _orderService.SearchOrder(TempData["orderid"].ToString());
@@ -290,9 +299,11 @@ namespace WebApp.Controllers
                             item.Product = product.FirstOrDefault(p => p.Id == item.ProductId);
                         }
                     }
+                    await _cartService.RemoveCart(userId);
                     return View(order);
                 }
             }
+            TempData["error"] = "Order failed !!!";
             return View();
         }
 

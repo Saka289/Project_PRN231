@@ -1,35 +1,40 @@
-﻿@using WebApp.Models.Dtos;
-
-@model StockDto;
+﻿@model WebApp.Models.Dtos.CouponDto
 @{
     ViewData["Title"] = "Create";
 }
 <div class="card">
 
     <div class="card-header">
-        <h5 class="text-primary"> Create a category</h5>
+        <h5 class="text-primary">Create a CouponCode</h5>
     </div>
 
     <div class="card-body" style="min-height:450px">
-        <form method="post" enctype="multipart/form-data">
-            <input asp-for="Id" hidden value="0" />
+        <form method="post" asp-action="Create">
             <div class="row">
                 <div class="col-9">
                     <div class="mb-3">
-                        <label asp-for="ProductId"></label>
-                        <input asp-for="ProductId" class="form-control" />
-                        <span asp-validation-for="ProductId" class="text-danger"></span>
+                        <label asp-for="CouponCode"></label>
+                        <input asp-for="CouponCode" type="text" class="form-control" />
+                        <span asp-validation-for="CouponCode" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="StockQuantity"></label>
-                        <input asp-for="StockQuantity" class="form-control" />
-                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                        <label asp-for="DiscountAmount"></label>
+                        <input asp-for="DiscountAmount" type="text" class="form-control" />
+                        <span asp-validation-for="DiscountAmount" class="text-danger"></span>
                     </div>
-
+                    <div class="mb-3">
+                        <label asp-for="MinAmount"></label>
+                        <input asp-for="MinAmount" type="text" class="form-control" />
+                        <span asp-validation-for="MinAmount" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-            <button type="submit" onclick="return ValidateInput()" class="btn btn-sm btn-success" value="Create">Create</button>
+            <button type="submit" class="btn btn-sm btn-success" value="Create">Create</button>
             <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
