@@ -69,6 +69,14 @@ namespace WebApp.Service
                                 }
                             }
                         }
+                        else if (value is IFormFile)
+                        {
+                            var file = (IFormFile)value;
+                            if (file != null)
+                            {
+                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
+                            }
+                        }
                         else
                         {
                             content.Add(new StringContent(value == null ? string.Empty : value.ToString()), prop.Name);

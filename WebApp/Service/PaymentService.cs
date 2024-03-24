@@ -32,5 +32,14 @@ namespace WebApp.Service
                 Url = SD.BaseUrlGateWay + "/api/Payment"
             });
         }
+
+        public async Task<ResponseDto?> GetPayments()
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/Payment"
+            });
+        }
     }
 }

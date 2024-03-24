@@ -98,9 +98,9 @@ namespace Web.Services.InventoryAPI.Controllers
 
         [HttpPost("ImportCsv")]
         [DisableRequestSizeLimit]
-        public async Task<ActionResult> ImportCsv([FromForm] IFormFile formFile)
+        public async Task<ActionResult> ImportCsv([FromForm] ImportInvens importInvens)
         {
-            var item =  await _inventoryService.Upload(formFile);
+            var item =  await _inventoryService.Upload(importInvens.File);
             if(item > 0)
             {
                 responseDto.IsSuccess = true;

@@ -54,12 +54,12 @@ namespace WebApp.Service
             });
         }
 
-        public async Task<ResponseDto?> ImportCsvFile([FromForm] IFormFile formFile)
+        public async Task<ResponseDto?> ImportCsvFile(ImportInvens model)
         {
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.POST,
-                Data = formFile,
+                Data = model,
                 Url = SD.BaseUrlGateWay + "/api/InventoryAPI/ImportCsv",
                 ContentType = SD.ContentType.MultipartFormData
             });

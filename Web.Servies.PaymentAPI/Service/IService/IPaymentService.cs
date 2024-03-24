@@ -9,5 +9,6 @@ namespace Web.Services.PaymentAPI.Service.IService
         ResponseDto UpsertPayment(PaymentDto paymentDto);
         public PaymentDto FindById(string id);
         public Task<List<PaymentDto>> PaymentCasso(List<PaymentCasso> payment);
+        public Task<List<PaymentDto>> GetPayments();
     }
 }

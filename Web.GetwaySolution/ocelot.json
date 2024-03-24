@@ -543,7 +543,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Payment",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Get" ]
     },
     //inventory
     {
