@@ -1,10 +1,10 @@
-﻿namespace Web.Services.OrderAPI.Models.Dto
+﻿namespace WebApp.Models.Dtos
 {
-    public class CartOrderDto
+
+    public class CartHeaderDto
     {
-        public Guid? OrderId { get; set; }
         public string UserId { get; set; }
-        public decimal OrderTotal { get; set; }
+        public decimal CartTotal { get; set; } 
         public string? CouponCode { get; set; }
         public decimal Discount { get; set; }
         public string? Name { get; set; }

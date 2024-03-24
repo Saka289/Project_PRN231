@@ -1,0 +1,122 @@
+﻿@model WebApp.Models.Dtos.OrderDto
+
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Order Confirmation</h2>
+                        <p>Home <span>-</span> Order Confirmation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================ confirmation part start =================-->
+<section class="confirmation_part padding_top">
+    @if (Model != null)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="confirmation_tittle">
+                        <span>Thank you. Your order has been received.</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-lx-4">
+                    <div class="single_confirmation_details">
+                        <h4>order info</h4>
+                        <ul>
+                            <li>
+                                <p>order number</p><span>: @Model.OrderId</span>
+                            </li>
+                            <li>
+                                <p>order Date</p><span>: @Model.OrderDate</span>
+                            </li>
+                            <li>
+                                <p>total</p><span>: @Model.OrderTotal.ToString("N0") VND</span>
+                            </li>
+                            <li>
+                                <p>payment status</p><span>: @Model.PaymentStatus</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-lx-4">
+                    <div class="single_confirmation_details">
+                        <h4>shipping Address</h4>
+                        <ul>
+                            <li>
+                                <p>Name</p><span>: @Model.Name</span>
+                            </li>
+                            <li>
+                                <p>Email</p><span>: @Model.Email</span>
+                            </li>
+                            <li>
+                                <p>Phone</p><span>: @Model.Phone</span>
+                            </li>
+                            <li>
+                                <p>Address</p><span>: @Model.Address</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="order_details_iner">
+                        <h3>Order Details</h3>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col" colspan="2">Product</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    <tr>
+                                        <th colspan="2"><span>@item.Product.Title</span></th>
+                                        <th>x0@(item.Quantity)</th>
+                                        <th> <span>@((item.UnitPrice * item.Quantity).ToString("N0") + " VND")</span></th>
+                                    </tr>
+                                }
+                                <tr>
+                                    <th colspan="3">CouponCode</th>
+                                    <th><span>flat rate: @Model.CouponCode</span></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">Total</th>
+                                    <th> <span>@Model.OrderTotal.ToString("N0") VND</span></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="confirmation_tittle">
+                        <span>Thank you. Your order has been received.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+<!--================ confirmation part end =================-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

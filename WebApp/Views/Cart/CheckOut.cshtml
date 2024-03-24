@@ -1,0 +1,224 @@
+﻿@model WebApp.ViewModels.CheckOutViewModel
+
+@{
+    decimal discountDecimal = (Convert.ToDecimal(Model.CartDto.CartHeader.Discount) / 100) * Model.CartDto.CartHeader.CartTotal;
+    decimal totalPrice = Model.CartDto.CartHeader.CartTotal - discountDecimal;
+}
+
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Product Checkout</h2>
+                        <p>Home <span>-</span> Shop Single</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Checkout Area =================-->
+<section class="checkout_area padding_top">
+    <div class="container">
+        <div class="billing_details">
+            <form asp-action="CheckOut" method="post">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Billing Details</h3>
+                        <div class="row contact_form">
+                            <div class="col-md-6 form-group">
+                                <input asp-for="FirstName" type="text" class="form-control" placeholder="First name" />
+                                <span asp-validation-for="FirstName" class="placeholder text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input asp-for="LastName" type="text" class="form-control" placeholder="Last name" />
+                                <span asp-validation-for="LastName" class="placeholder text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input asp-for="Email" type="text" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="Email" class="placeholder text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Phone Number" />
+                                <span asp-validation-for="PhoneNumber" class="placeholder text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input id="apartment" type="text" class="form-control" placeholder="Apartment Number" required />
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <select id="province" name="province" class="form-control">
+                                    <option value="">Select Province</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <select id="district" name="district" class="form-control">
+                                    <option value="">Select District</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <select id="ward" name="ward" class="form-control">
+                                    <option value="">Select Ward</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input id="address" readonly asp-for="Address" type="text" class="form-control" placeholder="Address" />
+                                <span asp-validation-for="Address" class="placeholder text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <h3>Shipping Details</h3>
+                                </div>
+                                <textarea asp-for="Note" class="form-control" rows="1" placeholder="Order Notes"></textarea>
+                                <span asp-validation-for="Note" class="placeholder text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            @if (Model.CartDto.CartHeader != null && Model.CartDto.CartDetails?.Count() > 0)
+                            {
+                                <ul class="list">
+                                    <li>
+                                        <a href="#">
+                                            Product
+                                            <span>Total</span>
+                                        </a>
+                                    </li>
+                                    @foreach (var item in Model.CartDto.CartDetails)
+                                    {
+                                        <li>
+                                            <a href="#">
+                                                @item.Product.Title
+                                                <span class="middle">x 0@(item.Quantity)</span>
+                                                <span class="last">@((item.UnitPrice * item.Quantity).ToString("N0") + " VND")</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                                <ul class="list list_2">
+                                    @if (Model.CartDto.CartHeader.CouponCode != null)
+                                    {
+                                        <li>
+                                            <a href="#">
+                                                Coupon
+                                                <span>Flat rate: @Model.CartDto.CartHeader.Discount%</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a href="#">
+                                            Total
+                                            <span>@Model.CartDto.CartHeader.CartTotal.ToString("N0") VND</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="#">Shopping Cart Empty !!!</a>
+                                </li>
+                            }
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input asp-for="Status" value="0" type="radio" id="f-option5" name="payment" checked />
+                                    <label for="f-option5">Bank transfer</label>
+                                    <div class="check"></div>
+                                </div>
+                                <p>
+                                    Please send a check to Store Name, Store Street, Store Town,
+                                    Store State / County, Store Postcode.
+                                </p>
+                            </div>
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input asp-for="Status" value="1" type="radio" id="f-option6" name="payment" />
+                                    <label for="f-option6">Receive goods at home</label>
+                                    <div class="check"></div>
+                                </div>
+                                <p>
+                                    Please send a check to Store Name, Store Street, Store Town,
+                                    Store State / County, Store Postcode.
+                                </p>
+                            </div>
+                            <div class="creat_account">
+                                <input type="checkbox" id="f-option4" name="selector" required />
+                                <label for="f-option4">I’ve read and accept the </label>
+                                <a href="#">terms & conditions*</a>
+                            </div>
+                            <button class="btn_3" type="submit">Proceed to Paypal</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!--================End Checkout Area =================-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+
+        $('#province, #district, #ward, #address').on('change input', function () {
+            var province = $('#province option:selected').text();
+            var district = $('#district option:selected').text();
+            var ward = $('#ward option:selected').text();
+            var address = $('#apartment').val();
+            var fullAddress = address.trim() + ', ' + ward + ', ' + district + ', ' + province;
+            $('#address').val(fullAddress);
+        });
+
+        // Fetch provinces
+        $.ajax({
+            url: "https://vapi.vnappmob.com/api/province/",
+            type: "GET",
+            success: function (data) {
+                var provinces = data.results;
+                var provinceDropdown = $('#province');
+                $.each(provinces, function (index, province) {
+                    provinceDropdown.append($('<option></option>').attr('value', province.province_id).text(province.province_name));
+                });
+            }
+        });
+
+        // When province is selected, fetch districts
+        $('#province').change(function () {
+            var provinceId = $(this).val();
+            $.ajax({
+                url: "https://vapi.vnappmob.com/api/province/district/" + provinceId,
+                type: "GET",
+                success: function (data) {
+                    var districts = data.results;
+                    var districtDropdown = $('#district');
+                    districtDropdown.empty();
+                    $.each(districts, function (index, district) {
+                        districtDropdown.append($('<option></option>').attr('value', district.district_id).text(district.district_name));
+                    });
+                }
+            });
+        });
+
+        // When district is selected, fetch wards
+        $('#district').change(function () {
+            var districtId = $(this).val();
+            $.ajax({
+                url: "https://vapi.vnappmob.com/api/province/ward/" + districtId,
+                type: "GET",
+                success: function (data) {
+                    var wards = data.results;
+                    var wardDropdown = $('#ward');
+                    wardDropdown.empty();
+                    $.each(wards, function (index, ward) {
+                        wardDropdown.append($('<option></option>').attr('value', ward.ward_id).text(ward.ward_name));
+                    });
+                }
+            });
+        });
+    </script>
+}

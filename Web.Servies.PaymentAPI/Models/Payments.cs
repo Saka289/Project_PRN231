@@ -4,7 +4,7 @@ using static Shared.Enums.SD;
 
 namespace Web.Services.PaymentAPI.Models
 {
-    public class Payments
+    public class Payments 
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

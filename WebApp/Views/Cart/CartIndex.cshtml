@@ -1,0 +1,159 @@
+﻿@model WebApp.Models.Dtos.CartDto
+
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Cart Products</h2>
+                        <p>Home <span>-</span>Cart Products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Cart Area =================-->
+<section class="cart_area padding_top">
+    <div class="container">
+        @if (Model.CartHeader != null && Model.CartDetails?.Count() > 0)
+        {
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartDetails)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img style="width:100px;height:100px" src="@item.Product.Image" alt="" />
+                                            </div>
+                                            <div class="media-body">
+                                                <p>@item.Product.Title</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>@item.UnitPrice.ToString("N0") VND</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input id="btnInput" data-productid="@item.ProductId" type="number" class="input-number" name="quantity" title="quantity" value="@item.Quantity" min="0" max="100" step="1">
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <h5 id="totalprice@(item.ProductId)">@((item.UnitPrice * item.Quantity).ToString("N0") + " VND")</h5>
+                                    </td>
+                                </tr>
+                            }
+                            <tr class="bottom_button">
+                                <td>
+                                    @if (Model.CartHeader.CouponCode != null)
+                                    {
+                                        <form id="my_form" action="RemoveCoupon" method="post">
+                                            <div class="mt-10">
+                                                <div class="float-left d-flex">
+                                                    <input value="@Model.CartHeader.CouponCode" disabled type="text" name="couponCode" placeholder="Coupon Code" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Coupon Code'" required class="w-auto single-input-primary mr-3" />
+                                                    <a href="javascript:{}" onclick="document.getElementById('my_form').submit();" class="btn_1">Remove Coupon</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form id="my_form" action="ApplyCoupon" method="post">
+                                            <div class="mt-10">
+                                                <div class="float-left d-flex">
+                                                    <input type="text" name="couponCode" placeholder="Coupon Code" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Coupon Code'" required class="w-auto single-input-primary mr-3" />
+                                                    <a href="javascript:{}" onclick="document.getElementById('my_form').submit();" class="btn_1">Apply Coupon</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    }
+                                </td>
+                                <td></td>
+                                <td>
+                                    <h5>Subtotal</h5>
+                                </td>
+                                <td>
+                                    <h5 id="total">@Model.CartHeader.CartTotal.ToString("N0") VND</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="checkout_btn_inner float-right">
+                        <a class="btn_1" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+                        <a href="/Cart/CheckOut" class="btn_1 checkout_btn_1">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1>Shopping Cart Empty !!!</h1>
+        }
+    </div>
+</section>
+<!--================End Cart Area =================-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+
+        $(document).on('input', '#btnInput', function () {
+            var quantity = $(this).val();
+            var productId = $(this).data("productid");
+            $.ajax({
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}`,
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        if (data.status) {
+                            setTimeout(function () {
+                                window.location.href = "/Cart/CartIndex";
+                            }, 1000);
+                        }
+                        var cart = JSON.parse(data.result);
+                        var foundItem = cart.CartDetails.find(function (item) {
+                            return item.ProductId == productId;
+                        });
+                        var totalPriceItem = (foundItem.Quantity * foundItem.UnitPrice).toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                        var totalPrice = parseFloat(cart.CartHeader.CartTotal).toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                        $("#total").text(totalPrice);
+                        $("#totalprice" + productId).text(totalPriceItem);
+                    } else {
+                        toastr.error(data.message);
+                    } ơ
+                },
+                error: function () {
+                    alert("An error occurred while processing your request.");
+                }
+            });
+        });
+
+        $(document).on('keydown', '#btnInput', function (e) {
+            e.preventDefault();
+        });
+    </script>
+}
