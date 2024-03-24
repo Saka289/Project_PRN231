@@ -1,9 +1,9 @@
 ﻿using static Shared.Enums.SD;
 
-namespace Web.Services.PaymentAPI.Models.Dto
+namespace WebApp.Models.Dtos
 {
     public class PaymentDto
-    { 
+    {
         public Guid id { get; set; }
         public string orderId { get; set; }
         public bool isPayed { get; set; }

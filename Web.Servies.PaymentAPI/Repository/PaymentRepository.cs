@@ -1,4 +1,5 @@
-﻿using Web.Services.PaymentAPI.Data;
+﻿using AutoMapper;
+using Web.Services.PaymentAPI.Data;
 using Web.Services.PaymentAPI.Models;
 using Web.Services.PaymentAPI.Repository.IRepository;
 
@@ -7,13 +8,15 @@ namespace Web.Services.PaymentAPI.Repository
     public class PaymentRepository : IPaymentRepository
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PaymentRepository(AppDbContext context)
+        public PaymentRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async void Remove(int paymentId)
+        public void Remove(int paymentId)
         {
             var obj = _context.Payments.SingleOrDefault(x => x.id.Equals(paymentId));
             if (obj != null)
@@ -22,10 +25,18 @@ namespace Web.Services.PaymentAPI.Repository
             }
         }
 
-        public void Update(Payments payments)
+        public Payments Update(Payments payments)
         {
-            _context.Payments.Update(payments);
-            _context.SaveChanges();
+            var obj = _context.Payments.FirstOrDefault(p => p.id == payments.id);
+            if (obj != null)
+            {
+                obj.orderId = payments.orderId;
+                obj.isPayed = payments.isPayed;
+                obj.paymentStatus = payments.paymentStatus;
+                obj.refund = payments.refund;
+                return obj;
+            }
+            return null;
         }
 
         public List<Payments> FindAll()
@@ -44,5 +55,14 @@ namespace Web.Services.PaymentAPI.Repository
             return result;
         }
 
+        public Payments Create(Payments payments)
+        {
+            return _context.Set<Payments>().Add(payments).Entity;
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
     }
 }

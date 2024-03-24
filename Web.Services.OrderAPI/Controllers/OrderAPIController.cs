@@ -31,7 +31,7 @@ namespace Web.Services.OrderAPI.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetOrdersByUserId")]
+        [HttpGet("GetOrdersByUserId/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrdersByUserId([Required] string userId)
         {
@@ -55,9 +55,9 @@ namespace Web.Services.OrderAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateStatus/{orderId}/{status}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateStatus([Required] string orderId, string status)
+        public async Task<IActionResult> UpdateStatus([Required] string orderId, [Required] string status)
         {
             var result = await _orderService.UpdateStatus(orderId, status);
             if (result.IsSuccess)
@@ -79,7 +79,7 @@ namespace Web.Services.OrderAPI.Controllers
             return NotFound();
         }
 
-        [HttpPost("GenerateQR")]
+        [HttpGet("GenerateQR/{orderId}/{amount}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GenerateQR([Required] string orderId, [Required] decimal amount)
         {

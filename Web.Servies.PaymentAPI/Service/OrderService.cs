@@ -1,4 +1,4 @@
-﻿  using CallService;
+﻿using CallService;
 using Newtonsoft.Json;
 using Shared.Dtos;
 using Shared.Enums;
@@ -23,7 +23,7 @@ namespace Web.Services.PaymentAPI.Service
                 var response = await _sendService.SendServiceAsync(new SendRequestDto()
                 {
                     ApiType = SD.ApiType.GET,
-                    Url = SD.OrderAPIBase + "/api/OrderAPI/SearchOrder/" + orderId
+                    Url = SD.OrderAPIDeployBase + "/api/OrderAPI/SearchOrder/" + orderId
                 });
                 if (response.IsSuccess && response.Result != null)
                 {

@@ -6,9 +6,11 @@ namespace Web.Services.PaymentAPI.Repository.IRepository
     public interface IPaymentRepository
     {
         void Remove(int productId);
-        void Update(Payments payments);
+        Payments Update(Payments payments);
+        Payments Create(Payments payments);
         Payments FindById(string id);
         List<Payments> FindAll();
         Payments FindByOrderId(string orderId);
+        void Save();
     }
 }

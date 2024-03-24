@@ -8,7 +8,9 @@ namespace WebApp.Service.IService
     {
         public Task<ResponseDto?> GetAllCoupon();
         public Task<ResponseDto?> GetCouponById(int id);
-        public Task<ResponseDto?> UpdateCounpon(CouponDto dto);
+        public Task<ResponseDto?> UpdateCoupon(CouponDto dto);
+        public Task<ResponseDto?> CreateCoupon(CouponDto dto);
+        public Task<ResponseDto?> GetCouponByCode(string code);
         public Task<ResponseDto?> DeleteCouponById(int id);
     }
 }

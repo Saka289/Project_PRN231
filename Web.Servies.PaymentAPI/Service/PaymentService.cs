@@ -1,4 +1,6 @@
-﻿using Web.Services.PaymentAPI.Models;
+﻿using AutoMapper;
+using Shared.Dtos;
+using Web.Services.PaymentAPI.Models;
 using Web.Services.PaymentAPI.Models.Dto;
 using Web.Services.PaymentAPI.Repository.IRepository;
 using Web.Services.PaymentAPI.Service.IService;
@@ -12,12 +14,16 @@ namespace Web.Services.PaymentAPI.Service
         private readonly IPaymentRepository _paymentRepository;
         private readonly IUserService _userService;
         private readonly IOrderService _orderService;
+        private readonly IMapper _mapper;
+        protected ResponseDto _response;
 
-        public PaymentService(IPaymentRepository paymentRepository, IUserService userService, IOrderService orderService)
+        public PaymentService(IPaymentRepository paymentRepository, IUserService userService, IOrderService orderService, IMapper mapper)
         {
             _paymentRepository = paymentRepository;
             _userService = userService;
             _orderService = orderService;
+            _mapper = mapper;
+            _response = new ResponseDto();
         }
 
 
@@ -29,7 +35,7 @@ namespace Web.Services.PaymentAPI.Service
             {
                 PaymentDto paymentDto = new PaymentDto
                 {
-                    paymentId = payments.id,
+                    id = payments.id,
                     orderId = payments.orderId,
                     isPayed = payments.isPayed,
                     paymentStatus = payments.paymentStatus,
@@ -39,24 +45,34 @@ namespace Web.Services.PaymentAPI.Service
             return null;
         }
 
-        public void Update(PaymentDto paymentDTO)
+        public ResponseDto UpsertPayment(PaymentDto paymentDTO)
         {
-            Payments payments = _paymentRepository.FindById(paymentDTO.paymentId.ToString());
-            if (payments != null)
+            try
             {
-                payments.paymentStatus = paymentDTO.paymentStatus;
-                payments.isPayed = paymentDTO.isPayed;
-                payments.orderId = paymentDTO.orderId;
-                _paymentRepository.Update(payments);
+                Payments payments = _paymentRepository.FindById(paymentDTO.id.ToString());
+                if (paymentDTO.id.Equals(Guid.Empty))
+                {
+                    Payments obj = _mapper.Map<Payments>(paymentDTO);
+                    var response = _paymentRepository.Create(obj);
+                    _paymentRepository.Save();
+                    _response.Result = _mapper.Map<PaymentDto>(response);
+                    _response.Message = "Payment created Successfully !!!";
+                }
+                else
+                {
+                    Payments obj = _mapper.Map<Payments>(paymentDTO);
+                    _paymentRepository.Update(obj);
+                    _paymentRepository.Save();
+                    _response.Result = _mapper.Map<PaymentDto>(obj);
+                    _response.Message = "Payment updated Successfully !!!";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                payments = new Payments();
-                payments.paymentStatus = paymentDTO.paymentStatus;
-                payments.orderId = paymentDTO.orderId;
-                payments.isPayed = paymentDTO.isPayed;
-                _paymentRepository.Update(payments);
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
             }
+            return _response;
         }
 
         public async Task<List<PaymentDto>> PaymentCasso(List<PaymentCasso> paymentCasso)
@@ -105,11 +121,12 @@ namespace Web.Services.PaymentAPI.Service
                     _paymentRepository.Update(payments);
                     paymentDTOs.Add(new PaymentDto
                     {
-                        paymentId = payments.id,
+                        id = payments.id,
                         orderId = payments.orderId,
                         paymentStatus = payments.paymentStatus,
                         refund = payments.refund,
                     });
+                    _paymentRepository.Save();
                 }
             }
             return paymentDTOs;

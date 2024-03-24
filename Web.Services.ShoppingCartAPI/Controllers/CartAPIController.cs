@@ -31,7 +31,7 @@ namespace Web.Services.ShoppingCartAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("RemoveCart")]
+        [HttpDelete("RemoveCart/{userId}")]
         public async Task<IActionResult> RemoveCart([Required] string userId)
         {
 
@@ -41,7 +41,12 @@ namespace Web.Services.ShoppingCartAPI.Controllers
         [HttpPost("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon([FromBody] CartDto cartDto)
         {
-            return Ok(_cartService.ApplyCoupon(cartDto));
+            var result = _cartService.ApplyCoupon(cartDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
     }
 }
