@@ -29,8 +29,13 @@ namespace Web.Services.InventoryAPI.Repository
 
         public async Task<int> Import(List<Inventory> inventories)
         {
-           await _context.Inventories.AddRangeAsync(inventories);
+            await _context.Inventories.AddRangeAsync(inventories);
             return _context.SaveChanges();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
 
         public int Update(Inventory inventory)

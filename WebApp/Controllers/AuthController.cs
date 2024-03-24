@@ -17,12 +17,14 @@ namespace WebApp.Controllers
         private readonly IAuthService _authService;
         private readonly IAdminService _adminService;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IOrderService _orderService;
 
-        public AuthController(IAuthService authService, ITokenProvider tokenProvider, IAdminService adminService)
+        public AuthController(IAuthService authService, ITokenProvider tokenProvider, IAdminService adminService, IOrderService orderService)
         {
             _authService = authService;
             _adminService = adminService;
             _tokenProvider = tokenProvider;
+            _orderService = orderService;
 
         }
 
@@ -115,13 +117,17 @@ namespace WebApp.Controllers
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             var response = await _adminService.GetMemberByUserID(userId);
+            var viewModel = new MyAccountViewModel();
             if (response != null && response.IsSuccess)
             {
                 var responseUser = JsonConvert.DeserializeObject<MemberDto>(Convert.ToString(response.Result));
-                var viewModel = new MyAccountViewModel
+                var responseOrder = await _orderService.GetOrdersByUserId(userId);
+                if (responseOrder != null && responseOrder.IsSuccess)
                 {
-                    Member = responseUser
-                };
+                    var order = JsonConvert.DeserializeObject<IEnumerable<OrderDto>>(Convert.ToString(responseOrder.Result));
+                    viewModel.Order = order;
+                    viewModel.Member = responseUser;
+                }
                 return View(viewModel);
             }
             return View(new MyAccountViewModel());

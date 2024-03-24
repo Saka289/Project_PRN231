@@ -16,18 +16,18 @@ namespace Web.Services.OrderAPI.Service
         {
             _sendService = sendService;
         }
-        public async Task<ProductDto> GetProduct(int productId)
+        public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             try
             {
                 var response = await _sendService.SendServiceAsync(new SendRequestDto()
                 {
                     ApiType = SD.ApiType.GET,
-                    Url = SD.ProductAPIBase + "/api/ProductAPI/" + productId
+                    Url = SD.ProductAPIBase + "/api/ProductAPI"
                 });
                 if (response.IsSuccess && response.Result != null)
                 {
-                    var result = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                    var result = JsonConvert.DeserializeObject<IEnumerable<ProductDto>>(Convert.ToString(response.Result));
                     return result;
                 }
             }

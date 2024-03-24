@@ -1,8 +1,11 @@
 ﻿@model WebApp.ViewModels.CheckOutViewModel
 
 @{
-    decimal discountDecimal = (Convert.ToDecimal(Model.CartDto.CartHeader.Discount) / 100) * Model.CartDto.CartHeader.CartTotal;
-    decimal totalPrice = Model.CartDto.CartHeader.CartTotal - discountDecimal;
+    if (Model.CartDto.CartHeader != null)
+    {
+        decimal discountDecimal = (Convert.ToDecimal(Model.CartDto.CartHeader.Discount) / 100) * Model.CartDto.CartHeader.CartTotal;
+        decimal totalPrice = Model.CartDto.CartHeader.CartTotal - discountDecimal;
+    }
 }
 
 <!--================Home Banner Area =================-->
@@ -127,7 +130,7 @@
                             }
                             <div class="payment_item">
                                 <div class="radion_btn">
-                                    <input asp-for="Status" value="0" type="radio" id="f-option5" name="payment" checked />
+                                    <input value="true" type="radio" id="f-option5" name="Status" checked />
                                     <label for="f-option5">Bank transfer</label>
                                     <div class="check"></div>
                                 </div>
@@ -138,7 +141,7 @@
                             </div>
                             <div class="payment_item">
                                 <div class="radion_btn">
-                                    <input asp-for="Status" value="1" type="radio" id="f-option6" name="payment" />
+                                    <input value="false" type="radio" id="f-option6" name="Status" />
                                     <label for="f-option6">Receive goods at home</label>
                                     <div class="check"></div>
                                 </div>
