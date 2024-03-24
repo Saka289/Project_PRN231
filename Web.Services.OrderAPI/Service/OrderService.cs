@@ -37,15 +37,14 @@ namespace Web.Services.OrderAPI.Service
         {
             try
             {
-                var productList = cartDto.CartDetails.Select(p => new ProductRequestDto
+                var productList = cartDto.CartDetails.Select(p => new ProductRequest
                 {
                     ProductId = p.ProductId,
                     Quantity = p.Quantity,
                 }).ToList();
 
                 var checkInventory = await _inventoryService.IsInStock(productList);
-                bool flagOrder = checkInventory.All(c => c.isInStock);
-                if (flagOrder == false)
+                if (checkInventory.Count() != productList.Count)
                 {
                     _response.Result = false;
                     _response.IsSuccess = false;
@@ -67,6 +66,12 @@ namespace Web.Services.OrderAPI.Service
 
                 Order orderCreated = await _orderRepository.CreateOrder(_mapper.Map<Order>(orderDto));
                 _orderRepository.SaveChanges();
+                var inventoryUpdate = new UpdateInvensRequestDto()
+                {
+                    products = productList,
+                    status = "Order Success"
+                };
+                await _inventoryService.UpdateInventory(inventoryUpdate);
                 _response.Result = _mapper.Map<OrderDto>(orderCreated);
                 _response.Message = "Create Order Successfully !!!";
             }
@@ -88,10 +93,10 @@ namespace Web.Services.OrderAPI.Service
                 {
                     foreach (var itemOrderDetails in itemOrder.OrderDetails)
                     {
-                        itemOrderDetails.Product = await _productService.GetProduct(itemOrderDetails.ProductId);
-                        if (itemOrderDetails.Product != null)
+                        var product = await _productService.GetProducts();
+                        if (product != null)
                         {
-                            itemOrderDetails.Product.Category = await _categoryService.GetCategory(itemOrderDetails.Product.CategoryId);
+                            itemOrderDetails.Product = product.FirstOrDefault(p => p.Id == itemOrderDetails.ProductId);
                         }
                     }
                 }
@@ -117,7 +122,19 @@ namespace Web.Services.OrderAPI.Service
                     _response.Result = false;
                     return _response;
                 }
-                _response.Result = _mapper.Map<IEnumerable<OrderDto>>(result);
+                var orderDtos = _mapper.Map<IEnumerable<OrderDto>>(result);
+                foreach (var itemOrder in orderDtos)
+                {
+                    foreach (var itemOrderDetails in itemOrder.OrderDetails.Where(od => od.OrderId == itemOrder.OrderId).ToList())
+                    {
+                        var product = await _productService.GetProducts();
+                        if (product != null)
+                        {
+                            itemOrderDetails.Product = product.FirstOrDefault(p => p.Id == itemOrderDetails.ProductId);
+                        }
+                    }
+                }
+                _response.Result = _mapper.Map<IEnumerable<OrderDto>>(orderDtos);
             }
             catch (Exception ex)
             {

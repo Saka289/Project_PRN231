@@ -15,7 +15,7 @@ namespace WebApp.ViewModels
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
-        public int Status { get; set; }
+        public bool Status { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]

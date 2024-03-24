@@ -1,5 +1,10 @@
 ﻿@model WebApp.ViewModels.MyAccountViewModel
 
+
+@{
+    var item = Model.Order.ToList();
+}
+
 <!-- breadcrumb start-->
 <section class="breadcrumb breadcrumb_bg">
     <div class="container">
@@ -47,7 +52,7 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-9">
-                <div class="login_part_form">
+                <div class="login_part_form w-100">
                     <div class="login_part_form_iner">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                             <h3>
@@ -92,6 +97,58 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <h3>
+                                My Order ! <br>
+                                <p>Purchased Products</p>
+                            </h3>
+                            <form class="row contact_form" action="MyOrder" method="post" novalidate="novalidate">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Order != null)
+                                        {
+                                            @foreach (var itemO in Model.Order)
+                                            {
+                                                @foreach (var itemOD in itemO.OrderDetails.Where(od => od.OrderId.Equals(itemO.OrderId)).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="media">
+                                                                <div class="d-flex">
+                                                                    <img style="width:50px;height:50px" src="@itemOD.Product.Image" alt="" />
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p>@itemOD.Product.Title</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h5>@itemOD.UnitPrice.ToString("N0") VND</h5>
+                                                        </td>
+                                                        <td>
+                                                            <h5>x0@(itemOD.Quantity)</h5>
+                                                        </td>
+                                                        <td>
+                                                            <h5>@((itemOD.UnitPrice * itemOD.Quantity).ToString("N0") + " VND")</h5>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <h3>Purchased Products Empty !!! </h3>
+                                        }
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                             <h3>

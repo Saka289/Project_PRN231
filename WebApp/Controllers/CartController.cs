@@ -195,7 +195,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> CheckOut(CheckOutViewModel checkOutViewModel)
         {
             var cart = await LoadCartDtoBaseOnLoggedInUser();
-            if (checkOutViewModel.Status == 1)
+            if (checkOutViewModel.Status == true)
             {
                 var session = _contextAccessor.HttpContext.Session;
                 cart.CartHeader.Name = checkOutViewModel.FirstName + " " + checkOutViewModel.LastName;
@@ -242,6 +242,11 @@ namespace WebApp.Controllers
                     await _orderService.UpdateStatus(order.OrderId.ToString(), SD.PaymentStatus.CASH.ToString());
                     TempData["orderId"] = order.OrderId;
                     return RedirectToAction(nameof(Confirmation));
+                }
+                else
+                {
+                    TempData["error"] = orderCreate.Message;
+                    return RedirectToAction(nameof(CheckOut));
                 }
             }
             return View(checkOutViewModel);

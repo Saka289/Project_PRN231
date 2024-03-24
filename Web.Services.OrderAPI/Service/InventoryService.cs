@@ -16,7 +16,7 @@ namespace Web.Services.OrderAPI.Service
             _sendService = sendService;
         }
 
-        public async Task<IEnumerable<InventoryDto>> IsInStock(List<ProductRequestDto> inventoryDto)
+        public async Task<IEnumerable<InventoryDto>> IsInStock(List<ProductRequest> inventoryDto)
         {
             try
             {
@@ -37,6 +37,28 @@ namespace Web.Services.OrderAPI.Service
                 throw new Exception(ex.Message);
             }
             return null;
+        }
+
+        public async Task<bool> UpdateInventory(UpdateInvensRequestDto updateInvensRequestDto)
+        {
+            try
+            {
+                var response = await _sendService.SendServiceAsync(new SendRequestDto()
+                {
+                    ApiType = SD.ApiType.PUT,
+                    Data = updateInvensRequestDto,
+                    Url = SD.InventoryAPIBase + "/api/InventoryAPI/UpdateInventory"
+                });
+                if (response.IsSuccess && response.Result != null)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return false;
         }
     }
 }
