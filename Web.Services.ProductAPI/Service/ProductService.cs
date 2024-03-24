@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FileUpload;
 using FileUpload.Models;
+using Newtonsoft.Json;
 using Shared.Dtos;
 using System.Security.Cryptography;
+using Web.Services.ProductAPI.Data;
 using Web.Services.ProductAPI.Models;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository;
@@ -15,15 +17,18 @@ namespace Web.Services.ProductAPI.Service
     {
         private readonly IProductRepository _productRepository;
         private readonly IProductImageRepository _productImageRepository;
+        private readonly IOrderService _orderService;
+        private readonly AppDbContext _context;
         protected ResponseDto _response;
         private IMapper _mapper;
-        public ProductService(IProductRepository productRepository, IMapper mapper, IProductImageRepository productImageRepository)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IProductImageRepository productImageRepository, IOrderService orderService, AppDbContext con)
         {
             _productRepository = productRepository;
             _productImageRepository = productImageRepository;
             _mapper = mapper;
             _response = new ResponseDto();
-
+            _orderService = orderService;
+            _context = con;
         }
         public async Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model)
         {
@@ -245,6 +250,30 @@ namespace Web.Services.ProductAPI.Service
                 IEnumerable<Product> objList = await _productRepository.GetAllByCateAsyns(id);
                 _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
             }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetBestSeller()
+        {
+            List<ProductDto> productDtos = new List<ProductDto>();
+            try
+            {
+                var bestSaler = await _orderService.GetBestSellers();
+                if(bestSaler != null)
+                {
+                    foreach (var proId in bestSaler.ToList())
+                    {
+                        productDtos.Add(_mapper.Map<ProductDto>(_context.Products.FirstOrDefault(ite => ite.Id == int.Parse(proId.ProductId))));
+                    }
+                }
+                _response.Result = productDtos;
+            }
+            
             catch (Exception ex)
             {
                 _response.Message = ex.Message;
