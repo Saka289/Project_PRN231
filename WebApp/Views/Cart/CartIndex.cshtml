@@ -120,7 +120,7 @@
             var quantity = $(this).val();
             var productId = $(this).data("productid");
             $.ajax({
-                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}`,
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}&status=cart`,
                 type: "GET",
                 dataType: "json",
                 headers: {

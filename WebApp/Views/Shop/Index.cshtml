@@ -35,7 +35,7 @@
                     <aside class="left_widgets p_filter_widgets">
                         <div class="l_w_title">
                             <h3>Browse Categories</h3>
-                            <input id="IdCategorySelected" type="hidden"/>
+                            <input id="IdCategorySelected" type="hidden" />
                         </div>
                         <div class="widgets_inner">
                             <ul class="list">
@@ -147,7 +147,7 @@
                                     <div class="single_product_text">
                                         <h4><a href="/Product/Detail/@item.Id" style="text-decoration:none">@item.Title</a></h4>
                                         <h3>@WebApp.Helper.Common.FormatNumber(item.Price, 0) vnđ</h3>
-                                        <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                        <a id="btnInput" data-productid="@item.Id" data-quantity="1" href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +242,31 @@
     <script src="~/js/stellar.js"></script>
     <script src="~/js/price_rangs.js"></script>
     <script type="text/javascript">
+
+        $(document).on('click', '#btnInput', function (e) {
+            e.preventDefault();
+            var quantity = $(this).data("quantity");
+            var productId = $(this).data("productid");
+            $.ajax({
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}&status=shop`,
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while processing your request.");
+                }
+            });
+        });
+
         $(document).ready(function () {
             $('.category').click(function () {
                 var categoryId = $(this).data('id');
@@ -300,7 +325,7 @@
                 var selectedValue = $(this).val();
 
                 // Lấy các thuộc tính khác bạn muốn gửi đi
-                var categoryId = $('#IdCategorySelected').val(); 
+                var categoryId = $('#IdCategorySelected').val();
                 var searchTitleValue = $('#searchTitleValue').val();
                 var priceFilter = $('input[name="priceFilter"]:checked').val();
                 var priceFrom = 0;
@@ -462,7 +487,7 @@
                                  <div class="single_product_text">
                                      <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
                                      <h3>${e.price} vnđ</h3>
-                                     <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                     <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                  </div>
                              </div>
                           </div>`;    

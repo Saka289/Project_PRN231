@@ -17,6 +17,7 @@ namespace WebApp.Areas.Admin.Controllers
             _couponService = couponService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             List<CouponDto> list = new List<CouponDto>();
@@ -32,59 +33,63 @@ namespace WebApp.Areas.Admin.Controllers
             return View(list);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CouponDto couponDto)
+        {
+            var response = await _couponService.CreateCoupon(couponDto);
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = response.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["error"] = response?.Message;
+            return View(couponDto);
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            CouponDto c = new CouponDto();
-            if (id != null)
+            ResponseDto? response = await _couponService.GetCouponById(id);
+            if (response != null && response.IsSuccess)
             {
-                //Edit
-                ResponseDto? response = await _couponService.GetCouponById(id);
-                if (response != null && response.IsSuccess)
-                {
-                    c = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
-                }
-                return View(c);
+                var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(coupon);
             }
-            return NotFound();
+            return View(new CouponDto());
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(CouponDto model)
         {
-            if (ModelState.IsValid)
+            //Update
+            var response = await _couponService.UpdateCoupon(model);
+            if (response != null && response.IsSuccess)
             {
-                //Update
-                ResponseDto? response = await _couponService.UpdateCoupon(model);
-                if (response != null && response.IsSuccess)
-                {
-                    TempData["success"] = "Update inventory successfully";
-                }
-                else
-                {
-                    TempData["error"] = response?.Message;
-                }
+                TempData["success"] = response.Message;
                 return RedirectToAction(nameof(Index));
             }
-
-            return View();
+            TempData["error"] = response?.Message;
+            return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id != null)
+            var response = await _couponService.DeleteCouponById(id);
+            if (response != null && response.IsSuccess)
             {
-                ResponseDto? response = await _couponService.DeleteCouponById(id);
-                if (response != null && response.IsSuccess)
-                {
-                    TempData["success"] = "Delete coupon successfully";
-                }
-                else
-                {
-                    TempData["error"] = "Delete coupon failed";
-                }
+                TempData["success"] = response.Message;
                 return RedirectToAction(nameof(Index));
             }
-            return NotFound();
+            TempData["error"] = response.Message;
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿@using WebApp.Models.Dtos;
-@model CouponDto;
+﻿@model WebApp.Models.Dtos.CouponDto
 @{
     ViewData["Title"] = " Update";
 
@@ -7,7 +6,7 @@
 <div class="card">
 
     <div class="card-header">
-        <h5 class="text-primary">Update a category</h5>
+        <h5 class="text-primary">Update a Coupon</h5>
     </div>
 
     <div class="card-body" style="min-height:450px">
@@ -32,8 +31,8 @@
                     </div>
                 </div>
             </div>
-                <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
-            <a asp-action="Index"  class="btn btn-sm btn-info">Back to list</a>
+            <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update" />
+            <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
         </form>
     </div>
 </div>

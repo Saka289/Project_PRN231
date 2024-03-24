@@ -37,7 +37,7 @@ namespace WebApp.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.BaseUrlGateWay + "/api/CartAPI/RemoveCart" + userId
+                Url = SD.BaseUrlGateWay + "/api/CartAPI/RemoveCart/" + userId
             });
         }
 
