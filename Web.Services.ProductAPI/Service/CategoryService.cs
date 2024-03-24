@@ -47,11 +47,11 @@ namespace Web.Services.ProductAPI.Service
 
                 };
                 FileUploadFunction fuf = new FileUploadFunction();
-                var stringImage = fuf.UploadImageAsync(s3Obj, cred);
+                var stringImage = await fuf.UploadImageAsync(s3Obj, cred);
                 Category obj = new Category();
                 obj.Name = cateDto.Name;
                 obj.Status = cateDto.Status;
-                obj.Image = Convert.ToString(stringImage.Result);
+                obj.Image = Convert.ToString(stringImage);
 
                 _categoryRepository.AddAsync(obj);
                 _categoryRepository.Save();
@@ -173,10 +173,10 @@ namespace Web.Services.ProductAPI.Service
 
                     };
                     FileUploadFunction fuf = new FileUploadFunction();
-                    var stringImage = fuf.UploadImageAsync(s3Obj, cred);
+                    var stringImage = await fuf.UploadImageAsync(s3Obj, cred);
 
 
-                    obj.Image = Convert.ToString(stringImage.Result);
+                    obj.Image = Convert.ToString(stringImage);
                 }
 
                 _categoryRepository.UpdateAsync(obj);

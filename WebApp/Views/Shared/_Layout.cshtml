@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="~/css/animate.css">
     <!-- owl carousel CSS -->
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <!-- nice select CSS -->
+    <link rel="stylesheet" href="~/css/nice-select.css">
+    <link rel="stylesheet" href="~/css/lightslider.min.css">
     <!-- font awesome CSS -->
     <link rel="stylesheet" href="~/css/all.css">
     <!-- flaticon CSS -->
@@ -21,10 +24,14 @@
     <link rel="stylesheet" href="~/css/magnific-popup.css">
     <!-- swiper CSS -->
     <link rel="stylesheet" href="~/css/slick.css">
+    <link rel="stylesheet" href="~/css/price_rangs.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="~/css/style.css">
+    <!-- nice select CSS -->
+    <link rel="stylesheet" href="~/css/nice-select.css">
+
     <!-- notifications -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
     <!--::header part start::-->
@@ -51,7 +58,7 @@
                                         Shop
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                        <a class="dropdown-item" href="category.html"> shop category</a>
+                                        <a class="dropdown-item" asp-controller="Shop" asp-action="Index"> shop category</a>
                                         <a class="dropdown-item" href="single-product.html">product details</a>
 
                                     </div>
@@ -64,7 +71,7 @@
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
                                         <a class="dropdown-item" href="tracking.html">tracking</a>
                                         <a class="dropdown-item" href="checkout.html">product checkout</a>
-                                        <a class="dropdown-item" href="cart.html">shopping cart</a>
+                                        <a class="dropdown-item" asp-controller="Cart" asp-action="CartIndex">shopping cart</a>
                                         <a class="dropdown-item" href="confirmation.html">confirmation</a>
                                         <a class="dropdown-item" href="elements.html">elements</a>
                                     </div>
@@ -257,6 +264,8 @@
     <script src="~/js/bootstrap.min.js"></script>
     <!-- easing js -->
     <script src="~/js/jquery.magnific-popup.js"></script>
+    <script src="~/js/lightslider.min.js"></script>
+
     <!-- swiper js -->
     <script src="~/js/swiper.min.js"></script>
     <!-- swiper js -->
@@ -266,6 +275,7 @@
     <script src="~/js/jquery.nice-select.min.js"></script>
     <!-- slick js -->
     <script src="~/js/slick.min.js"></script>
+    <script src="~/js/swiper.jquery.js"></script>
     <script src="~/js/jquery.counterup.min.js"></script>
     <script src="~/js/waypoints.min.js"></script>
     <script src="~/js/contact.js"></script>
@@ -273,8 +283,12 @@
     <script src="~/js/jquery.form.js"></script>
     <script src="~/js/jquery.validate.min.js"></script>
     <script src="~/js/mail-script.js"></script>
+    <script src="~/js/stellar.js"></script>
+    <script src="~/js/price_rangs.js"></script>
     <!-- custom js -->
+    <script src="~/js/theme.js"></script>
     <script src="~/js/custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

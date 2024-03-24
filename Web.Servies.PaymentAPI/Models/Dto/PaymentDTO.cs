@@ -3,8 +3,8 @@
 namespace Web.Services.PaymentAPI.Models.Dto
 {
     public class PaymentDto
-    {
-        public Guid paymentId {  get; set; }
+    { 
+        public Guid id { get; set; }
         public string orderId { get; set; }
         public bool isPayed { get; set; }
         public PaymentStatus paymentStatus { get; set; }

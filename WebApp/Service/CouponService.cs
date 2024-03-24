@@ -42,11 +42,30 @@ namespace WebApp.Service
             });
         }
 
-        public async Task<ResponseDto?> UpdateCounpon(CouponDto couponDto)
+        public async Task<ResponseDto?> GetCouponByCode(string code)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/CouponAPI/GetByCode/" + code,
+            });
+        }
+
+        public async Task<ResponseDto?> UpdateCoupon(CouponDto couponDto)
         {
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.PUT,
+                Data = couponDto,
+                Url = SD.BaseUrlGateWay + "/api/CouponAPI"
+            });
+        }
+
+        public async Task<ResponseDto?> CreateCoupon(CouponDto couponDto)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.POST,
                 Data = couponDto,
                 Url = SD.BaseUrlGateWay + "/api/CouponAPI"
             });

@@ -9,5 +9,6 @@ namespace Web.Services.ProductAPI.Service.IService
         Task<ResponseDto> ChangeDefaultImage(int id, int pid);
         Task<ResponseDto> DeleteImageOfProductImageAsync(int id);
         Task<ResponseDto> GetListImageOfProduct(int idProduct);
+        Task<ResponseDto> GetProductImageById(int id);
     }
 }

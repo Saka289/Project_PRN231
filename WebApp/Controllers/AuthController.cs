@@ -114,7 +114,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> MyAccount()
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
-            var response = await _adminService.GetUserById(userId);
+            var response = await _adminService.GetMemberByUserID(userId);
             if (response != null && response.IsSuccess)
             {
                 var responseUser = JsonConvert.DeserializeObject<MemberDto>(Convert.ToString(response.Result));
@@ -162,7 +162,7 @@ namespace WebApp.Controllers
                     return RedirectToAction(nameof(Login));
                 }
                 TempData["error"] = response.Message;
-                var result = await _adminService.GetUserById(userId);
+                var result = await _adminService.GetMemberByUserID(userId);
                 if (result != null && result.IsSuccess)
                 {
                     var responseUser = JsonConvert.DeserializeObject<MemberDto>(Convert.ToString(result.Result));

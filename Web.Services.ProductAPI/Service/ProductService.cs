@@ -2,6 +2,7 @@
 using FileUpload;
 using FileUpload.Models;
 using Shared.Dtos;
+using System.Security.Cryptography;
 using Web.Services.ProductAPI.Models;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Repository;
@@ -13,13 +14,16 @@ namespace Web.Services.ProductAPI.Service
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IProductImageRepository _productImageRepository;
         protected ResponseDto _response;
         private IMapper _mapper;
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IProductImageRepository productImageRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;   
+            _productImageRepository = productImageRepository;
+            _mapper = mapper;
             _response = new ResponseDto();
+
         }
         public async Task<ResponseDto> Add(ProductDtoForCreateAndUpdate model)
         {
@@ -42,7 +46,7 @@ namespace Web.Services.ProductAPI.Service
 
                 };
                 FileUploadFunction fuf = new FileUploadFunction();
-                var stringImage =  fuf.UploadImageAsync(s3Obj, cred);
+                var stringImage = fuf.UploadImageAsync(s3Obj, cred);
 
 
                 Product obj = new Product();
@@ -50,11 +54,23 @@ namespace Web.Services.ProductAPI.Service
                 obj.Price = model.Price;
                 obj.ProductCode = model.ProductCode;
                 obj.CategoryId = model.CategoryId;
-                obj.Description = model.Description;    
+                obj.Description = model.Description;
                 obj.Status = model.Status;
                 obj.Image = Convert.ToString(stringImage.Result);
                 _productRepository.AddAsync(obj);
                 _productRepository.Save();
+
+                // sau khi create product và ảnh bên productimage cloud
+                // cập nhật thêm vào bảng productimage in db
+                ProductImageDto productImageDto = new ProductImageDto
+                {
+                    Image = Convert.ToString(stringImage.Result),
+                    IsDefault = true,   
+                    ProductId = obj.Id,
+                };
+                _productImageRepository.AddAsync(productImageDto);
+                _productImageRepository.Save();
+
                 _response.Result = "";
                 _response.Message = "Add product successfully !";
             }
@@ -115,6 +131,20 @@ namespace Web.Services.ProductAPI.Service
             }
             return _response;
         }
+        public async Task<ResponseDto> SearchProductInShopPage(ProductSearchDto model)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchInShopPageAsyns(model);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
 
         public ResponseDto GetProductById(int pId)
         {
@@ -122,6 +152,21 @@ namespace Web.Services.ProductAPI.Service
             {
                 var objFind = _productRepository.GetByIdAsyns(pId);
                 _response.Result = _mapper.Map<ProductDto>(objFind);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> SearchProducts(string seachValue)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.SearchAsyns(seachValue);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
             }
             catch (Exception ex)
             {
@@ -142,8 +187,8 @@ namespace Web.Services.ProductAPI.Service
                 obj.CategoryId = model.CategoryId;
                 obj.Description = model.Description;
                 obj.Status = model.Status;
-                
-                
+
+
                 if (model.Image == null)
                 {
                     // nếu không chọn ảnh khách thì giữ nguyên ảnh hiện tại
@@ -173,7 +218,7 @@ namespace Web.Services.ProductAPI.Service
 
                     };
                     FileUploadFunction fuf = new FileUploadFunction();
-                    var stringImage = await  fuf.UploadImageAsync(s3Obj, cred);
+                    var stringImage = await fuf.UploadImageAsync(s3Obj, cred);
 
                     obj.Image = Convert.ToString(stringImage);
                 }
@@ -189,6 +234,21 @@ namespace Web.Services.ProductAPI.Service
 
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetAllProductByCateAsync(int id)
+        {
+            try
+            {
+                IEnumerable<Product> objList = await _productRepository.GetAllByCateAsyns(id);
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
             }
             return _response;
         }

@@ -1,9 +1,9 @@
-﻿namespace Web.Services.OrderAPI.Models.Dto
+﻿namespace WebApp.Models.Dtos
 {
-    public class CartOrderDetailDto
+    public class OrderDetailDto
     {
-        public Guid? OrderDetailId { get; set; }
-        public Guid? OrderId { get; set; }
+        public Guid OrderDetailId { get; set; }
+        public Guid OrderId { get; set; }
         public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }

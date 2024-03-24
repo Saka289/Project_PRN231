@@ -50,6 +50,15 @@ namespace WebApp.Service
             });
         }
 
+        public async Task<ResponseDto?> SearchProductAsync(string searchValue)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/Search/"+searchValue
+            });
+        }
+
         public async Task<ResponseDto?> GetProductByIdAsync(int id)
         {
             return await _baseService.SendAsync(new RequestDto
@@ -68,6 +77,24 @@ namespace WebApp.Service
                 Url = SD.BaseUrlGateWay + "/api/ProductAPI",
                 ContentType = SD.ContentType.MultipartFormData
 
+            });
+        }
+
+        public async Task<ResponseDto?> GetAllProductByCateAsync(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/GetListByCateId/"+id
+            });
+        }
+        public async Task<ResponseDto?> SearchProductInShopAsync(ProductSearchDto model)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.POST,
+                Data = model,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/SearchInShopPage"
             });
         }
     }

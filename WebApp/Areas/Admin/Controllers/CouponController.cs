@@ -54,7 +54,7 @@ namespace WebApp.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 //Update
-                ResponseDto? response = await _couponService.UpdateCounpon(model);
+                ResponseDto? response = await _couponService.UpdateCoupon(model);
                 if (response != null && response.IsSuccess)
                 {
                     TempData["success"] = "Update inventory successfully";

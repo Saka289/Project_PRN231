@@ -69,7 +69,7 @@ namespace Web.Services.ProductAPI.Service
                     string fileName = objInDb.Image.Substring(objInDb.Image.LastIndexOf('/') + 1);
                     // xóa ảnh ở cloudfare
                     FileUploadFunction f = new FileUploadFunction();
-                    await f.DeleteFileAsync("productimagetable", fileName);
+                    await f.DeleteFileAsync("productimages", fileName);
                     _repository.Remove(id);
                     _repository.Save();
                 }
@@ -115,7 +115,7 @@ namespace Web.Services.ProductAPI.Service
                         var objName = $"{Guid.NewGuid()}-{Path.GetFileNameWithoutExtension(file.FileName)}{fileExtension}";
                         var s3Obj = new S3Object
                         {
-                            BucketName = "productimagetable",
+                            BucketName = "productimages",
                             InputStream = memoryStr,
                             Name = objName,
                         };
@@ -128,11 +128,11 @@ namespace Web.Services.ProductAPI.Service
                         FileUploadFunction fuf = new FileUploadFunction();
                         var stringImage = await fuf.UploadImageAsync(s3Obj, cred);
                         //add product image
-                        ProductImage obj = new ProductImage();
-                        obj.ProductId = objInDb.Id;
-                        obj.IsDefault = false;
-                        obj.Image = Convert.ToString(stringImage);
-                        _repository.AddAsync(obj);
+                        ProductImageDto obj1 = new ProductImageDto();
+                        obj1.ProductId = objInDb.Id;
+                        obj1.IsDefault = false;
+                        obj1.Image = Convert.ToString(stringImage);
+                        _repository.AddAsync(obj1);
                         _repository.Save();
                     }
                     _response.Result = true;
@@ -147,7 +147,19 @@ namespace Web.Services.ProductAPI.Service
             return _response;
         }
 
-
-       
+        public async Task<ResponseDto> GetProductImageById(int id)
+        {
+            try
+            {
+                ProductImage obj = _repository.GetByIdAsyns(id);
+                _response.Result = _mapper.Map<ProductImageDto>(obj);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
     }
 }

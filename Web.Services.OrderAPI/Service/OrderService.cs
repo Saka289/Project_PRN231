@@ -37,7 +37,7 @@ namespace Web.Services.OrderAPI.Service
         {
             try
             {
-                var productList = cartDto.CartOrderDetails.Select(p => new ProductRequestDto
+                var productList = cartDto.CartDetails.Select(p => new ProductRequestDto
                 {
                     ProductId = p.ProductId,
                     Quantity = p.Quantity,
@@ -53,13 +53,13 @@ namespace Web.Services.OrderAPI.Service
                     return _response;
                 }
 
-                OrderDto orderDto = _mapper.Map<OrderDto>(cartDto.CartOrder);
+                OrderDto orderDto = _mapper.Map<OrderDto>(cartDto.CartHeader);
                 orderDto.OrderId = Guid.Empty;
                 orderDto.OrderDate = DateTime.Now;
                 orderDto.ShippedDate = DateTime.Now.AddDays(5);
                 orderDto.RequiredDate = DateTime.Now.AddDays(7);
                 orderDto.PaymentStatus = PaymentStatus.NOT_STARTED.ToString();
-                orderDto.OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(cartDto.CartOrderDetails).Select(orderDetails =>
+                orderDto.OrderDetails = _mapper.Map<IEnumerable<OrderDetailDto>>(cartDto.CartDetails).Select(orderDetails =>
                 {
                     orderDetails.OrderDetailId = Guid.Empty;
                     return orderDetails;

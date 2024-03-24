@@ -5,6 +5,7 @@ using Web.Services.PaymentAPI.Service.IService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Immutable;
+using System.Net;
 
 
 namespace Web.Services.PaymentAPI.Controllers
@@ -42,16 +43,21 @@ namespace Web.Services.PaymentAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(PaymentDto paymentDTO)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public IActionResult UpsertPayment([FromBody] PaymentDto paymentDto)
         {
-            _paymentService.Update(paymentDTO);
-            return Ok();
+            var result = _paymentService.UpsertPayment(paymentDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
         }
 
         [HttpPost("hanlePaymentWehook")]
         public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
-            
+
             var payemtn = await _paymentService.PaymentCasso(paymentCasso.data);
             if (payemtn.Any())
             {

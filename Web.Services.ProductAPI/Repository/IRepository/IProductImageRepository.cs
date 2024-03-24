@@ -1,5 +1,6 @@
 ﻿using System;
 using Web.Services.ProductAPI.Models;
+using Web.Services.ProductAPI.Models.Dto;
 
 namespace Web.Services.ProductAPI.Repository.IRepository
 {
@@ -7,7 +8,7 @@ namespace Web.Services.ProductAPI.Repository.IRepository
     {
         Task<IEnumerable<ProductImage>> GetAllByProductIdAsyns(int idProduct);
         ProductImage GetByIdAsyns(int id);
-        void AddAsync(ProductImage p);
+        void AddAsync(ProductImageDto p);
         void Remove(int pId);
         void ChangeDefaultImageAsync(int id);
         void Save();

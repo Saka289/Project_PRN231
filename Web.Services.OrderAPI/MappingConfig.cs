@@ -10,8 +10,8 @@ namespace Web.Services.OrderAPI
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<CartOrderDto, OrderDto>().ReverseMap();
-                config.CreateMap<CartOrderDetailDto, OrderDetailDto>().ReverseMap();
+                config.CreateMap<OrderDto, CartHeaderDto>().ForMember(dest => dest.CartTotal, u => u.MapFrom(src => src.OrderTotal)).ReverseMap();
+                config.CreateMap<CartDetailsDto, OrderDetailDto>().ReverseMap();
                 config.CreateMap<OrderDto, Order>().ReverseMap();
                 config.CreateMap<OrderDetailDto, OrderDetail>().ReverseMap();
             });

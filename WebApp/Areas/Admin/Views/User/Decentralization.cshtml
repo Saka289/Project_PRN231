@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WebApp.Models.Dtos.MemberDto>;
+@{
+    ViewData["Title"] = "Decentralization";
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="text-primary">Manager Decentralization</h5>
+        <a asp-action="Create" class="btn btn-sm btn-success"> <i class="bi bi-plus-square-fill"></i> Create</a>
+    </div>
+
+    <div class="card-body">
+        <table id="DT_load" class="table table-bordered table-striped table-hover" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>FullName</th>
+                    <th>PhoneNumber</th>
+                    <th>EmailConfirmed</th>
+                    <th>Role</th>
+                    <th>AssignRole</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="color:seagreen">@item.UserName</td>
+                        <td>@item.FirstName @item.LastName</td>
+                        <td>@item.PhoneNumber</td>
+                        @if (item.EmailConfirmed)
+                        {
+                            <td>Active</td>
+                        }
+                        else
+                        {
+                            <td>Unactive</td>
+                        }
+                        <td>@item.Roles.FirstOrDefault()</td>
+                        <td>
+                            <select asp-items="@ViewBag.Roles" class="form-control roleSelect">
+                                <option selected disabled>-- Select Role --</option>
+                            </select>
+                        </td>
+                        <td style="text-align:center">
+                            <button id="btnUpdate" data-userid="@item.Id" class="btn btn-sm btn-info">Update</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).on('click', '#btnUpdate', function () {
+            var userId = $(this).data("userid");
+            var role = $(this).closest('tr').find('.roleSelect').val();
+            var updateRoleDto = {
+                id: userId,
+                roleName: role,
+            };
+            if (role != null) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/Admin/User/Decentralization`,
+                            type: "POST",
+                            dataType: "json",
+                            data: JSON.stringify(updateRoleDto),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            success: function (data) {
+                                if (data.success) {
+                                    toastr.success(data.message);
+                                    setTimeout(function () {
+                                        window.location.href = "/Admin/User/Decentralization";
+                                    }, 1000);
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function () {
+                                alert("An error occurred while processing your request.");
+                            }
+                        });
+                    }
+                });
+            } else {
+                toastr.warning("Role is required!");
+            }
+        });
+    </script>
+}

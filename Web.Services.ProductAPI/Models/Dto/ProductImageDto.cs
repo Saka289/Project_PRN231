@@ -10,5 +10,6 @@ namespace Web.Services.ProductAPI.Models.Dto
         public string? Image { get; set; }
         public bool IsDefault { get; set; }
         public int? ProductId { get; set; }
+
     }
 }

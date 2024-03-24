@@ -30,9 +30,22 @@ namespace Web.Services.ShoppingCartAPI.Service
                 if (!string.IsNullOrEmpty(json))
                 {
                     // Deserialize the JSON back to the object
-                    var cart =  JsonConvert.DeserializeObject<CartDto>(json);
+                    var cart = JsonConvert.DeserializeObject<CartDto>(json);
                     cart.CartHeader.CouponCode = cartDto.CartHeader.CouponCode;
-                    cart.CartHeader.Discount = cartDto.CartHeader.Discount;
+                    if (cart.CartHeader.CouponCode == null)
+                    {
+                        decimal total = 0;
+                        foreach (var item in cart.CartDetails)
+                        {
+                            total += item.UnitPrice * item.Quantity;
+                        }
+                        cart.CartHeader.CartTotal = total;
+                    }
+                    else
+                    {
+                        cart.CartHeader.Discount = cartDto.CartHeader.Discount;
+                        cart.CartHeader.CartTotal -= cartDto.CartHeader.Discount / 100 * cart.CartHeader.CartTotal;
+                    }
                     db.StringSet(cartDto.CartHeader.UserId + "-shopping-cart", JsonConvert.SerializeObject(cart));
                     _response.IsSuccess = true;
                     _response.Message = "Shopping Cart is existed";
@@ -93,7 +106,7 @@ namespace Web.Services.ShoppingCartAPI.Service
             {
                 IDatabase db = redis.GetDatabase();
 
-                if(cartDto.CartDetails == null) 
+                if (cartDto.CartDetails == null)
                 {
                     throw new Exception("Cart is must not null");
                 }
@@ -104,11 +117,12 @@ namespace Web.Services.ShoppingCartAPI.Service
                 }
                 cartDto.CartHeader.CartTotal = total;
 
-                total -= cartDto.CartHeader.Discount/100 * total; 
+                total -= cartDto.CartHeader.Discount / 100 * total;
 
                 string json = JsonConvert.SerializeObject(cartDto);
 
                 db.StringSet(cartDto.CartHeader.UserId + "-shopping-cart", json);
+                _response.Result = json;
                 _response.IsSuccess = true;
             }
             catch (Exception ex)

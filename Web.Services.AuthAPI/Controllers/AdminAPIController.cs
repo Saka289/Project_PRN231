@@ -38,6 +38,18 @@ namespace Web.Services.AuthAPI.Controllers
             return NotFound();
         }
 
+        [HttpPost("UpdateRoleMember")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdateRoleMember([FromBody] UpdateRoleDto updateRoleDto)
+        {
+            var result = await _adminService.UpdateRoleMemeber(updateRoleDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
+        }
+
         [HttpGet("GetMemberByUserID/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetMemberByUserID([Required] string userId)
@@ -66,7 +78,7 @@ namespace Web.Services.AuthAPI.Controllers
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddEditMember([FromBody] MemberAddEditDto model)
         {
-            if (await CheckEmailExistsAsync(model.Email))
+            if (await CheckEmailExistsAsync(model.Email, model.UserId))
             {
                 _response.IsSuccess = false;
                 _response.Message = $"An existing account is using {model.Email}, email addres. Please try with another email address";
@@ -82,7 +94,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost("LockMember")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> LockMember([Required] string userId)
+        public async Task<IActionResult> LockMember([FromBody] string userId)
         {
             var result = await _adminService.LockMember(userId);
             if (result != null)
@@ -94,7 +106,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost("UnlockMember")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UnlockMember([Required] string userId)
+        public async Task<IActionResult> UnlockMember([FromBody] string userId)
         {
             var result = await _adminService.UnlockMember(userId);
             if (result != null)
@@ -104,7 +116,7 @@ namespace Web.Services.AuthAPI.Controllers
             return NotFound();
         }
 
-        [HttpDelete("DeleteMember")]
+        [HttpDelete("DeleteMember/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteMember([Required] string userId)
         {
@@ -128,9 +140,9 @@ namespace Web.Services.AuthAPI.Controllers
             return NotFound();
         }
 
-        private async Task<bool> CheckEmailExistsAsync(string email)
+        private async Task<bool> CheckEmailExistsAsync(string email, string userId)
         {
-            return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.Email.Equals(email) && x.Id != userId);
         }
     }
 }
