@@ -1,4 +1,5 @@
-﻿using Shared.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos;
 using Shared.Enums;
 using Web.Services.InventoryAPI.Models.Dto;
 using WebApp.Models.Dtos;
@@ -50,6 +51,17 @@ namespace WebApp.Service
                 ApiType = SD.ApiType.PUT,
                 Data = stock,
                 Url = SD.BaseUrlGateWay + "/api/InventoryAPI"
+            });
+        }
+
+        public async Task<ResponseDto?> ImportCsvFile(ImportInvens model)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.POST,
+                Data = model,
+                Url = SD.BaseUrlGateWay + "/api/InventoryAPI/ImportCsv",
+                ContentType = SD.ContentType.MultipartFormData
             });
         }
     }

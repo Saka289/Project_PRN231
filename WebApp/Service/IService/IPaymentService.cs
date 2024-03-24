@@ -7,5 +7,6 @@ namespace WebApp.Service.IService
     {
         Task<ResponseDto?> GetPaymentById(string id);
         Task<ResponseDto?> UpsertPayment(PaymentDto paymentDto);
+        Task<ResponseDto?> GetPayments();
     }
 }

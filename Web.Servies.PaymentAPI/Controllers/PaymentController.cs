@@ -70,5 +70,21 @@ namespace Web.Services.PaymentAPI.Controllers
             _response.Message = "Payment is not hanlde";
             return Ok(_response);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPayments()
+        {
+            var payemnts = await _paymentService.GetPayments();
+            if(payemnts.Any())
+            {
+                _response.Result = payemnts;
+                _response.IsSuccess = true;
+                _response.Message = "List Payment";
+                return Ok(_response);
+            }
+            _response.IsSuccess = false;
+            _response.Message = "Not have any Payment";
+            return Ok(_response);
+        }
     }
 }

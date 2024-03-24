@@ -543,7 +543,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Payment",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Get" ]
     },
     //inventory
     {
@@ -666,6 +666,18 @@
       ],
       "UpstreamPathTemplate": "/api/OrderAPI/GenerateQR/{orderId}/{amount}",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/InventoryAPI/ImportCsv",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6004
+        }
+      ],
+      "UpstreamPathTemplate": "/api/InventoryAPI/ImportCsv",
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {

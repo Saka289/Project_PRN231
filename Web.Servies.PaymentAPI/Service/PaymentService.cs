@@ -132,5 +132,15 @@ namespace Web.Services.PaymentAPI.Service
             return paymentDTOs;
         }
 
+        public async Task<List<PaymentDto>> GetPayments()
+        {
+            return _paymentRepository.FindAll().Select(ite => new PaymentDto
+            {
+                id=ite.id,
+                orderId=ite.orderId,
+                paymentStatus=ite.paymentStatus,
+                refund=ite.refund,
+            }).ToList();
+        }
     }
 }

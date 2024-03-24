@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Dtos;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using WebApp.Models.Dtos;
 using WebApp.Service.IService;
 
@@ -68,6 +70,31 @@ namespace WebApp.Areas.Admin.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ImportInvens model)
+        {
+            if (ModelState.IsValid)
+            {
+                //Update
+                ResponseDto? response = await _inventoryService.ImportCsvFile(model);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Import inventory successfully";
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
 
 
     }

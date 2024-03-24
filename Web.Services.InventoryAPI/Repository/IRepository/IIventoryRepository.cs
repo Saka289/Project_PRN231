@@ -8,5 +8,6 @@ namespace Web.Services.InventoryAPI.Repository.IRepository
         public List<Inventory> GetAll();
         public Inventory GetInventoryById(int id);
         public int Update(Inventory inventory);
+        public Task<int> Import(List<Inventory> inventories);
     }
 }
