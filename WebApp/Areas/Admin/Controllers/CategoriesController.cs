@@ -29,7 +29,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 TempData["error"] = response?.Message;
             }
-            return View(list);
+            return View(list.Where(x => x.Status == "Active").ToList());
         }
 
         public async Task<IActionResult> Update(int id)

@@ -83,7 +83,7 @@ namespace Web.Services.ProductAPI.Repository
 
         public async Task<IEnumerable<Product>> SearchInShopPageAsyns(ProductSearchDto searchModel)
         {
-            var query = _appDbContext.Products.Include(x=>x.Category).AsQueryable();
+            var query = _appDbContext.Products.Include(x=>x.Category).Where(x=>x.Status== "Active").AsQueryable();
             if(searchModel != null)
             {
                 if (!string.IsNullOrEmpty(searchModel.Title))

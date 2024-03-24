@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Reflection;
 using System.Security.Cryptography;
 using WebApp.Models.Dtos;
@@ -21,7 +22,7 @@ namespace WebApp.Areas.Admin.Controllers
             _categoryService = categoryService;
             _productImageService = productImageService;
         }
-        public async Task<IActionResult> IndexAsync(string searchString)
+        public async Task<IActionResult> Index(string searchString)
         {
             List<ProductDto> list = new List<ProductDto>();
             if (!string.IsNullOrEmpty(searchString))
@@ -49,7 +50,7 @@ namespace WebApp.Areas.Admin.Controllers
                     TempData["error"] = response?.Message;
                 }
             }
-            return View(list);
+            return View(list.Where(x=>x.Status== "Active").ToList());
         }
         public async Task<IActionResult> Create()
         {
@@ -60,7 +61,7 @@ namespace WebApp.Areas.Admin.Controllers
             if (response != null && response.IsSuccess)
             {
                 listC = JsonConvert.DeserializeObject<List<CategoryDto>>(Convert.ToString(response.Result));
-                Categories = listC.Select(x => new SelectListItem
+                Categories = listC.Where(x=>x.Status=="Active").Select(x => new SelectListItem
                 {
                     Text = x.Name.ToString(),
                     Value = x.Id.ToString()
@@ -122,7 +123,7 @@ namespace WebApp.Areas.Admin.Controllers
                 if (response2 != null && response2.IsSuccess)
                 {
                     var listC = JsonConvert.DeserializeObject<List<CategoryDto>>(Convert.ToString(response2.Result));
-                    Categories = listC.Select(x => new SelectListItem
+                    Categories = listC.Where(x=>x.Status=="Active").Select(x => new SelectListItem
                     {
                         Text = x.Name.ToString(),
                         Value = x.Id.ToString()
@@ -157,7 +158,7 @@ namespace WebApp.Areas.Admin.Controllers
             if (response2 != null && response2.IsSuccess)
             {
                 var listC = JsonConvert.DeserializeObject<List<CategoryDto>>(Convert.ToString(response2.Result));
-                Categories = listC.Select(x => new SelectListItem
+                Categories = listC.Where(x=>x.Status=="Active").Select(x => new SelectListItem
                 {
                     Text = x.Name.ToString(),
                     Value = x.Id.ToString()
