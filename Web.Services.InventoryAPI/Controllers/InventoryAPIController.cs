@@ -114,6 +114,14 @@ namespace Web.Services.InventoryAPI.Controllers
             }
             return Ok(responseDto);
         }
+
+        [HttpPut("UpdateInventory")]
+        public IActionResult UpdateInven(UpdateInvensRequest request)
+        {
+            _inventoryService.UpdateInventory(request.products, request.status);
+            return Ok(responseDto);
+        }
+
     }
         
 }
