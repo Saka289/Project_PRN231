@@ -106,7 +106,19 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 totalRevenue += item.OrderTotal;
             }
+            // get best seller  
+            List<ProductDto> listPSeller = new List<ProductDto>();
+            ResponseDto? response234 = await _productService.GetProductBestSellerAsync();
+            if (response234 != null && response234.IsSuccess)
+            {
+                listPSeller = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response234.Result));
+            }
+            else
+            {
+                TempData["error"] = response234?.Message;
+            }
 
+            ViewBag.ListBestSeller = listPSeller;
             ViewBag.RevenueByCategory = revenueByCategory;
             ViewBag.cntProductActive = cntProductActive;
             ViewBag.cntUserActive = cntUserActive;
