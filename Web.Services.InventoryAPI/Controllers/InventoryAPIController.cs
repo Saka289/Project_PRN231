@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
+using System.Data;
 using Web.Services.InventoryAPI.Models.Dto;
 using Web.Services.InventoryAPI.Service.IService;
 
@@ -12,11 +14,13 @@ namespace Web.Services.InventoryAPI.Controllers
     {
         private readonly IInventoryService _inventoryService;
         private ResponseDto responseDto;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public InventoryAPIController(IInventoryService inventoryService)
+        public InventoryAPIController(IInventoryService inventoryService, IWebHostEnvironment webHostEnvironment)
         {
             _inventoryService = inventoryService;
             responseDto = new ResponseDto();
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]
@@ -61,7 +65,7 @@ namespace Web.Services.InventoryAPI.Controllers
         {
             var inven = _inventoryService.GetInventoryById(id);
 
-            if(inven == null)
+            if (inven == null)
             {
                 responseDto.IsSuccess = false;
                 responseDto.Message = "Not stock is existed";
@@ -80,7 +84,7 @@ namespace Web.Services.InventoryAPI.Controllers
         {
             int update = _inventoryService.Update(stock);
 
-            if(update == 0)
+            if (update == 0)
             {
                 responseDto.IsSuccess = false;
                 responseDto.Message = "Update failes";
@@ -91,5 +95,25 @@ namespace Web.Services.InventoryAPI.Controllers
             responseDto.Message = "Update Successfully";
             return Ok(responseDto);
         }
+
+        [HttpPost("ImportCsv")]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult> ImportCsv([FromForm] IFormFile formFile)
+        {
+            var item =  await _inventoryService.Upload(formFile);
+            if(item > 0)
+            {
+                responseDto.IsSuccess = true;
+                responseDto.Result = item;
+                responseDto.Message = "Import success " + item + " Record";
+            } else
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Result = item;
+                responseDto.Message = "No Item to Import ";
+            }
+            return Ok(responseDto);
+        }
     }
+        
 }

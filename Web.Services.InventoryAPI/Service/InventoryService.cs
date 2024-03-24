@@ -1,20 +1,30 @@
-﻿using Web.Services.InventoryAPI.Models;
+﻿using System.Data;
+using Web.Services.InventoryAPI.Models;
 using Web.Services.InventoryAPI.Models.Dto;
 using Web.Services.InventoryAPI.Repository.IRepository;
 using Web.Services.InventoryAPI.Service.IService;
 using Web.Services.OrderAPI.Service.IService;
+using System.Data.OleDb;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using FileUpload;
+
 
 namespace Web.Services.InventoryAPI.Service
 {
     public class InventoryService : IInventoryService
     {
+        public readonly IConfiguration _configuration;
         private readonly IIventoryRepository _repository;
         public readonly IProductService _productService;
+        public readonly IWebHostEnvironment _webHostEnvironment;
 
-        public InventoryService(IIventoryRepository repository, IProductService productService)
+        public InventoryService(IIventoryRepository repository, IProductService productService, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _repository = repository;
             _productService = productService;
+            _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         public List<StockDto> getStock()
@@ -121,5 +131,58 @@ namespace Web.Services.InventoryAPI.Service
             }
             return 0;
         }
+
+
+        public async Task<int> Upload(IFormFile file)
+        {
+            try
+            {
+                var filePath = SaveFile(file);
+
+                // load product requests from excel file
+                var inventoriedto = ExcelHelper.Import<InventoryImport>(filePath);
+
+                List<Inventory> inventories = inventoriedto.Where(item => item.ProductId != 0).Select(item => new Inventory
+                {
+                    ProductId = item.ProductId,
+                    StockQuantity = item.StockQuantity,
+                }).ToList();
+
+                return await _repository.Import(inventories);
+            } catch 
+            {
+                throw new Exception("Data Invalid type");
+            }
+        }
+
+        private string SaveFile(IFormFile file)
+        {
+            if (file.Length == 0)
+            {
+                throw new BadHttpRequestException("File is empty.");
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+
+            var webRootPath = _webHostEnvironment.WebRootPath;
+            if (string.IsNullOrWhiteSpace(webRootPath))
+            {
+                webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            }
+
+            var folderPath = Path.Combine(webRootPath, "uploads");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var fileName = $"{Guid.NewGuid()}.{extension}";
+            var filePath = Path.Combine(folderPath, fileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            file.CopyTo(stream);
+
+            return filePath;
+        }
     }
+
 }

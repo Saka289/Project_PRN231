@@ -27,6 +27,12 @@ namespace Web.Services.InventoryAPI.Repository
             return _context.Inventories.FirstOrDefault(x => x.Id == id);
         }
 
+        public async Task<int> Import(List<Inventory> inventories)
+        {
+           await _context.Inventories.AddRangeAsync(inventories);
+            return _context.SaveChanges();
+        }
+
         public int Update(Inventory inventory)
         {
             _context.Inventories.Update(inventory);

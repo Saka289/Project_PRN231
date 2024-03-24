@@ -88,6 +88,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 //ApplyMigration();
+app.UseStaticFiles();
 
 app.Run();
 
