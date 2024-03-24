@@ -90,5 +90,16 @@ namespace Web.Services.OrderAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("GetBessSeler")]
+        public async Task<IActionResult> GetBestSaler()
+        {
+            var result = await _orderService.GetBestSeller();
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

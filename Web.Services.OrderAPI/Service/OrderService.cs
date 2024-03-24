@@ -15,6 +15,7 @@ namespace Web.Services.OrderAPI.Service
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly IInventoryService _inventoryService;
@@ -22,7 +23,7 @@ namespace Web.Services.OrderAPI.Service
         protected ResponseDto _response;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService, IVietQrService vietQrService)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService, IVietQrService vietQrService, IOrderDetailRepository orderDetailRepository)
         {
             _orderRepository = orderRepository;
             _productService = productService;
@@ -31,6 +32,7 @@ namespace Web.Services.OrderAPI.Service
             _vietQrService = vietQrService;
             _response = new ResponseDto();
             _mapper = mapper;
+            _orderDetailRepository = orderDetailRepository;
         }
 
         public async Task<ResponseDto> CreateOrder(CartDto cartDto)
@@ -187,6 +189,29 @@ namespace Web.Services.OrderAPI.Service
                 }
                 _response.Message = result.Desc;
                 _response.Result = result.Data.QrDataUrl;
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetBestSeller()
+        {
+            try
+            {
+                var result = await _orderDetailRepository.GetOrderDetailRepositoryAsync();
+                if (result.Any())
+                {
+                    _response.Result = result;
+                    _response.Message = "true";
+                    _response.IsSuccess = true;
+                    return _response;
+                }
+                _response.Message = "Not Have";
+                _response.IsSuccess = false;
             }
             catch (Exception ex)
             {

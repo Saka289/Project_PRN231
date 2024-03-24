@@ -136,7 +136,17 @@ namespace Web.Services.ProductAPI.Controllers
             return NotFound();
         }
 
-
+        [HttpGet("GetBestSeller")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetBestSaler()
+        {
+            var rs = await _productService.GetBestSeller();
+            if (rs != null)
+            {
+                return Ok(rs);
+            }
+            return NotFound();
+        }
 
     }
 }

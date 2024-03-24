@@ -14,5 +14,6 @@ namespace Web.Services.ProductAPI.Service.IService
         Task<ResponseDto> Update(ProductDtoForCreateAndUpdate model);
         ResponseDto Delete(int pId);
         ResponseDto DeleteSoft(int pId);
+        Task<ResponseDto> GetBestSeller();
     }
 }

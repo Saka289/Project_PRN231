@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace Web.Services.ProductAPI.Models.Dto
 {
     public class CategoryDto

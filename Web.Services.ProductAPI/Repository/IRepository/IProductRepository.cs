@@ -16,6 +16,5 @@ namespace Web.Services.ProductAPI.Repository.IRepository
 
         Task<IEnumerable<Product>> SearchAsyns(string searchValue);
         Task<IEnumerable<Product>> SearchInShopPageAsyns(ProductSearchDto searchModel);
-
     }
 }
