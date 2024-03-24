@@ -100,6 +100,19 @@
       "UpstreamPathTemplate": "/api/ProductAPI",
       "UpstreamHttpMethod": [ "Get" ]
     },
+    //get list by cid
+    {
+      "DownstreamPathTemplate": "/api/ProductAPI/GetListByCateId/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6007
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductAPI/GetListByCateId/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
     //search
     {
       "DownstreamPathTemplate": "/api/ProductAPI/Search/{searchValue}",
@@ -112,6 +125,19 @@
       ],
       "UpstreamPathTemplate": "/api/ProductAPI/Search/{searchValue}",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    //search in shoppage
+    {
+      "DownstreamPathTemplate": "/api/ProductAPI/SearchInShopPage",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6007
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductAPI/SearchInShopPage",
+      "UpstreamHttpMethod": [ "Post" ]
     },
     //get by id
     {

@@ -42,6 +42,31 @@ namespace Web.Services.ProductAPI.Controllers
             }
             return NotFound();
         }
+        [HttpGet("GetListByCateId/{id}")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+
+        public async Task<IActionResult> GetListByCateId(int id)
+        {
+            var result = await _productService.GetAllProductByCateAsync(id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
+
+        [HttpPost("SearchInShopPage")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+
+        public async Task<IActionResult> SearchInShopPage(ProductSearchDto model)
+        {
+            var result = await _productService.SearchProductInShopPage(model);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
 
         [HttpGet]
         [Route("{id:int}")]

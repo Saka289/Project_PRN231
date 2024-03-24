@@ -51,7 +51,7 @@ namespace Web.Services.ProductAPI.Controllers
         public async Task<IActionResult> AddAsync([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
         {
 
-            var rs = _categoryService.Add(categoryDto);
+            var rs = await _categoryService.Add(categoryDto);
 
 
             if (rs != null)
@@ -75,9 +75,9 @@ namespace Web.Services.ProductAPI.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-        public IActionResult Update([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
+        public async Task<IActionResult> Update([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
         {
-            var result = _categoryService.Update(categoryDto);
+            var result = await _categoryService.Update(categoryDto);
 
             if (result != null)
             {
