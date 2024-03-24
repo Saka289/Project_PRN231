@@ -97,5 +97,14 @@ namespace WebApp.Service
                 Url = SD.BaseUrlGateWay + "/api/ProductAPI/SearchInShopPage"
             });
         }
+
+        public async Task<ResponseDto?> GetProductBestSellerAsync()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BaseUrlGateWay + "/api/ProductAPI/GetBestSeller"
+            });
+        }
     }
 }
