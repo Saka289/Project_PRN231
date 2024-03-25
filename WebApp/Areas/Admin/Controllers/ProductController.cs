@@ -50,7 +50,7 @@ namespace WebApp.Areas.Admin.Controllers
                     TempData["error"] = response?.Message;
                 }
             }
-            return View(list.Where(x=>x.Status== "Active").ToList());
+            return View(list.Where(x=>x.Status== "Active").OrderByDescending(x=>x.Id).ToList());
         }
         public async Task<IActionResult> Create()
         {
