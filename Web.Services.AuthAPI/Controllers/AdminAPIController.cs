@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
+using Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Web.Services.AuthAPI.Models;
@@ -12,6 +14,7 @@ using Web.Services.AuthAPI.Service.IService;
 namespace Web.Services.AuthAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class AdminAPIController : ControllerBase
     {
@@ -40,6 +43,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost("UpdateRoleMember")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> UpdateRoleMember([FromBody] UpdateRoleDto updateRoleDto)
         {
             var result = await _adminService.UpdateRoleMemeber(updateRoleDto);
@@ -76,6 +80,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> AddEditMember([FromBody] MemberAddEditDto model)
         {
             if (await CheckEmailExistsAsync(model.Email, model.UserId))
@@ -94,6 +99,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost("LockMember")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> LockMember([FromBody] string userId)
         {
             var result = await _adminService.LockMember(userId);
@@ -106,6 +112,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpPost("UnlockMember")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> UnlockMember([FromBody] string userId)
         {
             var result = await _adminService.UnlockMember(userId);
@@ -118,6 +125,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpDelete("DeleteMember/{userId}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> DeleteMember([Required] string userId)
         {
             var result = await _adminService.DeleteMember(userId);
@@ -130,6 +138,7 @@ namespace Web.Services.AuthAPI.Controllers
 
         [HttpGet("GetRoles")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<IActionResult> GetRoles()
         {
             var result = await _adminService.GetApplicationRoles();

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Data;
 using Web.Services.InventoryAPI.Models.Dto;
 using Web.Services.InventoryAPI.Service.IService;
@@ -9,6 +11,7 @@ using Web.Services.InventoryAPI.Service.IService;
 namespace Web.Services.InventoryAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class InventoryAPIController : ControllerBase
     {
@@ -97,6 +100,7 @@ namespace Web.Services.InventoryAPI.Controllers
         }
 
         [HttpPost("ImportCsv")]
+        [Authorize(Roles = SD.RoleAdmin)]
         public async Task<ActionResult> ImportCsv([FromForm] ImportInvens importInvens)
         {
             var item =  await _inventoryService.Upload(importInvens.File);

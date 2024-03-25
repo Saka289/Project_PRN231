@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Net;
 using WebApp.Models.Dtos;
 using WebApp.Service.IService;
@@ -8,6 +10,7 @@ using WebApp.Service.IService;
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.RoleAdmin)]
     public class HomeAdminController : Controller
     {
         private readonly IProductService _productService;
@@ -169,8 +172,8 @@ namespace WebApp.Areas.Admin.Controllers
                         }
                     }
                     var labels = revenueByCategory.Keys.ToList();
-                    var data = revenueByCategory.Values.ToList();   
-                    
+                    var data = revenueByCategory.Values.ToList();
+
                     return Json(new
                     {
                         success = true,

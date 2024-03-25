@@ -1,8 +1,10 @@
 ﻿using FileUpload;
 using FileUpload.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Net;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Service.IService;
@@ -10,6 +12,7 @@ using Web.Services.ProductAPI.Service.IService;
 namespace Web.Services.ProductAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CategoryAPIController : ControllerBase
     {
@@ -19,9 +22,10 @@ namespace Web.Services.ProductAPI.Controllers
         {
             _categoryService = categoryService;
         }
+
         [HttpGet]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
             {
             var result = await _categoryService.GetAllCategories();
@@ -34,6 +38,7 @@ namespace Web.Services.ProductAPI.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult GetById (int id)
         {
@@ -46,8 +51,8 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPost]
-        //[ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-
+        [Authorize(Roles = SD.RoleAdmin)]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddAsync([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
         {
 
@@ -62,6 +67,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = SD.RoleAdmin)]
         [Route("{id:int}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteById(int id) {
@@ -74,6 +80,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromForm] CategoryDtoForCreateAndUpdate categoryDto)
         {
@@ -89,6 +96,7 @@ namespace Web.Services.ProductAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteSoft/{id:int}")]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteSoftById(int id)
         {

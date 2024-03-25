@@ -6,11 +6,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Immutable;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Web.Services.PaymentAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PaymentController : ControllerBase
     {
@@ -55,6 +57,7 @@ namespace Web.Services.PaymentAPI.Controllers
         }
 
         [HttpPost("hanlePaymentWehook")]
+        [AllowAnonymous]
         public async Task<IActionResult> hanlePaymentWehook([FromBody] PaymentWebHook paymentCasso)
         {
 
@@ -75,7 +78,7 @@ namespace Web.Services.PaymentAPI.Controllers
         public async Task<IActionResult> GetPayments()
         {
             var payemnts = await _paymentService.GetPayments();
-            if(payemnts.Any())
+            if (payemnts.Any())
             {
                 _response.Result = payemnts;
                 _response.IsSuccess = true;

@@ -39,7 +39,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CategoryAPI",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
     //put
@@ -53,7 +56,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CategoryAPI",
-      "UpstreamHttpMethod": [ "Put" ]
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
     //delete
@@ -67,7 +73,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CategoryAPI/{id}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
 
@@ -82,7 +91,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CategoryAPI/DeleteSoft/{id}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
 
@@ -137,7 +149,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI/SearchInShopPage",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //get by id
     {
@@ -163,7 +178,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
     //put
@@ -177,7 +195,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI",
-      "UpstreamHttpMethod": [ "Put" ]
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
     //delete
@@ -191,7 +212,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI/{id}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
 
@@ -206,7 +230,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI/DeleteSoft/{id}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //Get best seller
     {
@@ -260,7 +287,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductImage",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //delete productimage
     {
@@ -273,7 +303,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductImage/{id}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
 
     //change default image
@@ -287,7 +320,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/ProductImage/{id}/{pid}",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //AdminAPI
     {
@@ -300,7 +336,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AdminAPI",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/AdminAPI/GetMemberByUserID/{userId}",
@@ -336,7 +375,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AdminAPI/LockMember",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/AdminAPI/UnlockMember",
@@ -348,7 +390,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AdminAPI/UnlockMember",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/AdminAPI/DeleteMember/{userId}",
@@ -360,7 +405,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AdminAPI/DeleteMember/{userId}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/AdminAPI/GetRoles",
@@ -384,7 +432,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/AdminAPI/UpdateRoleMember",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //AuthAPI
     {
@@ -495,7 +546,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CartAPI/GetCart/{userId}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/CartAPI/SaveCart",
@@ -507,7 +561,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CartAPI/SaveCart",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/CartAPI/RemoveCart/{userId}",
@@ -519,7 +576,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CartAPI/RemoveCart/{userId}",
-      "UpstreamHttpMethod": [ "Delete" ]
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/CartAPI/ApplyCoupon",
@@ -531,7 +591,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CartAPI/ApplyCoupon",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     // Payment
     {
@@ -556,7 +619,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Payment",
-      "UpstreamHttpMethod": [ "Post", "Get" ]
+      "UpstreamHttpMethod": [ "Post", "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     //inventory
     {
@@ -594,7 +660,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CouponAPI",
-      "UpstreamHttpMethod": [ "Get", "Put", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Put", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/CouponAPI/{id}",
@@ -606,7 +675,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/CouponAPI/{id}",
-      "UpstreamHttpMethod": [ "Get", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/CouponAPI/GetByCode/{code}",
@@ -631,7 +703,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/OrderAPI",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/OrderAPI/GetOrdersByUserId/{userId}",
@@ -643,7 +718,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/OrderAPI/GetOrdersByUserId/{userId}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/OrderAPI/UpdateStatus/{orderId}/{status}",
@@ -655,7 +733,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/OrderAPI/UpdateStatus/{orderId}/{status}",
-      "UpstreamHttpMethod": [ "Put" ]
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/OrderAPI/SearchOrder/{orderId}",
@@ -667,7 +748,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/OrderAPI/SearchOrder/{orderId}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/OrderAPI/GenerateQR/{orderId}/{amount}",
@@ -679,7 +763,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/OrderAPI/GenerateQR/{orderId}/{amount}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/InventoryAPI/ImportCsv",
@@ -691,7 +778,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/InventoryAPI/ImportCsv",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/InventoryAPI/UpdateInventory",

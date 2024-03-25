@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Net;
 using Web.Services.CouponAPI.Models.Dto;
 using Web.Services.CouponAPI.Service.IService;
@@ -8,6 +10,7 @@ using Web.Services.CouponAPI.Service.IService;
 namespace Web.Services.CouponAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CouponAPIController : ControllerBase
     {
@@ -56,6 +59,7 @@ namespace Web.Services.CouponAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult Post([FromBody] CouponDto couponDto)
         {
@@ -68,6 +72,7 @@ namespace Web.Services.CouponAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult Put([FromBody] CouponDto couponDto)
         {
@@ -80,6 +85,7 @@ namespace Web.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = SD.RoleAdmin)]
         [Route("{id:int}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int id)

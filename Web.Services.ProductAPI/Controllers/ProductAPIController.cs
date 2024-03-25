@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos;
+using Shared.Enums;
 using System.Net;
 using Web.Services.ProductAPI.Models.Dto;
 using Web.Services.ProductAPI.Service;
@@ -9,6 +11,7 @@ using Web.Services.ProductAPI.Service.IService;
 namespace Web.Services.ProductAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ProductAPIController : ControllerBase
     {
@@ -18,7 +21,9 @@ namespace Web.Services.ProductAPI.Controllers
         {
             _productService = productService;
         }
+
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> Get()
@@ -31,6 +36,7 @@ namespace Web.Services.ProductAPI.Controllers
             return NotFound();
         }
         [HttpGet("Search/{searchValue}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> Search(string searchValue)
@@ -42,7 +48,9 @@ namespace Web.Services.ProductAPI.Controllers
             }
             return NotFound();
         }
+
         [HttpGet("GetListByCateId/{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> GetListByCateId(int id)
@@ -56,6 +64,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPost("SearchInShopPage")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
 
         public async Task<IActionResult> SearchInShopPage(ProductSearchDto model)
@@ -70,6 +79,7 @@ namespace Web.Services.ProductAPI.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public IActionResult GetById(int id)
         {
@@ -82,8 +92,8 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
-
         public async Task<IActionResult> AddAsync([FromForm] ProductDtoForCreateAndUpdate productDto)
         {
 
@@ -97,6 +107,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = SD.RoleAdmin)]
         [Route("{id:int}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteById(int id)
@@ -110,6 +121,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = SD.RoleAdmin)]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromForm] ProductDtoForCreateAndUpdate productDto)
         {
@@ -124,6 +136,7 @@ namespace Web.Services.ProductAPI.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = SD.RoleAdmin)]
         [Route("DeleteSoft/{id:int}")]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteSoftById(int id)
@@ -137,6 +150,7 @@ namespace Web.Services.ProductAPI.Controllers
         }
 
         [HttpGet("GetBestSeller")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetBestSaler()
         {

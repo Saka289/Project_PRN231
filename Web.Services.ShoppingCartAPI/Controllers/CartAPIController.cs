@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using Web.Services.ShoppingCartAPI.Models.Dto;
 using Web.Services.ShoppingCartAPI.Service.IService;
@@ -7,6 +9,7 @@ using Web.Services.ShoppingCartAPI.Service.IService;
 namespace Web.Services.ShoppingCartAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CartAPIController : ControllerBase
     {

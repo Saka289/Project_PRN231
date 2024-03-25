@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos;
+using Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Web.Services.OrderAPI.Models.Dto;
@@ -9,6 +11,7 @@ using Web.Services.OrderAPI.Service.IService;
 namespace Web.Services.OrderAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class OrderAPIController : ControllerBase
     {
@@ -91,7 +94,8 @@ namespace Web.Services.OrderAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("GetBessSeler")]
+        [AllowAnonymous]
+        [HttpGet("GetBestSeller")]
         public async Task<IActionResult> GetBestSaler()
         {
             var result = await _orderService.GetBestSeller();

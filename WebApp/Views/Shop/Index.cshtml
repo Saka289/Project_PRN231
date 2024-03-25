@@ -208,7 +208,7 @@
                     }
                 },
                 error: function () {
-                    alert("An error occurred while processing your request.");
+                    window.location.href = "/Auth/Login";
                 }
             });
         });
@@ -428,15 +428,15 @@
             var html = ``;
             data.forEach(e => {
                 html += ` <div class="col-lg-4 col-sm-6">
-                             <div class="single_product_item">
-                                 <img src="${e.image}" alt="ProductImage">
-                                 <div class="single_product_text">
-                                     <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
-                                     <h3>${e.price} vnđ</h3>
-                                     <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
-                                 </div>
-                             </div>
-                          </div>`;    
+                                                     <div class="single_product_item">
+                                                         <img src="${e.image}" alt="ProductImage">
+                                                         <div class="single_product_text">
+                                                             <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
+                                                             <h3>${e.price} vnđ</h3>
+                                                             <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                                         </div>
+                                                     </div>
+                                                  </div>`;
             });
             $("#divProduct").append(html);
         }

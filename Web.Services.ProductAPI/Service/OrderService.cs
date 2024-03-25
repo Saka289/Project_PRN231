@@ -24,7 +24,7 @@ namespace Web.Services.OrderAPI.Service
                 var response = await _sendService.SendServiceAsync(new SendRequestDto()
                 {
                     ApiType = SD.ApiType.GET,
-                    Url = SD.OrderAPIBase + "/api/OrderAPI/GetBessSeler"
+                    Url = SD.OrderAPIBase + "/api/OrderAPI/GetBestSeller"
                 });
                 if (response.IsSuccess && response.Result != null)
                 {

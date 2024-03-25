@@ -3,6 +3,7 @@ using CallService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Shared.Enums;
 using Web.Services.OrderAPI;
 using Web.Services.OrderAPI.Data;
 using Web.Services.OrderAPI.Extensions;
@@ -23,11 +24,14 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddHttpClient("CallAPI").AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
+
+builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddHttpClient<ISendService, SendService>();
-builder.Services.AddHttpClient<IProductService, ProductService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<IInventoryService, InventoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<IVietQrService, VietQrService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();

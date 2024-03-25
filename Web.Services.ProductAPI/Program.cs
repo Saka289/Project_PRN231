@@ -11,6 +11,7 @@ using Web.Services.ProductAPI.Repository;
 using Web.Services.ProductAPI.Repository.IRepository;
 using Web.Services.ProductAPI.Service;
 using Web.Services.ProductAPI.Service.IService;
+using Web.Services.ProductAPI.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +23,14 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddHttpClient<ISendService, SendService>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
 
+builder.Services.AddHttpClient("CallAPI").AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
+
+builder.Services.AddHttpClient<ISendService, SendService>();
+builder.Services.AddHttpClient<IOrderService, OrderService>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
