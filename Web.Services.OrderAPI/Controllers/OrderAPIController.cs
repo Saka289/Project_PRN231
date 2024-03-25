@@ -71,6 +71,7 @@ namespace Web.Services.OrderAPI.Controllers
         }
 
         [HttpGet("SearchOrder/{orderId}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SearchOrder([Required] string orderId)
         {

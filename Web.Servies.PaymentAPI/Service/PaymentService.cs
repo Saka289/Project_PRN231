@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Shared.Dtos;
+using System.Text;
 using Web.Services.PaymentAPI.Models;
 using Web.Services.PaymentAPI.Models.Dto;
 using Web.Services.PaymentAPI.Repository.IRepository;
@@ -136,10 +139,10 @@ namespace Web.Services.PaymentAPI.Service
         {
             return _paymentRepository.FindAll().Select(ite => new PaymentDto
             {
-                id=ite.id,
-                orderId=ite.orderId,
-                paymentStatus=ite.paymentStatus,
-                refund=ite.refund,
+                id = ite.id,
+                orderId = ite.orderId,
+                paymentStatus = ite.paymentStatus,
+                refund = ite.refund,
             }).ToList();
         }
     }

@@ -182,7 +182,16 @@ namespace Web.Services.OrderAPI.Service
                     return _response;
                 }
                 var result = await _orderRepository.SearchOrder(orderId);
-                _response.Result = _mapper.Map<OrderDto>(result);
+                var orderDtos = _mapper.Map<OrderDto>(result);
+                foreach (var itemOrder in orderDtos.OrderDetails)
+                {
+                    var product = await _productService.GetProducts();
+                    if (product != null)
+                    {
+                        itemOrder.Product = product.FirstOrDefault(p => p.Id == itemOrder.ProductId);
+                    }
+                }
+                _response.Result = _mapper.Map<OrderDto>(orderDtos);
             }
             catch (Exception ex)
             {

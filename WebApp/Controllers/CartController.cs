@@ -12,7 +12,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    [Authorize] 
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;

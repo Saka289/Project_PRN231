@@ -23,11 +23,14 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddHttpClient("CallAPI").AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
+
+builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddHttpClient<IUserService, UserService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
-builder.Services.AddHttpClient<IOrderService, OrderService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient<IOrderService, OrderService>();
 builder.Services.AddHttpClient<ISendService, SendService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -73,19 +76,19 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-//app.UseSwagger();
-//app.UseSwaggerUI(options =>
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
 //{
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PAYMENT API");
-//    options.RoutePrefix = string.Empty;
-//});
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PAYMENT API");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseStaticFiles();
 
