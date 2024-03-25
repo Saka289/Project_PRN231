@@ -31,7 +31,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddHttpClient<ISendService, SendService>();
-builder.Services.AddHttpClient<IProductService, ProductService>();
+builder.Services.AddHttpClient<IProductService, ProductService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<IInventoryService, InventoryService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient<IVietQrService, VietQrService>().AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
@@ -81,20 +81,20 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 //// Configure the HTTP request pipeline.
-//app.UseSwagger();
-//app.UseSwaggerUI(options =>
+//if (app.Environment.IsDevelopment())
 //{
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
-//    options.RoutePrefix = string.Empty;
-//});
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 

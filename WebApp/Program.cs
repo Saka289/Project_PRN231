@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Shared.Enums;
-using WebApp.Service.IService;
 using WebApp.Service;
+using WebApp.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +35,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

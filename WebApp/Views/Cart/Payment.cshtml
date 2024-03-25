@@ -91,8 +91,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var remainingTime;
-            var t = localStorage.getItem('remainingTime');
-            if (localStorage.getItem('remainingTime') !== "null") {
+            if (JSON.parse(localStorage.getItem('remainingTime')) !== null) {
                 var value = JSON.parse(localStorage.getItem('remainingTime'));
                 var date = new Date(value);
                 var formattedTime = date.toLocaleTimeString('en-US', {
@@ -132,6 +131,7 @@
 
             if (remainingTime.getTime() <= 0) {
                 clearInterval(interval);
+                localStorage.removeItem('remainingTime');
             }
         };
 
