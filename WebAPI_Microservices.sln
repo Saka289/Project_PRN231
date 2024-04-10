@@ -11,33 +11,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{63FF032E-3E8F-4BAB-8EE3-E26C1A553D1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{69A61C82-0218-4A3D-BD12-E1DDB516988D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "FrontEnd\WebApp\WebApp.csproj", "{69A61C82-0218-4A3D-BD12-E1DDB516988D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.AuthAPI", "Web.Services.AuthAPI\Web.Services.AuthAPI.csproj", "{F09D11A6-37B7-4176-A996-D9B3CD9ACE4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.AuthAPI", "Services\Web.Services.AuthAPI\Web.Services.AuthAPI.csproj", "{F09D11A6-37B7-4176-A996-D9B3CD9ACE4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.ProductAPI", "Web.Services.ProductAPI\Web.Services.ProductAPI.csproj", "{9DEC8242-D4F0-41DA-A68C-4723BEF796FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.ProductAPI", "Services\Web.Services.ProductAPI\Web.Services.ProductAPI.csproj", "{9DEC8242-D4F0-41DA-A68C-4723BEF796FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.InventoryAPI", "Web.Services.InventoryAPI\Web.Services.InventoryAPI.csproj", "{0C24ED66-7AED-4D00-BF24-1F2C29F531E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.InventoryAPI", "Services\Web.Services.InventoryAPI\Web.Services.InventoryAPI.csproj", "{0C24ED66-7AED-4D00-BF24-1F2C29F531E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.OrderAPI", "Web.Services.OrderAPI\Web.Services.OrderAPI.csproj", "{1CB2002C-9C75-4CCC-B61D-CE86B88894AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.OrderAPI", "Services\Web.Services.OrderAPI\Web.Services.OrderAPI.csproj", "{1CB2002C-9C75-4CCC-B61D-CE86B88894AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.ShoppingCartAPI", "Web.Services.ShoppingCartAPI\Web.Services.ShoppingCartAPI.csproj", "{8B676DFD-0394-4A89-885A-32D132FF1A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.ShoppingCartAPI", "Services\Web.Services.ShoppingCartAPI\Web.Services.ShoppingCartAPI.csproj", "{8B676DFD-0394-4A89-885A-32D132FF1A1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.PaymentAPI", "Web.Servies.PaymentAPI\Web.Services.PaymentAPI.csproj", "{D08B8A0D-175C-4BC5-A49D-29E22B17DC33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.PaymentAPI", "Services\Web.Servies.PaymentAPI\Web.Services.PaymentAPI.csproj", "{D08B8A0D-175C-4BC5-A49D-29E22B17DC33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.EmailAPI", "Web.Services.EmailAPI\Web.Services.EmailAPI.csproj", "{69B6E322-3557-4378-9A10-BFBB3EED2D21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.EmailAPI", "Services\Web.Services.EmailAPI\Web.Services.EmailAPI.csproj", "{69B6E322-3557-4378-9A10-BFBB3EED2D21}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.GetwaySolution", "Web.GetwaySolution\Web.GetwaySolution.csproj", "{0087595E-3390-4A00-81F8-320C561664F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.GetwaySolution", "Gateway\Web.GetwaySolution\Web.GetwaySolution.csproj", "{0087595E-3390-4A00-81F8-320C561664F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.CouponAPI", "Web.Services.CouponAPI\Web.Services.CouponAPI.csproj", "{5B0A08B9-91BB-4898-A96F-FAC10771B38D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services.CouponAPI", "Services\Web.Services.CouponAPI\Web.Services.CouponAPI.csproj", "{5B0A08B9-91BB-4898-A96F-FAC10771B38D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{4753BA78-92D4-4083-A34A-EF5315C6C0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "BuildingBlocks\Shared\Shared.csproj", "{4753BA78-92D4-4083-A34A-EF5315C6C0DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "EventBus.Messages\EventBus.Messages.csproj", "{FD1CF892-BA9A-4DFB-A700-02CDAB8FF694}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj", "{FD1CF892-BA9A-4DFB-A700-02CDAB8FF694}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileUpload", "FileUpload\FileUpload.csproj", "{C177EAEB-4197-4AF4-B7C9-E821C0115416}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileUpload", "BuildingBlocks\FileUpload\FileUpload.csproj", "{C177EAEB-4197-4AF4-B7C9-E821C0115416}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallService", "CallService\CallService.csproj", "{3A1EE8E5-74BB-4091-9B52-8DD7C1072C4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallService", "BuildingBlocks\CallService\CallService.csproj", "{3A1EE8E5-74BB-4091-9B52-8DD7C1072C4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

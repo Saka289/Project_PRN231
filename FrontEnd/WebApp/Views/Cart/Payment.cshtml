@@ -91,6 +91,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var remainingTime;
+            localStorage.removeItem('remainingTime');
             if (JSON.parse(localStorage.getItem('remainingTime')) !== null) {
                 var value = JSON.parse(localStorage.getItem('remainingTime'));
                 var date = new Date(value);

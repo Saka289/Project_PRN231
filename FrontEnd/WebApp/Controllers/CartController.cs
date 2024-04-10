@@ -223,6 +223,7 @@ namespace WebApp.Controllers
                     if (responsePayment != null && responsePayment.IsSuccess)
                     {
                         var payment = JsonConvert.DeserializeObject<PaymentDto>(Convert.ToString(responsePayment.Result));
+                        await _cartService.RemoveCart(order.UserId);
                         session.SetString("paymentId", payment.id.ToString());
                     }
                     session.SetString("orderId", order.OrderId.ToString());
