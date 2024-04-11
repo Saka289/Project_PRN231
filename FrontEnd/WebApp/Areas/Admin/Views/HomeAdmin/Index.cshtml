@@ -1,0 +1,335 @@
+﻿@using WebApp.Models.Dtos;
+@{
+    ViewData["Title"] = "Dashboard";
+    var cntProductActive = ViewBag.cntProductActive;
+    var cntUserActive = ViewBag.cntUserActive;
+    var cntOrderActive = ViewBag.cntOrderActive;
+    List<OrderDto> listOrderRecent = ViewBag.listOrderRecent;
+    var int1 = 1;
+    var int2 = 1;
+    var revenue = ViewBag.Revenue;
+    Dictionary<string, decimal> revenueByEachCate = ViewBag.RevenueByCategory;
+    List<ProductDto> listProductBestSeller = ViewBag.ListBestSeller;
+
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-header">
+            <h3 class="mb-2">Sales Dashboard Template </h3>
+            <p class="pageheader-text">Lorem ipsum dolor sit ametllam fermentum ipsum eu porta consectetur adipiscing elit.Nullam vehicula nulla ut egestas rhoncus.</p>
+            <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Sales Dashboard Template</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- pagehader  -->
+<!-- ============================================================== -->
+
+<div class="row">
+    <!-- ============================================================== -->
+    <!-- sales  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Sales</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">@WebApp.Helper.Common.FormatNumber(revenue, 0)</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">5.86%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end sales  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- new customer  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Customer</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">@cntUserActive</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">10%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end new customer  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- visitor  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Product</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">@cntProductActive</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">5%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end visitor  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- total orders  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Total Orders</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">@cntOrderActive</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-danger font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light bg-danger-light "><i class="fa fa-fw fa-arrow-down"></i></span><span class="ml-1">4%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end total orders  -->
+    <!-- ============================================================== -->
+</div>
+<div class="row">
+    <div class="col-xl-8 col-lg-12 col-md-8 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Revenue</h5>
+            <div class="card-body">
+                <canvas id="revenue" width="400" height="150"></canvas>
+            </div>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 p-3">
+                        <h4> Today's Earning: $2,800.30</h4>
+                        <p>
+                            Suspendisse potenti. Done csit amet rutrum.
+                        </p>
+                    </div>
+                    <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 p-3">
+                        <h2 class="font-weight-normal mb-3"><span>$48,325</span>                                                    </h2>
+                        <div class="mb-0 mt-3 legend-item">
+                            <span class="fa-xs text-primary mr-1 legend-title "><i class="fa fa-fw fa-square-full"></i></span>
+                            <span class="legend-text">Current Week</span>
+                        </div>
+                    </div>
+                    <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 p-3">
+                        <h2 class="font-weight-normal mb-3">
+
+                            <span>$59,567</span>
+                        </h2>
+                        <div class="text-muted mb-0 mt-3 legend-item"> <span class="fa-xs text-secondary mr-1 legend-title"><i class="fa fa-fw fa-square-full"></i></span><span class="legend-text">Previous Week</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end reveune  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- total sale  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-4 col-lg-12 col-md-4 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Total Sale</h5>
+            <div class="card-body">
+                <canvas id="total-sale" width="220" height="155"></canvas>
+                <div class="chart-widget-list">
+                    @foreach (var item in revenueByEachCate)
+                    {
+                        <p>
+                            <span class="fa-xs text-primary mr-1 legend-title"><i class="fa fa-fw fa-square-full"></i></span><span class="legend-text"> @item.Key</span>
+                            <span class="float-right">@WebApp.Helper.Common.FormatNumber(item.Value, 0) VNĐ</span>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end total sale  -->
+    <!-- ============================================================== -->
+</div>
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Top Selling Products</h5>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr class="border-0">
+                                <th class="border-0">#</th>
+                                <th class="border-0">Image</th>
+                                <th class="border-0">Product Name</th>
+                                <th class="border-0">ProductCode</th>
+                                <th class="border-0">Price</th>
+                                <th class="border-0">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listProductBestSeller.Count() > 0)
+                            {
+                                @foreach (var item in listProductBestSeller)
+                                {
+                                    <tr>
+                                        <td>@(int2++)</td>
+                                        <td>
+                                            <div class="m-r-10"><img src="@item.Image" alt="user" class="rounded" width="45"></div>
+                                        </td>
+                                        <td>@item.Title</td>
+                                        <td>@item.ProductCode </td>
+                                        <td>@WebApp.Helper.Common.FormatNumber(item.Price,0) VNĐ</td>
+                                        <td>@item.Status</td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="8"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Recent Orders</h5>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr class="border-0">
+                                <th class="border-0">#</th>
+                                <th class="border-0">Customer Name</th>
+                                <th class="border-0">Phone</th>
+                                <th class="border-0">CouponCode</th>
+                                <th class="border-0">OrderTotal</th>
+                                <th class="border-0">OrderDate</th>
+                                <th class="border-0">Address</th>
+                                <th class="border-0">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listOrderRecent.Count > 0)
+                            {
+                                @foreach (var item in listOrderRecent)
+                                {
+                                    <tr>
+                                        <td>@(int1++)</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Phone </td>
+                                        <td>@item.CouponCode</td>
+                                        <td>@WebApp.Helper.Common.FormatNumber(item.OrderTotal, 0)</td>
+                                        <td>@item.OrderDate</td>
+                                        <td>@item.Address</td>
+                                        <td>@item.PaymentStatus </td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="9"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </divc>
+    <!-- ============================================================== -->
+    <!-- end recent orders  -->
+    <!-- ============================================================== -->
+    <!-- end revenue locations  -->
+    <!-- ============================================================== -->
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var ctx = document.getElementById("total-sale").getContext('2d');
+
+        // Hàm gọi API và cập nhật dữ liệu cho biểu đồ
+        async function updateChart() {
+            try {
+                const response = await fetch('/Admin/HomeAdmin/GetDataForChartRevenueByCategory');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const { success, labels, data } = await response.json();
+                if (success) {
+                    const myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                backgroundColor: [
+                                    "#5969ff",
+                                    "#ff407b",
+                                    "#25d5f2",
+                                    "#ffc750",
+                                    "#4caf50",
+                                    "#ff9800",
+                                    "#9c27b0",
+                                    "#03a9f4",
+                                    "#e91e63",
+                                    "#8bc34a",
+                                    "#ff5722",
+                                    "#673ab7",
+                                    "#009688",
+                                    "#ffeb3b",
+                                    "#9e9e9e",
+                                    "#ff5252",
+                                    "#00bcd4",
+                                    "#cddc39",
+                                ],
+                                data: data
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    });
+                } else {
+                    throw new Error('API request was not successful');
+                }
+            } catch (error) {
+                console.error('Error updating chart:', error);
+            }
+        }
+
+        // Gọi hàm để cập nhật biểu đồ khi trang được tải
+        updateChart();
+
+
+        // ==============================================================
+    </script>
+}

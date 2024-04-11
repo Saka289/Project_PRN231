@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebApp.Models.Dtos.CouponDto>;
+@{
+    ViewData["Title"] = "Coupon";
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="text-primary">List of Coupon</h5>
+        <a asp-action="Create" class="btn btn-sm btn-secondary"> <i class="bi bi-plus-square-fill"></i>Create</a>
+    </div>
+    <div class="card-body">
+        <table id="DT_load" class="table table-bordered table-striped" style="width:100%;">
+            <thead>
+                <tr>
+
+                    <th>Coupon Code</th>
+                    <th>Discount Amount</th>
+                    <th>Min Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CouponCode</td>
+                        <td>@item.DiscountAmount%</td>
+                        <td>@item.MinAmount.ToString("N0") VND</td>
+                        <td style="text-align:center">
+                            <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.CouponId">Update</a>
+                            <button id="btnDelete" data-couponid="@item.CouponId" class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).on('click', '#btnDelete', function () {
+            var couponid = $(this).data("couponid");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Admin/Coupon/Delete/' + couponid;
+                }
+            });
+        });
+    </script>
+}
+

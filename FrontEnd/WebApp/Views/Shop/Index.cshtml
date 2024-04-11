@@ -1,0 +1,445 @@
+﻿@using WebApp.Models.Dtos;
+@model ProductSearchDto
+@{
+    List<CategoryDto> categoryDtos = ViewBag.ListCate;
+    List<ProductDto> productDtos = ViewBag.ListProduct;
+    int countOfListProduct = ViewBag.ListProductCount;
+
+    var categoryIdSelected = ViewBag.IdCate;
+
+}
+
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Shop Category</h2>
+                        <p>Home <span>-</span> Shop Category</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Category Product Area =================-->
+<section class="cat_product_area section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="left_sidebar_area">
+                    <aside class="left_widgets p_filter_widgets">
+                        <div class="l_w_title">
+                            <h3>Browse Categories</h3>
+                            <input id="IdCategorySelected" type="hidden" />
+                        </div>
+                        <div class="widgets_inner">
+                            <ul class="list">
+                                @if (categoryDtos.Count > 0)
+                                {
+                                    @foreach (var item in categoryDtos)
+                                    {
+                                        @* <li>
+                                @if (ViewBag.IdCate == item.Id)
+                                {
+                                <a href="/Shop/Index?id=@item.Id" style="color: red;">@item.Name</a>
+                                }
+                                else
+                                {
+                                <a href="/Shop/Index?id=@item.Id">@item.Name</a>
+                                }
+                                </li> *@
+                                        <li>
+                                            <a class="category" data-id="@item.Id">@item.Name</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </aside>
+
+
+
+                    <aside class="left_widgets p_filter_widgets">
+                        <div class="l_w_title">
+                            <h3>Price Filter</h3>
+                        </div>
+                        <div class="widgets_inner">
+                            <div>
+                                <!-- <div id="slider-range"></div> -->
+                                @* <input type="text" class="js-range-slider" value="" /> *@
+                                <div class="d-flex flex-column">
+                                    <div class="price_value d-flex justify-content-start">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="priceFilter" value="" checked> All
+                                        </label>
+                                    </div>
+                                    <div class="price_value d-flex justify-content-start">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="priceFilter" value="0-200000"> 0 - 200.000 VNĐ
+                                        </label>
+                                    </div>
+                                    <div class="price_value d-flex justify-content-start">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="priceFilter" value="200000-500000"> 200.000 - 500.000 VNĐ
+                                        </label>
+                                    </div>
+                                    <div class="price_value d-flex justify-content-start">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="priceFilter" value="500000-1000000"> 500.000 - 1000.000 VNĐ
+                                        </label>
+                                    </div>
+                                    <div class="price_value d-flex justify-content-start">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="priceFilter" value="1000000-999999999"> 1000.000 VNĐ and more...
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product_top_bar d-flex justify-content-between align-items-center">
+                            <div class="single_product_menu">
+                                <p><span id="countProduct">@countOfListProduct </span> Product Found</p>
+                            </div>
+                            <div class="single_product_menu d-flex">
+                                <h5>short by : </h5>
+                                <select id="orderBy">
+                                    <option value="" data-display="Select">Select option</option>
+                                    <option value="Title">Title</option>
+                                    <option value="Price">Price</option>
+                                </select>
+                            </div>
+
+
+                            <div class="single_product_menu d-flex">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="search"
+                                           aria-describedby="inputGroupPrepend" id="searchTitleValue">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">
+                                            <i class="ti-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center latest_product_inner" id="divProduct">
+                    @if (productDtos.Count() > 0)
+                    {
+                        foreach (var item in productDtos)
+                        {
+                            <div class="col-lg-4 col-sm-6">
+                                <div class="single_product_item">
+                                    <img src="@item.Image" alt="ProductImage">
+                                    <div class="single_product_text">
+                                        <h4><a href="/Product/Detail/@item.Id" style="text-decoration:none">@item.Title</a></h4>
+                                        <h3>@WebApp.Helper.Common.FormatNumber(item.Price, 0) vnđ</h3>
+                                        <a id="btnInput" data-productid="@item.Id" data-quantity="1" href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="col-lg-12">
+                        <div class="pageination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/stellar.js"></script>
+    <script src="~/js/price_rangs.js"></script>
+    <script type="text/javascript">
+
+        $(document).on('click', '#btnInput', function (e) {
+            e.preventDefault();
+            var quantity = $(this).data("quantity");
+            var productId = $(this).data("productid");
+            $.ajax({
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}&status=shop`,
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    window.location.href = "/Auth/Login";
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('.category').click(function () {
+                var categoryId = $(this).data('id');
+                var searchTitleValue = $('#searchTitleValue').val();
+                var priceFilter = $('input[name="priceFilter"]:checked').val();
+                var priceFrom = 0;
+                var priceTo = 0;
+                if (priceFilter) {
+                    // Tách chuỗi priceFilter thành mảng các phần tử
+                    var priceRange = priceFilter.split('-');
+                    // Kiểm tra nếu mảng có 2 phần tử
+                    if (priceRange.length === 2) {
+                        // Chuyển đổi các phần tử thành kiểu int
+                        priceFrom = parseInt(priceRange[0]);
+                        priceTo = parseInt(priceRange[1]);
+                    }
+                }
+                var orderBy = $('#orderBy').val();
+                // Tạo đối tượng ProductSearchDto từ dữ liệu trên form
+                var model = {
+                    CategoryId: categoryId,
+                    Title: searchTitleValue,
+                    PriceFrom: priceFrom,
+                    PriceTo: priceTo,
+                    sortQuery: orderBy
+                };
+
+                // Gửi đối tượng ProductSearchDto đến controller bằng AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/Shop/SearchInShopPage",
+                    data: JSON.stringify(model),
+                    contentType: "application/json",
+                    success: function (rs) {
+                        // Xử lý kết quả trả về
+                        if (rs.success) {
+                            console.log(rs.data);
+                            $("#IdCategorySelected").val(model.CategoryId);
+
+
+                            LoadProduct(rs.data);
+                        } else {
+                            console.log("Search failed");
+                        }
+                    },
+                    error: function () {
+                        console.log("Error while processing search request");
+                    }
+                });
+                console.log(model);
+            });
+
+
+            $('#orderBy').change(function () {
+                // Lấy giá trị đã chọn từ phần tử select
+                var selectedValue = $(this).val();
+
+                // Lấy các thuộc tính khác bạn muốn gửi đi
+                var categoryId = $('#IdCategorySelected').val();
+                var searchTitleValue = $('#searchTitleValue').val();
+                var priceFilter = $('input[name="priceFilter"]:checked').val();
+                var priceFrom = 0;
+                var priceTo = 0;
+                if (priceFilter) {
+                    var priceRange = priceFilter.split('-');
+                    if (priceRange.length === 2) {
+                        priceFrom = parseInt(priceRange[0]);
+                        priceTo = parseInt(priceRange[1]);
+                    }
+                }
+                // Tạo đối tượng chứa các thuộc tính
+                var model = {
+                    CategoryId: categoryId,
+                    Title: searchTitleValue,
+                    PriceFrom: priceFrom,
+                    PriceTo: priceTo,
+                    sortQuery: selectedValue
+                };
+                console.log(model);
+
+                // Gửi đối tượng về controller sử dụng AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/Shop/SearchInShopPage",
+                    data: JSON.stringify(model),
+                    contentType: "application/json",
+                    success: function (rs) {
+                        // Xử lý kết quả trả về
+                        if (rs.success) {
+                            console.log(rs.data);
+                            $("#IdCategorySelected").val(model.CategoryId);
+
+
+                            LoadProduct(rs.data);
+                        } else {
+                            console.log("Search failed");
+                        }
+                    },
+                    error: function () {
+                        console.log("Error while processing the request");
+                    }
+                });
+            });
+
+
+            $('input[name="priceFilter"]').change(function () {
+                // Lấy giá trị đã chọn từ radio button
+                var selectedValue = $(this).val();
+                var priceFrom = 0;
+                var priceTo = 0;
+                if (selectedValue) {
+                    var priceRange = selectedValue.split('-');
+                    if (priceRange.length === 2) {
+                        priceFrom = parseInt(priceRange[0]);
+                        priceTo = parseInt(priceRange[1]);
+                    }
+                }
+                // Lấy các giá trị khác bạn muốn gửi đi
+                var categoryId = $('#IdCategorySelected').val(); // Lấy categoryId từ thẻ <a> đã được chọn màu đỏ
+                var searchTitleValue = $('#searchTitleValue').val();
+                var orderBy = $('#orderBy').val();
+
+                // Tạo đối tượng chứa các giá trị
+                var model = {
+                    CategoryId: categoryId,
+                    Title: searchTitleValue,
+                    PriceFrom: priceFrom,
+                    PriceTo: priceTo,
+                    sortQuery: orderBy
+                };
+                console.log(model);
+
+                // Gửi đối tượng về controller sử dụng AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/Shop/SearchInShopPage",
+                    data: JSON.stringify(model),
+                    contentType: "application/json",
+                    success: function (rs) {
+                        // Xử lý kết quả trả về
+                        if (rs.success) {
+                            console.log(rs.data);
+                            $("#IdCategorySelected").val(model.CategoryId);
+
+
+                            LoadProduct(rs.data);
+                        } else {
+                            console.log("Search failed");
+                        }
+                    },
+                    error: function () {
+                        console.log("Error while processing the request");
+                    }
+                });
+            });
+
+            $('#searchTitleValue').keypress(function (e) {
+                if (e.which == 13) { // Kiểm tra nếu phím được ấn là phím Enter
+                    var categoryId = $('#IdCategorySelected').val(); // Lấy categoryId từ thẻ <a> đã được chọn màu đỏ
+                    var searchTitleValue = $('#searchTitleValue').val();
+                    var priceFilter = $('input[name="priceFilter"]:checked').val();
+                    var priceFrom = 0;
+                    var priceTo = 0;
+                    if (priceFilter) {
+                        var priceRange = priceFilter.split('-');
+                        if (priceRange.length === 2) {
+                            priceFrom = parseInt(priceRange[0]);
+                            priceTo = parseInt(priceRange[1]);
+                        }
+                    }
+                    var orderBy = $('#orderBy').val();
+
+
+                    var model = {
+                        CategoryId: categoryId,
+                        Title: searchTitleValue,
+                        PriceFrom: priceFrom,
+                        PriceTo: priceTo,
+                        sortQuery: orderBy
+                    };
+                    console.log(model);
+
+                    // Gửi đối tượng về controller sử dụng AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "/Shop/SearchInShopPage",
+                        data: JSON.stringify(model),
+                        contentType: "application/json",
+                        success: function (rs) {
+                            // Xử lý kết quả trả về
+                            if (rs.success) {
+                                console.log(rs.data);
+                                $("#IdCategorySelected").val(model.CategoryId);
+                                LoadProduct(rs.data);
+                            } else {
+                                console.log("Search failed");
+                            }
+                        },
+                        error: function () {
+                            console.log("Error while processing the request");
+                        }
+                    });
+
+                }
+
+
+            });
+
+        });
+        function LoadProduct(data) {
+            $("#divProduct").empty();
+            $('#countProduct').text(data.length);
+            var html = ``;
+            data.forEach(e => {
+                html += ` <div class="col-lg-4 col-sm-6">
+                                                     <div class="single_product_item">
+                                                         <img src="${e.image}" alt="ProductImage">
+                                                         <div class="single_product_text">
+                                                             <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
+                                                             <h3>${e.price} vnđ</h3>
+                                                             <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                                         </div>
+                                                     </div>
+                                                  </div>`;
+            });
+            $("#divProduct").append(html);
+        }
+
+    </script>
+}

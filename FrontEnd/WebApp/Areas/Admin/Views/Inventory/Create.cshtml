@@ -1,0 +1,21 @@
+﻿@using WebApp.Models.Dtos;
+
+@model ImportInvens;
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary"> Create a Inventories</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data" asp-action="Create">
+            <input  asp-for="File" type="file"/>
+            
+            <button type="submit" onclick="return ValidateInput()" class="btn btn-sm btn-success" value="Create">Upload</button>
+            <a asp-action="Index" class="btn btn-sm btn-info">Back to list</a>
+        </form>
+    </div>
+</div>

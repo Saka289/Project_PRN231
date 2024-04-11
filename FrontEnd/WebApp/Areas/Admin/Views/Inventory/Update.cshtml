@@ -1,0 +1,33 @@
+﻿@using WebApp.Models.Dtos;
+@model StockDto;
+@{
+    ViewData["Title"] = " Update";
+
+}
+<div class="card">
+
+    <div class="card-header">
+        <h5 class="text-primary">Update a inventories</h5>
+    </div>
+
+    <div class="card-body" style="min-height:450px">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Id" hidden />
+            <div class="row">
+                <div class="col-9">
+                    <div class="mb-3">
+                        <label asp-for="StockQuantity"></label>
+                        <input asp-for="StockQuantity" class="form-control"  />
+                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+                <input type="submit" class="btn btn-sm btn-warning" style="width:150px;" value="Update"/>
+            <a asp-action="Index"  class="btn btn-sm btn-info">Back to list</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
