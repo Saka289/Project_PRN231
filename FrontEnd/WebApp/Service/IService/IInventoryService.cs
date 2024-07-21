@@ -11,5 +11,6 @@ namespace WebApp.Service.IService
         Task<ResponseDto?> GetInventoryById(int id);
         Task<ResponseDto?> UpdateInventoryAsync(StockDto stock);
         Task<ResponseDto?> ImportCsvFile(ImportInvens model);
+        Task<ResponseDto?> DeleteInventory(int id);
     }
 }

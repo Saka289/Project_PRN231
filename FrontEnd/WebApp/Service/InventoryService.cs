@@ -64,5 +64,14 @@ namespace WebApp.Service
                 ContentType = SD.ContentType.MultipartFormData
             });
         }
+
+        public async Task<ResponseDto?> DeleteInventory(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = SD.ApiType.DELETE,
+                Url = SD.BaseUrlGateWay + "/api/InventoryAPI/Delete/" + id
+            });
+        }
     }
 }

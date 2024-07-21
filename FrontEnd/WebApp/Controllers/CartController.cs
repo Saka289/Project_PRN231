@@ -90,7 +90,7 @@ namespace WebApp.Controllers
                         {
                             ProductId = productId,
                             UnitPrice = Convert.ToDecimal(model.Price),
-                            Quantity = 1,
+                            Quantity = quantity,
                             Product = model
                         });
                         mess = "Add Cart Successfully !!!";
@@ -117,7 +117,7 @@ namespace WebApp.Controllers
                     {
                         ProductId = productId,
                         UnitPrice = Convert.ToDecimal(model.Price),
-                        Quantity = 1,
+                        Quantity = quantity,
                         Product = model
                     });
                 }
@@ -210,24 +210,44 @@ namespace WebApp.Controllers
                 {
                     TempData["success"] = orderCreate.Message;
                     var order = JsonConvert.DeserializeObject<OrderDto>(Convert.ToString(orderCreate.Result));
+                    order.OrderDetails = cart.CartDetails.Select(c => new OrderDetailDto()
+                    {
+                        ProductId = c.ProductId,
+                        UnitPrice = c.UnitPrice,
+                        Quantity = c.Quantity,
+                        Product = c.Product,
+                    });
                     await _orderService.UpdateStatus(order.OrderId.ToString(), SD.PaymentStatus.IN_PROGRESS.ToString());
-                    PaymentDto paymentDto = new PaymentDto()
+                    var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
+                    StripeRequestDto stripeRequestDto = new()
                     {
-                        id = Guid.Empty,
-                        orderId = order.OrderIdString,
-                        isPayed = true,
-                        paymentStatus = SD.PaymentStatus.IN_PROGRESS,
-                        refund = 0,
+                        ApprovedUrl = domain + "Cart/Confirmation?orderId=" + order.OrderId,
+                        CancelUrl = domain + "Cart/CheckOut",
+                        Order = order
                     };
-                    var responsePayment = await _paymentService.UpsertPayment(paymentDto);
-                    if (responsePayment != null && responsePayment.IsSuccess)
-                    {
-                        var payment = JsonConvert.DeserializeObject<PaymentDto>(Convert.ToString(responsePayment.Result));
-                        await _cartService.RemoveCart(order.UserId);
-                        session.SetString("paymentId", payment.id.ToString());
-                    }
-                    session.SetString("orderId", order.OrderId.ToString());
-                    return RedirectToAction(nameof(Payment));
+
+                    var stripeResponse = await _orderService.CreateStripeSession(stripeRequestDto);
+                    StripeRequestDto stripeResponseResult = JsonConvert.DeserializeObject<StripeRequestDto>(Convert.ToString(stripeResponse.Result));
+                    Response.Headers.Add("Location", stripeResponseResult.StripeSessionUrl);
+                    return new StatusCodeResult(303);
+                    //PaymentDto paymentDto = new PaymentDto()
+                    //{
+                    //    id = Guid.Empty,
+                    //    orderId = order.OrderIdString,
+                    //    isPayed = true,
+                    //    paymentStatus = SD.PaymentStatus.IN_PROGRESS,
+                    //    refund = 0,
+                    //};
+                    //var responsePayment = await _paymentService.UpsertPayment(paymentDto);
+                    //if (responsePayment != null && responsePayment.IsSuccess)
+                    //{
+                    //    var payment = JsonConvert.DeserializeObject<PaymentDto>(Convert.ToString(responsePayment.Result));
+                    //    await _cartService.RemoveCart(order.UserId);
+                    //    session.SetString("paymentId", payment.id.ToString());
+                    //}
+                    //session.SetString("orderId", order.OrderId.ToString());
+                    //return RedirectToAction(nameof(Payment));
                 }
             }
             else
@@ -289,7 +309,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Confirmation()
+        public async Task<IActionResult> Confirmation(string orderId)
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             if (TempData["orderId"] != null)
@@ -308,6 +328,33 @@ namespace WebApp.Controllers
                         }
                     }
                     await _cartService.RemoveCart(userId);
+                    return View(order);
+                }
+            }
+            else
+            {
+                ResponseDto? response1 = await _orderService.ValidateStripeSession(orderId);
+                if (response1 != null && response1.IsSuccess)
+                {
+                    OrderDto orderHeader = JsonConvert.DeserializeObject<OrderDto>(Convert.ToString(response1.Result));
+                    if (orderHeader.PaymentStatus == SD.PaymentStatus.COMPLETED.ToString())
+                    {
+                        await _cartService.RemoveCart(userId);
+                    }
+                }
+                var response = await _orderService.SearchOrder(orderId);
+                if (response != null && response.IsSuccess)
+                {
+                    var order = JsonConvert.DeserializeObject<OrderDto>(Convert.ToString(response.Result));
+                    var responseProduct = await _productService.GetAllProductAsync();
+                    if (responseProduct != null && responseProduct.IsSuccess)
+                    {
+                        var product = JsonConvert.DeserializeObject<IEnumerable<ProductDto>>(Convert.ToString(responseProduct.Result));
+                        foreach (var item in order.OrderDetails)
+                        {
+                            item.Product = product.FirstOrDefault(p => p.Id == item.ProductId);
+                        }
+                    }
                     return View(order);
                 }
             }

@@ -35,7 +35,9 @@ namespace Web.Services.OrderAPI.Models
         [Required]
         public DateTime RequiredDate { get; set; }
         [Required]
-        public string PaymentStatus { get; set; }
+        public string? PaymentStatus { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public string? StripeSessionId { get; set; }
         [Required]
         public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }

@@ -43,5 +43,12 @@ namespace Web.Services.InventoryAPI.Repository
             _context.Inventories.Update(inventory);
             return _context.SaveChanges();
         }
+
+        public async Task<bool> UpdateRange(List<Inventory> inventories)
+        {
+            _context.UpdateRange(inventories);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

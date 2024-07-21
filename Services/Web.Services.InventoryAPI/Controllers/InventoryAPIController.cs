@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
 using Shared.Enums;
 using System.Data;
+using Web.Services.InventoryAPI.Data;
 using Web.Services.InventoryAPI.Models.Dto;
 using Web.Services.InventoryAPI.Service.IService;
 
@@ -18,12 +19,14 @@ namespace Web.Services.InventoryAPI.Controllers
         private readonly IInventoryService _inventoryService;
         private ResponseDto responseDto;
         private IWebHostEnvironment _webHostEnvironment;
+        private readonly AppDbContext _context;
 
-        public InventoryAPIController(IInventoryService inventoryService, IWebHostEnvironment webHostEnvironment)
+        public InventoryAPIController(IInventoryService inventoryService, IWebHostEnvironment webHostEnvironment, AppDbContext context)
         {
             _inventoryService = inventoryService;
             responseDto = new ResponseDto();
             _webHostEnvironment = webHostEnvironment;
+            _context = context;
         }
 
         [HttpPost]
@@ -99,17 +102,38 @@ namespace Web.Services.InventoryAPI.Controllers
             return Ok(responseDto);
         }
 
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _context.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            if (result == null)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Not found !!!";
+                responseDto.Result = false;
+            }
+            _context.Inventories.Remove(result);
+            await _context.SaveChangesAsync();
+
+            responseDto.IsSuccess = true;
+            responseDto.Result = true;
+            responseDto.Message = "Delete Successfully";
+            return Ok(responseDto);
+
+        }
+
         [HttpPost("ImportCsv")]
         [Authorize(Roles = SD.RoleAdmin)]
         public async Task<ActionResult> ImportCsv([FromForm] ImportInvens importInvens)
         {
-            var item =  await _inventoryService.Upload(importInvens.File);
-            if(item > 0)
+            var item = await _inventoryService.Upload(importInvens.File);
+            if (item > 0)
             {
                 responseDto.IsSuccess = true;
                 responseDto.Result = item;
                 responseDto.Message = "Import success " + item + " Record";
-            } else
+            }
+            else
             {
                 responseDto.IsSuccess = false;
                 responseDto.Result = item;
@@ -126,5 +150,5 @@ namespace Web.Services.InventoryAPI.Controllers
         }
 
     }
-        
+
 }

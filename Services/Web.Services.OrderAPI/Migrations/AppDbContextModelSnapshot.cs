@@ -56,6 +56,9 @@ namespace Web.Services.OrderAPI.Migrations
                     b.Property<decimal>("OrderTotal")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -68,6 +71,9 @@ namespace Web.Services.OrderAPI.Migrations
 
                     b.Property<DateTime>("ShippedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("StripeSessionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Shared.Enums;
+using System;
 using Web.Services.OrderAPI;
 using Web.Services.OrderAPI.Data;
 using Web.Services.OrderAPI.Extensions;
@@ -81,20 +82,22 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
 // Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
-    options.RoutePrefix = string.Empty;
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+// // Configure the HTTP request pipeline.
+// app.UseSwagger();
+// app.UseSwaggerUI(options =>
+// {
+//     options.SwaggerEndpoint("/swagger/v1/swagger.json", "ORDER API");
+//     options.RoutePrefix = string.Empty;
+// });
+
+Stripe.StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("Stripe:SecretKey");
 
 app.UseHttpsRedirection();
 

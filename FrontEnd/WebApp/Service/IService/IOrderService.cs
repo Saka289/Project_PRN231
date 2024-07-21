@@ -8,6 +8,9 @@ namespace WebApp.Service.IService
         Task<ResponseDto?> GetOrders();
         Task<ResponseDto?> CreateOrder(CartDto cartDto);
         Task<ResponseDto?> GetOrdersByUserId(string userId);
+        Task<ResponseDto?> CreateStripeSession(StripeRequestDto stripeRequestDto);
+        Task<ResponseDto?> ValidateStripeSession(string orderId);
+        Task<ResponseDto?> UpdateOrderStatus(string orderId, string newStatus);
         Task<ResponseDto?> UpdateStatus(string orderId, string status);
         Task<ResponseDto?> SearchOrder(string orderId);
         Task<ResponseDto?> GenerateQR(string orderId, decimal amount);

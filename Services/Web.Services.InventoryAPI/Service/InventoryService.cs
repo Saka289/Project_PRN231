@@ -8,6 +8,8 @@ using System.Data.OleDb;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using FileUpload;
+using Web.Services.InventoryAPI.Data;
+using NPOI.OpenXmlFormats.Wordprocessing;
 
 
 namespace Web.Services.InventoryAPI.Service
@@ -18,13 +20,15 @@ namespace Web.Services.InventoryAPI.Service
         private readonly IIventoryRepository _repository;
         public readonly IProductService _productService;
         public readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly AppDbContext _context;
 
-        public InventoryService(IIventoryRepository repository, IProductService productService, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public InventoryService(IIventoryRepository repository, IProductService productService, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, AppDbContext context)
         {
             _repository = repository;
             _productService = productService;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _context = context;
         }
 
         public List<StockDto> getStock()
@@ -143,14 +147,39 @@ namespace Web.Services.InventoryAPI.Service
 
                 // load product requests from excel file
                 var inventoriedto = ExcelHelper.Import<InventoryImport>(filePath);
+                int count = 0;
 
-                List<Inventory> inventories = inventoriedto.Where(item => item.ProductId != 0).Select(item => new Inventory
+                foreach (var item in inventoriedto)
                 {
-                    ProductId = item.ProductId,
-                    StockQuantity = item.StockQuantity,
-                }).ToList();
+                    var product = await _productService.GetProductById(item.ProductId);
+                    if (product == null)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == item.ProductId);
+                        if (inventory == null)
+                        {
+                            var inventCreate = new Inventory()
+                            {
+                                ProductId = item.ProductId,
+                                StockQuantity = item.StockQuantity,
+                            };
+                            await _context.Inventories.AddAsync(inventCreate);
+                            await _context.SaveChangesAsync();
+                            count++;
+                        }
+                        else
+                        {
+                            inventory.StockQuantity += item.StockQuantity;
+                            count++;
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+                return count;
 
-                return await _repository.Import(inventories);
             }
             catch
             {

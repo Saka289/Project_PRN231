@@ -3,6 +3,7 @@
 @{
     List<CategoryDto> categoryDtos4 = ViewBag.ListCate;
     List<ProductDto> bestSeller = ViewBag.ListBestSeller;
+    // List<ProductDto> products = ViewBag.ListProduct;
 }
 <!-- banner part start-->
 <section class="banner_part">
@@ -110,7 +111,7 @@
         </div>
         <div class="row align-items-center justify-content-between">
             <div class="col-lg-7 col-sm-6">
-                <div class="single_feature_post_text"> 
+                <div class="single_feature_post_text">
                     <p>Premium Quality</p>
                     <h3>@categoryDtos4[0].Name</h3>
                     <a href="#" class="feature_btn">EXPLORE NOW <i class="fas fa-play"></i></a>
@@ -144,6 +145,44 @@
         </div>
     </div>
 </section>
+
+<!-- product_list start-->
+<section class="product_list section_padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="section_tittle text-center">
+                    <h2>awesome <span>shop</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product_list_slider owl-carousel">
+                    <div class="single_product_list_slider">
+                        <div class="row align-items-center justify-content-between">
+                            @foreach (var item in ViewBag.ListProduct)
+                            {
+                                <div class="col-lg-3 col-sm-6">
+                                    <div class="single_product_item">
+                                        <img src="@item.Image" alt="">
+                                        <div class="single_product_text">
+                                            <h4><a href="/Product/Detail/@item.Id" style="text-decoration:none">@item.Title</a></h4>
+                                            <h3>@WebApp.Helper.Common.FormatNumber(item.Price, 0) VNĐ</h3>
+                                            <a id="btnInput" data-productid="@item.Id" data-quantity="1" href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product_list part start-->
+
 
 <section class="our_offer section_padding">
     <div class="container">
@@ -195,15 +234,16 @@
         <div class="row align-items-center justify-content-between">
             <div class="col-lg-12">
                 <div class="best_product_slider owl-carousel">
-                    @if (bestSeller.Count() > 0)
+                    @if (bestSeller != null)
                     {
                         @foreach (var item in bestSeller)
                         {
                             <div class="single_product_item">
                                 <img src="@item.Image" alt="">
                                 <div class="single_product_text">
-                                    <h4>@item.Title</h4>
-                                    <h3>@WebApp.Helper.Common.FormatNumber(item.Price,0) VNĐ</h3>
+                                    <h4><a href="/Product/Detail/@item.Id" style="text-decoration:none">@item.Title</a></h4>
+                                    <h3>@WebApp.Helper.Common.FormatNumber(item.Price, 0) VNĐ</h3>
+                                    <a id="btnInput" data-productid="@item.Id" data-quantity="1" href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         }
@@ -278,3 +318,30 @@
     </div>
 </section>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).on('click', '#btnInput', function (e) {
+            e.preventDefault();
+            var quantity = $(this).data("quantity");
+            var productId = $(this).data("productid");
+            $.ajax({
+                url: `/Cart/SaveCart?productId=${productId}&quantity=${quantity}&status=shop`,
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    window.location.href = "/Auth/Login";
+                }
+            });
+        });
+    </script>
+}

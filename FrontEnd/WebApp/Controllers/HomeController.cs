@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Shared.Dtos;
 using System.Diagnostics;
+using System.Linq;
 using WebApp.Models;
 using WebApp.Models.Dtos;
 using WebApp.Service.IService;
@@ -13,11 +14,11 @@ namespace WebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
-        public HomeController(ILogger<HomeController> logger, ICategoryService categoryService,IProductService productService)
+        public HomeController(ILogger<HomeController> logger, ICategoryService categoryService, IProductService productService)
         {
             _logger = logger;
             _categoryService = categoryService;
-            _productService = productService;   
+            _productService = productService;
         }
 
         public async Task<IActionResult> Index()
@@ -36,6 +37,23 @@ namespace WebApp.Controllers
             if (list.Count() > 0)
             {
                 ViewBag.ListCate = list;
+            }
+
+            // get list Produc 
+            List<ProductDto> listPAll = new List<ProductDto>();
+            ResponseDto? response3 = await _productService.GetAllProductAsync();
+            if (response3 != null && response3.IsSuccess)
+            {
+                listPAll = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response3.Result));
+            }
+            else
+            {
+                TempData["error"] = response3?.Message;
+            }
+            if (listPAll.Count() > 0)
+            {
+                var randomEightProducts = listPAll.Where(x => x.Status == "Active").OrderBy(x => Guid.NewGuid()).Take(8).ToList();
+                ViewBag.ListProduct = randomEightProducts;
             }
 
 

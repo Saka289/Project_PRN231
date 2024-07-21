@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
 using Shared.Enums;
+using Stripe;
 using System.Collections.Generic;
 using Web.Services.OrderAPI.Data;
 using Web.Services.OrderAPI.Models;
@@ -20,10 +22,11 @@ namespace Web.Services.OrderAPI.Service
         private readonly ICategoryService _categoryService;
         private readonly IInventoryService _inventoryService;
         private readonly IVietQrService _vietQrService;
+        private readonly AppDbContext _context;
         protected ResponseDto _response;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService, IVietQrService vietQrService, IOrderDetailRepository orderDetailRepository)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductService productService, ICategoryService categoryService, IInventoryService inventoryService, IVietQrService vietQrService, IOrderDetailRepository orderDetailRepository, AppDbContext context)
         {
             _orderRepository = orderRepository;
             _productService = productService;
@@ -33,6 +36,7 @@ namespace Web.Services.OrderAPI.Service
             _response = new ResponseDto();
             _mapper = mapper;
             _orderDetailRepository = orderDetailRepository;
+            _context = context;
         }
 
         public async Task<ResponseDto> CreateOrder(CartDto cartDto)
@@ -156,6 +160,18 @@ namespace Web.Services.OrderAPI.Service
                     _response.IsSuccess = false;
                     _response.Result = false;
                     return _response;
+                }
+                Order orderHeader = _context.Orders.First(u => u.OrderId.ToString() == orderId);
+                if (status == SD.PaymentStatus.REFUND.ToString())
+                {
+                    //we will give refund
+                    var options = new RefundCreateOptions
+                    {
+                        Reason = RefundReasons.RequestedByCustomer,
+                        PaymentIntent = orderHeader.PaymentIntentId
+                    };
+                    var service = new RefundService();
+                    Refund refund = service.Create(options);
                 }
                 var result = await _orderRepository.UpdateStatus(orderId, status);
                 _orderRepository.SaveChanges();

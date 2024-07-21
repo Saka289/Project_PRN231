@@ -12,8 +12,8 @@ using Web.Services.OrderAPI.Data;
 namespace Web.Services.OrderAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305165736_OrderDbUpdateProduct")]
-    partial class OrderDbUpdateProduct
+    [Migration("20240715094702_Init_Add_Order")]
+    partial class Init_Add_Order
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,6 +58,9 @@ namespace Web.Services.OrderAPI.Migrations
                     b.Property<decimal>("OrderTotal")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -70,6 +73,9 @@ namespace Web.Services.OrderAPI.Migrations
 
                     b.Property<DateTime>("ShippedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("StripeSessionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

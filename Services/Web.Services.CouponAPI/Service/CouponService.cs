@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
 using Web.Services.CouponAPI.Models;
 using Web.Services.CouponAPI.Models.Dto;
@@ -27,6 +28,18 @@ namespace Web.Services.CouponAPI.Service
                 Coupon obj = _mapper.Map<Coupon>(couponDto);
                 _couponRepository.AddAsync(obj);
                 _couponRepository.Save();
+
+                var options = new Stripe.CouponCreateOptions
+                {
+                    PercentOff = (long)couponDto.DiscountAmount,
+                    Name = couponDto.CouponCode,
+                    Currency = "vnd",
+                    Id = couponDto.CouponCode
+                };
+                var service = new Stripe.CouponService();
+                service.Create(options);
+
+
                 _response.Result = _mapper.Map<CouponDto>(obj);
                 _response.Message = "Coupon created Successfully !!!";
             }
@@ -42,8 +55,14 @@ namespace Web.Services.CouponAPI.Service
         {
             try
             {
+                var obj = _couponRepository.GetAsyns(couponId);
                 _couponRepository.Remove(couponId);
                 _couponRepository.Save();
+
+                var service = new Stripe.CouponService();
+                service.Delete(obj.CouponCode);
+
+
                 _response.Result = true;
                 _response.Message = "Coupon deleted Successfully !!!";
             }

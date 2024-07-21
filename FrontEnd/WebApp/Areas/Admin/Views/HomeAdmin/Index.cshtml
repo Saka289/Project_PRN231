@@ -10,7 +10,6 @@
     var revenue = ViewBag.Revenue;
     Dictionary<string, decimal> revenueByEachCate = ViewBag.RevenueByCategory;
     List<ProductDto> listProductBestSeller = ViewBag.ListBestSeller;
-
 }
 
 
@@ -22,7 +21,9 @@
             <div class="page-breadcrumb">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="#" class="breadcrumb-link">Dashboard</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Sales Dashboard Template</li>
                     </ol>
                 </nav>
@@ -46,7 +47,9 @@
                     <h1 class="mb-1">@WebApp.Helper.Common.FormatNumber(revenue, 0)</h1>
                 </div>
                 <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">5.86%</span>
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-up"></i>
+                    </span><span class="ml-1">5.86%</span>
                 </div>
             </div>
         </div>
@@ -65,7 +68,9 @@
                     <h1 class="mb-1">@cntUserActive</h1>
                 </div>
                 <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">10%</span>
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-up"></i>
+                    </span><span class="ml-1">10%</span>
                 </div>
             </div>
         </div>
@@ -84,7 +89,9 @@
                     <h1 class="mb-1">@cntProductActive</h1>
                 </div>
                 <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">5%</span>
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-up"></i>
+                    </span><span class="ml-1">5%</span>
                 </div>
             </div>
         </div>
@@ -103,7 +110,9 @@
                     <h1 class="mb-1">@cntOrderActive</h1>
                 </div>
                 <div class="metric-label d-inline-block float-right text-danger font-weight-bold">
-                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light bg-danger-light "><i class="fa fa-fw fa-arrow-down"></i></span><span class="ml-1">4%</span>
+                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light bg-danger-light ">
+                        <i class="fa fa-fw fa-arrow-down"></i>
+                    </span><span class="ml-1">4%</span>
                 </div>
             </div>
         </div>
@@ -128,9 +137,13 @@
                         </p>
                     </div>
                     <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 p-3">
-                        <h2 class="font-weight-normal mb-3"><span>$48,325</span>                                                    </h2>
+                        <h2 class="font-weight-normal mb-3">
+                            <span>$48,325</span>
+                        </h2>
                         <div class="mb-0 mt-3 legend-item">
-                            <span class="fa-xs text-primary mr-1 legend-title "><i class="fa fa-fw fa-square-full"></i></span>
+                            <span class="fa-xs text-primary mr-1 legend-title ">
+                                <i class="fa fa-fw fa-square-full"></i>
+                            </span>
                             <span class="legend-text">Current Week</span>
                         </div>
                     </div>
@@ -139,7 +152,11 @@
 
                             <span>$59,567</span>
                         </h2>
-                        <div class="text-muted mb-0 mt-3 legend-item"> <span class="fa-xs text-secondary mr-1 legend-title"><i class="fa fa-fw fa-square-full"></i></span><span class="legend-text">Previous Week</span></div>
+                        <div class="text-muted mb-0 mt-3 legend-item">
+                            <span class="fa-xs text-secondary mr-1 legend-title">
+                                <i class="fa fa-fw fa-square-full"></i>
+                            </span><span class="legend-text">Previous Week</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -160,7 +177,9 @@
                     @foreach (var item in revenueByEachCate)
                     {
                         <p>
-                            <span class="fa-xs text-primary mr-1 legend-title"><i class="fa fa-fw fa-square-full"></i></span><span class="legend-text"> @item.Key</span>
+                            <span class="fa-xs text-primary mr-1 legend-title">
+                                <i class="fa fa-fw fa-square-full"></i>
+                            </span><span class="legend-text"> @item.Key</span>
                             <span class="float-right">@WebApp.Helper.Common.FormatNumber(item.Value, 0) VNĐ</span>
                         </p>
                     }
@@ -180,35 +199,39 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="bg-light">
-                            <tr class="border-0">
-                                <th class="border-0">#</th>
-                                <th class="border-0">Image</th>
-                                <th class="border-0">Product Name</th>
-                                <th class="border-0">ProductCode</th>
-                                <th class="border-0">Price</th>
-                                <th class="border-0">Status</th>
-                            </tr>
+                        <tr class="border-0">
+                            <th class="border-0">#</th>
+                            <th class="border-0">Image</th>
+                            <th class="border-0">Product Name</th>
+                            <th class="border-0">ProductCode</th>
+                            <th class="border-0">Price</th>
+                            <th class="border-0">Status</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (listProductBestSeller.Count() > 0)
+                        @if (listProductBestSeller.Count() > 0)
+                        {
+                            @foreach (var item in listProductBestSeller)
                             {
-                                @foreach (var item in listProductBestSeller)
-                                {
-                                    <tr>
-                                        <td>@(int2++)</td>
-                                        <td>
-                                            <div class="m-r-10"><img src="@item.Image" alt="user" class="rounded" width="45"></div>
-                                        </td>
-                                        <td>@item.Title</td>
-                                        <td>@item.ProductCode </td>
-                                        <td>@WebApp.Helper.Common.FormatNumber(item.Price,0) VNĐ</td>
-                                        <td>@item.Status</td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td>@(int2++)</td>
+                                    <td>
+                                        <div class="m-r-10">
+                                            <img src="@item.Image" alt="user" class="rounded" width="45">
+                                        </div>
+                                    </td>
+                                    <td>@item.Title</td>
+                                    <td>@item.ProductCode </td>
+                                    <td>@WebApp.Helper.Common.FormatNumber(item.Price, 0) VNĐ</td>
+                                    <td>@item.Status</td>
+                                </tr>
                             }
-                            <tr>
-                                <td colspan="8"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
-                            </tr>
+                        }
+                        <tr>
+                            <td colspan="8">
+                                <a href="#" class="btn btn-outline-light float-right">View Details</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -224,37 +247,39 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="bg-light">
-                            <tr class="border-0">
-                                <th class="border-0">#</th>
-                                <th class="border-0">Customer Name</th>
-                                <th class="border-0">Phone</th>
-                                <th class="border-0">CouponCode</th>
-                                <th class="border-0">OrderTotal</th>
-                                <th class="border-0">OrderDate</th>
-                                <th class="border-0">Address</th>
-                                <th class="border-0">Status</th>
-                            </tr>
+                        <tr class="border-0">
+                            <th class="border-0">#</th>
+                            <th class="border-0">Customer Name</th>
+                            <th class="border-0">Phone</th>
+                            <th class="border-0">CouponCode</th>
+                            <th class="border-0">OrderTotal</th>
+                            <th class="border-0">OrderDate</th>
+                            <th class="border-0">Address</th>
+                            <th class="border-0">Status</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (listOrderRecent.Count > 0)
+                        @if (listOrderRecent.Count > 0)
+                        {
+                            @foreach (var item in listOrderRecent)
                             {
-                                @foreach (var item in listOrderRecent)
-                                {
-                                    <tr>
-                                        <td>@(int1++)</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.Phone </td>
-                                        <td>@item.CouponCode</td>
-                                        <td>@WebApp.Helper.Common.FormatNumber(item.OrderTotal, 0)</td>
-                                        <td>@item.OrderDate</td>
-                                        <td>@item.Address</td>
-                                        <td>@item.PaymentStatus </td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td>@(int1++)</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Phone </td>
+                                    <td>@item.CouponCode</td>
+                                    <td>@WebApp.Helper.Common.FormatNumber(item.OrderTotal, 0)</td>
+                                    <td>@item.OrderDate</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.PaymentStatus </td>
+                                </tr>
                             }
-                            <tr>
-                                <td colspan="9"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
-                            </tr>
+                        }
+                        <tr>
+                            <td colspan="9">
+                                <a href="#" class="btn btn-outline-light float-right">View Details</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -263,13 +288,12 @@
     </div>
 
 
-    </divc>
-    <!-- ============================================================== -->
-    <!-- end recent orders  -->
-    <!-- ============================================================== -->
-    <!-- end revenue locations  -->
-    <!-- ============================================================== -->
 </div>
+<!-- ============================================================== -->
+<!-- end recent orders  -->
+<!-- ============================================================== -->
+<!-- end revenue locations  -->
+<!-- ============================================================== -->
 
 @section Scripts {
     <script type="text/javascript">

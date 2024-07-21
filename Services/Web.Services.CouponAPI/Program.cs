@@ -55,6 +55,8 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+Stripe.StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("Stripe:SecretKey");
+
 builder.AddAppAuthencation();
 
 builder.Services.AddAuthorization();

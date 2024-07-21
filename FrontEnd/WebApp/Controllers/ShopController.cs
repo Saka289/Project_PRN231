@@ -73,6 +73,7 @@ namespace WebApp.Controllers
 
             return View();
         }
+
         [HttpPost]
         public async Task<JsonResult> SearchInShopPage([FromBody] ProductSearchDto model)
         {

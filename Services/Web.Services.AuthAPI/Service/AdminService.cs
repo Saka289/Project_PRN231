@@ -185,12 +185,13 @@ namespace Web.Services.AuthAPI.Service
         {
             try
             {
-                var members = await _userManager.Users
-                    .Join(_context.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { u, ur })
-                    .Join(_context.Roles, ur => ur.ur.RoleId, r => r.Id, (ur, r) => new { ur, r })
-                    .Select(m => m.ur.u.ToMemberDto(_context))
-                    .ToListAsync();
-                _response.Result = members;
+                var members = await (from u in _userManager.Users
+                                     join ur in _context.UserRoles on u.Id equals ur.UserId
+                                     join r in _context.Roles on ur.RoleId equals r.Id
+                                     select u)
+                                    .ToListAsync();
+                var memberDtos = members.Select(u => u.ToMemberDto(_context)).ToList();
+                _response.Result = memberDtos;
             }
             catch (Exception ex)
             {

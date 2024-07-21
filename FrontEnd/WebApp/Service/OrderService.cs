@@ -25,6 +25,15 @@ namespace WebApp.Service
             });
         }
 
+        public async Task<ResponseDto?> CreateStripeSession(StripeRequestDto stripeRequestDto)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = stripeRequestDto,
+                Url = SD.OrderAPIBase + "/api/OrderAPI/CreateStripeSession"
+            });
+        }
         public async Task<ResponseDto?> GenerateQR(string orderId, decimal amount)
         {
             return await _baseService.SendAsync(new RequestDto()
@@ -61,12 +70,32 @@ namespace WebApp.Service
             });
         }
 
+        public async Task<ResponseDto?> UpdateOrderStatus(string orderId, string newStatus)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = newStatus,
+                Url = SD.OrderAPIBase + "/api/OrderAPI/UpdateOrderStatus/" + orderId
+            });
+        }
+
+
         public async Task<ResponseDto?> UpdateStatus(string orderId, string status)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.PUT,
                 Url = SD.BaseUrlGateWay + $"/api/OrderAPI/UpdateStatus/{orderId}/{status}"
+            });
+        }
+        public async Task<ResponseDto?> ValidateStripeSession(string orderId)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = orderId,
+                Url = SD.OrderAPIBase + "/api/OrderAPI/ValidateStripeSession"
             });
         }
     }

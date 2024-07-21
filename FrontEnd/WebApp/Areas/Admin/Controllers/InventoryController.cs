@@ -75,6 +75,19 @@ namespace WebApp.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _inventoryService.DeleteInventory(id);
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = response.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["error"] = response.Message;
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(ImportInvens model)
         {

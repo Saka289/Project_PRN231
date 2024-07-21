@@ -5,7 +5,7 @@ namespace WebApp.ViewModels
 {
     public class CheckOutViewModel
     {
-        public CartDto CartDto { get; set; }
+        public CartDto CartDto { get; set; } = new CartDto();
         [Required]
         public string Email { get; set; }
         [Required]

@@ -1,4 +1,3 @@
-﻿
 ﻿@using WebApp.Models.Dtos;
 @{
     ViewData["Title"] = "Stocks";
@@ -8,7 +7,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="text-primary">List of inventories</h5>
-        <a class="btn btn-sm btn-secondary"> <i class="bi bi-plus-square-fill"></i> Create</a>
+        <a asp-action="Create" class="btn btn-sm btn-secondary"> <i class="bi bi-plus-square-fill"></i> Create</a>
     </div>
     <div class="card-body">
         <table id="DT_load" class="table table-bordered table-striped" style="width:100%;">
@@ -33,7 +32,7 @@
                             <td>@item.ReservedQuantity</td>
                             <td style="text-align:center">
                                 <a class="btn btn-sm btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
-                                <a class="btn btn-sm btn-danger">Delete</a>
+                                <button id="btnDelete" data-couponid="@item.Id" class="btn btn-sm btn-danger">Delete</button>
                             </td>
                         </tr>
                     }
@@ -45,5 +44,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).on('click', '#btnDelete', function () {
+            var couponid = $(this).data("couponid");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Admin/Inventory/Delete/' + couponid;
+                }
+            });
+        });
+    </script>
 }
 

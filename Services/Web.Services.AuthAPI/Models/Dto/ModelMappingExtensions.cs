@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using Web.Services.AuthAPI.Data;
 
 namespace Web.Services.AuthAPI.Models.Dto

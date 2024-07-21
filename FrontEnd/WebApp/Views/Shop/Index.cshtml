@@ -39,6 +39,9 @@
                         </div>
                         <div class="widgets_inner">
                             <ul class="list">
+                                <li>
+                                    <a class="category" asp-action="Index">All</a>
+                                </li>
                                 @if (categoryDtos.Count > 0)
                                 {
                                     @foreach (var item in categoryDtos)
@@ -113,7 +116,7 @@
                             </div>
                             <div class="single_product_menu d-flex">
                                 <h5>short by : </h5>
-                                <select id="orderBy">
+                                <select class="form-control" id="orderBy">
                                     <option value="" data-display="Select">Select option</option>
                                     <option value="Title">Title</option>
                                     <option value="Price">Price</option>
@@ -266,6 +269,7 @@
             });
 
 
+
             $('#orderBy').change(function () {
                 // Lấy giá trị đã chọn từ phần tử select
                 var selectedValue = $(this).val();
@@ -285,13 +289,13 @@
                 }
                 // Tạo đối tượng chứa các thuộc tính
                 var model = {
-                    CategoryId: categoryId,
+                    CategoryId: categoryId ? categoryId : 0,
                     Title: searchTitleValue,
                     PriceFrom: priceFrom,
                     PriceTo: priceTo,
                     sortQuery: selectedValue
                 };
-                console.log(model);
+                // console.log(model);
 
                 // Gửi đối tượng về controller sử dụng AJAX
                 $.ajax({
@@ -337,7 +341,7 @@
 
                 // Tạo đối tượng chứa các giá trị
                 var model = {
-                    CategoryId: categoryId,
+                    CategoryId: categoryId ? categoryId : 0,
                     Title: searchTitleValue,
                     PriceFrom: priceFrom,
                     PriceTo: priceTo,
@@ -387,7 +391,7 @@
 
 
                     var model = {
-                        CategoryId: categoryId,
+                        CategoryId: categoryId ? categoryId : 0,
                         Title: searchTitleValue,
                         PriceFrom: priceFrom,
                         PriceTo: priceTo,
@@ -428,15 +432,15 @@
             var html = ``;
             data.forEach(e => {
                 html += ` <div class="col-lg-4 col-sm-6">
-                                                     <div class="single_product_item">
-                                                         <img src="${e.image}" alt="ProductImage">
-                                                         <div class="single_product_text">
-                                                             <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
-                                                             <h3>${e.price} vnđ</h3>
-                                                             <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
-                                                         </div>
-                                                     </div>
-                                                  </div>`;
+                                                                                                                                             <div class="single_product_item">
+                                                                                                                                                 <img src="${e.image}" alt="ProductImage">
+                                                                                                                                                 <div class="single_product_text">
+                                                                                                                                                     <h4><a href="/Product/Detail/${e.id}" style="text-decoration:none">${e.title}</a></h4>
+                                                                                                                                                     <h3>${e.price} vnđ</h3>
+                                                                                                                                                     <a href="#" id="btnInput" data-productid="${e.id}" data-quantity="1" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                                                                                                                                 </div>
+                                                                                                                                             </div>
+                                                                                                                                          </div>`;
             });
             $("#divProduct").append(html);
         }

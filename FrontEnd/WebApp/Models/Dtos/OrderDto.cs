@@ -20,7 +20,9 @@
         public string? Note { get; set; }
         public DateTime ShippedDate { get; set; }
         public DateTime RequiredDate { get; set; }
-        public string PaymentStatus { get; set; }
+        public string? PaymentStatus { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public string? StripeSessionId { get; set; }
         public IEnumerable<OrderDetailDto> OrderDetails { get; set; }
     }
 }
